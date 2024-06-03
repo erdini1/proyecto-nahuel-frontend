@@ -8,9 +8,11 @@ const axiosInstance = axios.create({
 	},
 });
 
-const authToken = localStorage.getItem('token');
-if (authToken) {
-	axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+if (typeof window !== 'undefined') {
+	const authToken = localStorage.getItem('token');
+	if (authToken) {
+		axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+	}
 }
 
 export default axiosInstance;
