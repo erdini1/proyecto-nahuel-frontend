@@ -8,7 +8,7 @@ const useToken = () => {
 		const authToken = localStorage.getItem('token');
 
 		if (!authToken) {
-			router.push('/auth/login')
+			router.push('/login')
 		}
 		return () => {
 			// cleanup

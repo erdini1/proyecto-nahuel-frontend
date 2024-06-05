@@ -41,7 +41,7 @@ export default function SignIn() {
 			const response = await axios.post('/api/auth/login', { number, password });
 			const { token } = response.data;
 			localStorage.setItem('token', token);
-			window.location.href = '/dashboard';
+			window.location.href = '/';
 		} catch (error) {
 			console.error('Error during login:', error);
 			alert('Error al iniciar sesión. Por favor, verifica tus credenciales.');
