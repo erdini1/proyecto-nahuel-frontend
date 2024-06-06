@@ -1,15 +1,16 @@
 "use client";
-// import { redirect } from "next/navigation";
-// import { useAuthContext } from "@/contexts/authContext";
+
+import Navbar from '@/components/Navbar';
+import { useState } from 'react';
 
 function Layout({ children }) {
-	//   const { isLoggedIn } = useAuthContext();
-
-	//   if (!isLoggedIn) {
-	//     redirect("/login");
-	//   }
-
-	return <div>{children}</div>;
+	const [userName, setUserName] = useState('Empleado');
+	return (
+		<div>
+			<Navbar userName={userName} />
+			{children}
+		</div>
+	)
 }
 
 export default Layout;

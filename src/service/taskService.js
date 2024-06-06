@@ -2,7 +2,7 @@ import axios from "../config/axios";
 
 export const getUserTasks = async (date) => {
 	try {
-		const response = await axios.get(`/api/checklist/date?date=${date}`);
+		const response = await axios.get(`/checklist/date?date=${date}`);
 		return response.data;
 	} catch (error) {
 		console.error('Failed to get tasks:', error);
@@ -12,7 +12,7 @@ export const getUserTasks = async (date) => {
 
 export const completeTask = async (taskId) => {
 	try {
-		const response = await axios.put(`/api/checklist/${taskId}/completed`);
+		const response = await axios.put(`/checklist/${taskId}/completed`);
 		return response.data;
 	} catch (error) {
 		console.error('Failed to complete task:', error);

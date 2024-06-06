@@ -1,5 +1,8 @@
 "use client";
 import React, { useState } from 'react';
+
+import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/contexts/authContext";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from "@/config/axios.js"
+import { decode } from '@/helpers/token.helper';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -34,14 +38,31 @@ export default function SignIn() {
 	const classes = useStyles();
 	const [number, setNumber] = useState('');
 	const [password, setPassword] = useState('');
+	const router = useRouter();
+	const { login } = useAuthContext();
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		try {
-			const response = await axios.post('/api/auth/login', { number, password });
+			const response = await axios.post('/auth/login', { number, password });
 			const { token } = response.data;
-			localStorage.setItem('token', token);
-			window.location.href = '/';
+			const decodedToken = decode(token);
+
+			login(token);
+
+			switch (decodedToken.role) {
+				case 'admin':
+					router.push("/admin");
+					break;
+				case 'cashier':
+					router.push("/");
+					break;
+				case 'employee':
+					router.push("/employee/checklist");
+					break;
+				default:
+					router.push("/unauthorized");
+			}
 		} catch (error) {
 			console.error('Error during login:', error);
 			alert('Error al iniciar sesión. Por favor, verifica tus credenciales.');

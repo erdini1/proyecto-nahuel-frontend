@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Navbar = ({ userName, onLogout }) => {
+const Navbar = ({ userName }) => {
 	const classes = useStyles();
 
 	return (
@@ -33,7 +33,7 @@ const Navbar = ({ userName, onLogout }) => {
 				<Typography variant="h6" className={classes.userName}>
 					{userName}
 				</Typography>
-				<Button color="inherit" onClick={onLogout}>
+				<Button color="inherit" href='/logout'>
 					Cerrar sesión
 				</Button>
 			</Toolbar>
