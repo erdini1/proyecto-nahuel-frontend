@@ -3,7 +3,42 @@
 export default function Dashboard() {
 	return (
 		<div>
-			<h1>ADMIN</h1>
+			{/* <MainContent> */}
+			<div className="stats-overview">
+				<div className="stat">
+					<h2>Tareas</h2>
+					<p>Completadas: X | Pendientes: Y</p>
+				</div>
+				<div className="stat">
+					<h2>Empleados</h2>
+					<p>Activos: A | Inactivos: B</p>
+				</div>
+				<div className="stat">
+					<h2>Caja</h2>
+					<p>Ingresos: $X | Egresos: $Y</p>
+				</div>
+			</div>
+			<div className="recent-activity">
+				<h2>Actividad Reciente</h2>
+				<ul>
+					<li>Tarea X completada por Empleado Y</li>
+					<li>Empleado Z inició sesión</li>
+				</ul>
+			</div>
+			<div className="notifications">
+				<h2>Notificaciones</h2>
+				<ul>
+					<li>Tarea A vencida</li>
+					<li>Recordatorio: Revisión de caja a las 5 PM</li>
+				</ul>
+			</div>
+			<div className="quick-links">
+				<h2>Accesos Directos</h2>
+				<button>Agregar Nuevo Empleado</button>
+				<button>Crear Nueva Tarea</button>
+				<button>Ver Reportes</button>
+			</div>
+			{/* </MainContent> */}
 
 		</div>
 	);

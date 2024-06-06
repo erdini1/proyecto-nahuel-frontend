@@ -32,7 +32,7 @@ export function middleware(request) {
 		if (pathname.startsWith("/admin") && user.role !== ROLE.ADMIN) {
 			return NextResponse.redirect(new URL("/unauthorized", request.url)); // Página no autorizado
 		}
-		if (pathname.startsWith("/employee") && ![ROLE.ADMIN, ROLE.EMPLOYEE].includes(user.role)) {
+		if (pathname.startsWith("/employee") && ![ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.CASHIER].includes(user.role)) {
 			return NextResponse.redirect(new URL("/unauthorized", request.url));
 		}
 		if (pathname.startsWith("/cashier") && ![ROLE.ADMIN, ROLE.CASHIER].includes(user.role)) {

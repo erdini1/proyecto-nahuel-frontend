@@ -1,10 +1,9 @@
-"use client"
+import { Dashboard } from "@/components/component/Dashboard"
 
-export default function Dashboard() {
+export default function Component() {
 	return (
 		<div>
-			<h1>Home</h1>
-
+			<Dashboard />
 		</div>
-	);
+	)
 }

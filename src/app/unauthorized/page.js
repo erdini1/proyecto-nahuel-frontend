@@ -5,7 +5,7 @@ export default function Unauthorized() {
 		<div className="flex h-[100dvh] w-full flex-col items-center justify-center bg-gray-100 px-4 ">
 			<div className="max-w-md space-y-4 text-center">
 				<h1 className="text-4xl font-bold tracking-tighter sm:text-5xl">Acceso denegado</h1>
-				<p className="text-gray-500 dark:text-gray-400">
+				<p className="text-gray-500">
 					Lo sentimos, no tienes los permisos necesarios para acceder a esta página. Por favor, contacta con el
 					administrador si crees que esto es un error.
 				</p>
