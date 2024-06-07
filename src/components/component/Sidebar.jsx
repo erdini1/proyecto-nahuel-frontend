@@ -14,41 +14,77 @@ export default function Sidebar() {
 				</div>
 				<div className="flex-1">
 					<nav className="grid items-start px-4 text-sm font-medium">
-						<div className="grid gap-1">
-							<div className="text-gray-500 px-3 py-2 ">Tasks</div>
+
+						{/* ---- Empleados ----- */}
+
+						<div className="grid gap-1 mt-4">
+							<div className="text-gray-500 px-3 py-2">Employees</div>
 							<Link
+								href="#"
 								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
-								href="#">
-								<UserIcon className="h-4 w-4" />
-								Assign Tasks
+								prefetch={false}
+							>
+								<UserPlusIcon className="h-4 w-4" />
+								Create User
 							</Link>
+							<Link
+								href="#"
+								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								prefetch={false}
+							>
+								<UserCheckIcon className="h-4 w-4" />
+								Modify User
+							</Link>
+							<Link
+								href="#"
+								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								prefetch={false}
+							>
+								<UserXIcon className="h-4 w-4" />
+								Delete User
+							</Link>
+						</div>
+
+						{/* ---- Tareas ----- */}
+
+						<div className="grid gap-1 mt-4">
+							<div className="text-gray-500 px-3 py-2 ">Tareas</div>
 							<Link
 								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
 								href="#">
 								<PlusIcon className="h-4 w-4" />
-								Create Tasks
+								Crear Tareas
 							</Link>
 							<Link
 								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
 								href="#">
-								<InboxIcon className="h-4 w-4" />
-								Unassigned Tasks
-							</Link>
-							<Link
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
-								href="#">
-								<UsersIcon className="h-4 w-4" />
-								Tasks by User
+								<UserIcon className="h-4 w-4" />
+								Asignar Tareas
 							</Link>
 							<Link
 								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
 								href="#">
 								<EyeIcon className="h-4 w-4" />
-								View Tasks by User
+								Ver Tareas por usuario
+							</Link>
+							<Link
+								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								href="#">
+								<UsersIcon className="h-4 w-4" />
+								Tareas asginadas a varios usuarios
+							</Link>
+							<Link
+								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								href="#">
+								<InboxIcon className="h-4 w-4" />
+								Tareas sin asignar
 							</Link>
 						</div>
+
+						{/* ---- Caja ----- */}
+
 						<div className="grid gap-1 mt-4">
-							<div className="text-gray-500 px-3 py-2">Accounting</div>
+							<div className="text-gray-500 px-3 py-2">Caja</div>
 							<Link
 								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
 								href="#">
@@ -241,10 +277,9 @@ function UserIcon(props) {
 	);
 }
 
-
-function UsersIcon(props) {
+function UserCheckIcon(props) {
 	return (
-		(<svg
+		<svg
 			{...props}
 			xmlns="http://www.w3.org/2000/svg"
 			width="24"
@@ -254,12 +289,77 @@ function UsersIcon(props) {
 			stroke="currentColor"
 			strokeWidth="2"
 			strokeLinecap="round"
-			strokeLinejoin="round">
+			strokeLinejoin="round"
+		>
+			<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+			<circle cx="9" cy="7" r="4" />
+			<polyline points="16 11 18 13 22 9" />
+		</svg>
+	)
+}
+
+function UserPlusIcon(props) {
+	return (
+		<svg
+			{...props}
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
+			<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+			<circle cx="9" cy="7" r="4" />
+			<line x1="19" x2="19" y1="8" y2="14" />
+			<line x1="22" x2="16" y1="11" y2="11" />
+		</svg>
+	)
+}
+
+function UserXIcon(props) {
+	return (
+		<svg
+			{...props}
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
+			<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+			<circle cx="9" cy="7" r="4" />
+			<line x1="17" x2="22" y1="8" y2="13" />
+			<line x1="22" x2="17" y1="8" y2="13" />
+		</svg>
+	)
+}
+
+function UsersIcon(props) {
+	return (
+		<svg
+			{...props}
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
 			<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
 			<circle cx="9" cy="7" r="4" />
 			<path d="M22 21v-2a4 4 0 0 0-3-3.87" />
 			<path d="M16 3.13a4 4 0 0 1 0 7.75" />
-		</svg>)
-	);
+		</svg>
+	)
 }
-

@@ -1,9 +1,9 @@
-import { Dashboard } from "@/components/component/Dashboard"
+import { TasksHome } from "@/components/component/tasks-home"
 
 export default function Component() {
 	return (
 		<div>
-			<Dashboard />
+			<TasksHome />
 		</div>
 	)
 }

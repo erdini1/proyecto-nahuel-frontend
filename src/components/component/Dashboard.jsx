@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent, DropdownMenu } from "@/components/ui/dropdown-menu"
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
 
+// TODO: Eliminar los darks de los className y agregar los componentes del otro estilo de v0
 export function Dashboard() {
   return (
     (
@@ -29,7 +30,6 @@ export function Dashboard() {
                   type="search" />
               </div>
             </form>
-
           </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
