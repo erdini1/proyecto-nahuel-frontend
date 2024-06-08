@@ -1,13 +1,17 @@
 "use client";
 
 import Link from "next/link"
+import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
+
+	const pathname = usePathname();
+	
 	return (
 		<div className="hidden border-r bg-gray-100/40 lg:block">
 			<div className="flex flex-col gap-2">
 				<div className="flex h-[60px] items-center px-6">
-					<Link className="flex items-center gap-2 font-semibold" href="#">
+					<Link className="flex items-center gap-2 font-semibold" href="/admin/dashboard">
 						<ClipboardListIcon className="h-6 w-6" />
 						<span className="">Admin Dashboard</span>
 					</Link>
@@ -21,7 +25,7 @@ export default function Sidebar() {
 							<div className="text-gray-500 px-3 py-2">Employees</div>
 							<Link
 								href="#"
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								prefetch={false}
 							>
 								<UserPlusIcon className="h-4 w-4" />
@@ -29,7 +33,7 @@ export default function Sidebar() {
 							</Link>
 							<Link
 								href="#"
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								prefetch={false}
 							>
 								<UserCheckIcon className="h-4 w-4" />
@@ -37,7 +41,7 @@ export default function Sidebar() {
 							</Link>
 							<Link
 								href="#"
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								prefetch={false}
 							>
 								<UserXIcon className="h-4 w-4" />
@@ -50,31 +54,31 @@ export default function Sidebar() {
 						<div className="grid gap-1 mt-4">
 							<div className="text-gray-500 px-3 py-2 ">Tareas</div>
 							<Link
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
-								href="#">
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/tasks" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+								href="/admin/tasks">
 								<PlusIcon className="h-4 w-4" />
-								Crear Tareas
+								Ver Tareas
 							</Link>
 							<Link
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<UserIcon className="h-4 w-4" />
 								Asignar Tareas
 							</Link>
 							<Link
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<EyeIcon className="h-4 w-4" />
 								Ver Tareas por usuario
 							</Link>
 							<Link
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<UsersIcon className="h-4 w-4" />
-								Tareas asginadas a varios usuarios
+								Tareas en varios usuarios
 							</Link>
 							<Link
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<InboxIcon className="h-4 w-4" />
 								Tareas sin asignar
@@ -86,19 +90,19 @@ export default function Sidebar() {
 						<div className="grid gap-1 mt-4">
 							<div className="text-gray-500 px-3 py-2">Caja</div>
 							<Link
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<DollarSignIcon className="h-4 w-4" />
 								Invoices
 							</Link>
 							<Link
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<ReceiptIcon className="h-4 w-4" />
 								Payments
 							</Link>
 							<Link
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<BarChartIcon className="h-4 w-4" />
 								Reports

@@ -52,7 +52,7 @@ export default function SignIn() {
 
 			switch (decodedToken.role) {
 				case 'admin':
-					router.push("/admin");
+					router.push("/admin/dashboard");
 					break;
 				case 'cashier':
 					router.push("/");

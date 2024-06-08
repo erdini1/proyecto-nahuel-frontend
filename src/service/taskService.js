@@ -19,3 +19,23 @@ export const completeTask = async (taskId) => {
 		throw new Error('Failed to get tasks');
 	}
 };
+
+export const createTask = async (task) => {
+	try {
+		const response = await axios.post('/task', task);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to create task:', error);
+		throw new Error('Failed to create task');
+	}
+}
+
+export const getAllTasks = async () => {
+	try {
+		const response = await axios.get('/task');
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get tasks:', error);
+		throw new Error('Failed to get tasks');
+	}
+}

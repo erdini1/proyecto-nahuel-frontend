@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button"
 import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card"
+import Link from "next/link";
 
-export function TasksHome() {
+export function AdminHome() {
   return (
     (
       <div className="flex flex-col">
@@ -21,9 +22,11 @@ export function TasksHome() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button className="w-full" variant="outline">
-                  Crear usuario
-                </Button>
+                <Link href="/admin/-">
+                  <Button className="w-full" variant="outline">
+                    Crear usuario
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
             <Card>
@@ -32,9 +35,11 @@ export function TasksHome() {
                 <CardDescription>Modifica la información de un usuario.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button className="w-full" variant="outline">
-                  Modificar Usuario
-                </Button>
+                <Link href="/admin/-">
+                  <Button className="w-full" variant="outline">
+                    Modificar Usuario
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
             <Card>
@@ -43,9 +48,11 @@ export function TasksHome() {
                 <CardDescription>Elimina un usuario de la base de datos.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button className="w-full" variant="outline">
-                  Eliminar Usuario
-                </Button>
+                <Link href="/admin/-">
+                  <Button className="w-full" variant="outline">
+                    Eliminar Usuario
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </div>
@@ -54,19 +61,21 @@ export function TasksHome() {
           <div className="flex items-center align-middle">
             <h1 className="font-semibold text-lg md:text-2xl">Tareas</h1>
             <Button className="ml-auto" size="sm">
-              Crear Tareas
+              <Link href="/admin/tasks">Ver tareas</Link>
             </Button>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle>Asignar Tareas</CardTitle>
-                <CardDescription>Asigna tareas a los empleados.</CardDescription>
+                <CardTitle>Ver tareas</CardTitle>
+                <CardDescription>Ver todas las tareas creadas en el sistema.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button className="w-full" variant="outline">
-                  Asignar Tareas
-                </Button>
+                <Link href="/admin/tasks">
+                  <Button className="w-full" variant="outline">
+                    Ver tareas
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
             <Card>
@@ -75,9 +84,11 @@ export function TasksHome() {
                 <CardDescription>Ver las tareas asignadas a un usuario en específico.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button className="w-full" variant="outline">
-                  Ver Tareas por usuario
-                </Button>
+                <Link href="/admin/-">
+                  <Button className="w-full" variant="outline">
+                    Ver Tareas por usuario
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
             <Card>
@@ -86,9 +97,11 @@ export function TasksHome() {
                 <CardDescription>Ver las tareas asignadas a varios usuarios.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button className="w-full" variant="outline">
-                  Tareas asignadas a varios usuarios
-                </Button>
+                <Link href="/admin/-">
+                  <Button className="w-full" variant="outline">
+                    Tareas asignadas a varios usuarios
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </div>
