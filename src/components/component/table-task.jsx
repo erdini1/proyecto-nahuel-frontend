@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { createTask, getAllTasks } from "@/service/taskService";
 import { TableCell } from "@material-ui/core";
 
+
+// TODO: agregar validaciones para los campos del formulario
 export function TableTask() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [taskDescription, setTaskDescription] = useState('');
