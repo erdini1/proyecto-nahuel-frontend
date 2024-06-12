@@ -8,10 +8,18 @@ const axiosInstance = axios.create({
 		'Content-Type': 'application/json',
 	}
 });
-const token = Cookies.get('token');
 
-if (token) {
-	axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
+axiosInstance.interceptors.request.use(
+	(config) => {
+		const token = Cookies.get('token');
+		if (token) {
+			config.headers['Authorization'] = `Bearer ${token}`;
+		}
+		return config;
+	},
+	(error) => {
+		return Promise.reject(error);
+	}
+);
 
 export default axiosInstance;

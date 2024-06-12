@@ -1,57 +1,10 @@
-"use client";
+"use client"
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import { completeTask, getUserTasks } from '@/service/taskService';
 
-const useStyles = makeStyles((theme) => ({
-	container: {
-		marginTop: theme.spacing(4),
-		padding: theme.spacing(4),
-	},
-	table: {
-		minWidth: 650,
-	},
-	button: {
-		margin: theme.spacing(1),
-	},
-	header: {
-		marginBottom: theme.spacing(4),
-		display: 'flex',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-	headerItem: {
-		marginRight: theme.spacing(3),
-	},
-	title: {
-		marginBottom: theme.spacing(2),
-		textAlign: 'center',
-		fontWeight: 'bold',
-		textTransform: 'uppercase',
-	},
-	search: {
-		marginBottom: theme.spacing(2),
-		width: '100%',
-	},
-}));
-
 const ChecklistPage = () => {
-
-	const classes = useStyles();
 	const [userTasks, setUserTasks] = useState([]);
 	const [searchQuery, setSearchQuery] = useState('');
-
 	const [userName, setUserName] = useState('Empleado');
 
 	const date = new Date().toISOString().split('T')[0];
@@ -60,7 +13,6 @@ const ChecklistPage = () => {
 		const fetchUserTasks = async () => {
 			try {
 				const data = await getUserTasks(date);
-				console.log('Fetched tasks:', data);
 				setUserTasks(data);
 				setUserName(data[0]?.User.firstName + " " + data[0]?.User.lastName);
 			} catch (error) {
@@ -88,65 +40,49 @@ const ChecklistPage = () => {
 	);
 
 	return (
-		<>
-			<Container className={classes.container} component={Paper} elevation={3}>
-				<Typography variant="h4" className={classes.title}>
-					Tareas Diarias
-				</Typography>
-				<Box className={classes.header}>
-					<Typography variant="h6" className={classes.headerItem}>
-						Turno: {userTasks[0]?.shift || 'N/A'}
-					</Typography>
-					<Typography variant="h6" className={classes.headerItem}>
-						Fecha: {date}
-					</Typography>
-					<Typography variant="h6" className={classes.headerItem}>
-						Responsable: {userName}
-					</Typography>
-				</Box>
-				<TextField
-					className={classes.search}
-					variant="outlined"
-					label="Buscar Tareas"
-					value={searchQuery}
-					onChange={handleSearchChange}
-				/>
-				{filteredTasks.length === 0 ? (
-					<Typography variant="h6" align="center">No tasks found.</Typography>
-				) : (
-					<Table className={classes.table}>
-						<TableHead>
-							<TableRow>
-								<TableCell align="center">
-									<Typography variant="subtitle1" className="font-bold text-lg uppercase">Descripción</Typography>
-								</TableCell>
-								<TableCell align="center">
-									<Typography variant="subtitle1" className="font-bold text-lg uppercase">Estado</Typography>
-								</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{filteredTasks.map((userTask) => (
-								<TableRow key={userTask.id}>
-									<TableCell align="center">{userTask.Task.description}</TableCell>
-									<TableCell align="center">
-										<Button
-											variant="contained"
-											color={userTask.isCompleted ? "default" : "primary"}
-											className={classes.button}
-											onClick={() => handleCompleteUserTask(userTask.Task.id)}
-											disabled={userTask.isCompleted}
-										>
-											{userTask.isCompleted ? 'Completado' : 'Completar'}
-										</Button>
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				)}
-			</Container>
-		</>
+		<div className="container mx-auto p-6 bg-white rounded-lg shadow-md">
+			<h1 className="text-2xl font-bold text-center mb-6">Tareas Diarias</h1>
+			<div className="flex justify-between items-center mb-4">
+				<p className="text-lg"><strong>Turno:</strong> {userTasks[0]?.shift || 'N/A'}</p>
+				<p className="text-lg"><strong>Fecha:</strong> {date}</p>
+				<p className="text-lg"><strong>Responsable:</strong> {userName}</p>
+			</div>
+			<input
+				type="text"
+				className="w-full p-2 mb-4 border border-gray-300 rounded-md"
+				placeholder="Buscar Tareas"
+				value={searchQuery}
+				onChange={handleSearchChange}
+			/>
+			{filteredTasks.length === 0 ? (
+				<p className="text-center text-lg">No se encontraron tareas</p>
+			) : (
+				<table className="min-w-full bg-white">
+					<thead>
+						<tr>
+							<th className="py-2 px-4 border-b-2 border-gray-300 text-center">Descripción</th>
+							<th className="py-2 px-4 border-b-2 border-gray-300 text-center">Estado</th>
+						</tr>
+					</thead>
+					<tbody>
+						{filteredTasks.map((userTask) => (
+							<tr key={userTask.id}>
+								<td className="py-2 px-4 border-b border-gray-300 text-center">{userTask.Task.description}</td>
+								<td className="py-2 px-4 border-b border-gray-300 text-center">
+									<button
+										className={`py-2 px-4 rounded-md ${userTask.isCompleted ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 text-white'}`}
+										onClick={() => handleCompleteUserTask(userTask.Task.id)}
+										disabled={userTask.isCompleted}
+									>
+										{userTask.isCompleted ? 'Completado' : 'Completar'}
+									</button>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			)}
+		</div>
 	);
 };
 

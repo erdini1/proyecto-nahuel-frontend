@@ -7,6 +7,7 @@ import {
 	useMemo,
 } from "react";
 import Cookies from "js-cookie";
+import axiosInstance from "@/config/axios";
 
 export const AuthContext = createContext({
 	login: (token) => { },
@@ -16,7 +17,8 @@ export const AuthContext = createContext({
 export default function AuthContextProvider({ children }) {
 
 	const login = useCallback(function (token) {
-		Cookies.set("token", JSON.stringify(token));
+		Cookies.set("token", token);
+		axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 	}, []);
 
 	const logout = useCallback(function () {
