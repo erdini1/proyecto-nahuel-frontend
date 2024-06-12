@@ -1,8 +1,8 @@
 import axios from "../config/axios";
 
-export const getUserTasks = async (date) => {
+export const getUserTasks = async (date, userId) => {
 	try {
-		const response = await axios.get(`/checklist/date?date=${date}`);
+		const response = await axios.get(`/checklist/date?date=${date}${userId ? `&userId=${userId}` : ''}`);
 		return response.data;
 	} catch (error) {
 		console.error('Failed to get tasks:', error);
@@ -37,5 +37,20 @@ export const getAllTasks = async () => {
 	} catch (error) {
 		console.error('Failed to get tasks:', error);
 		throw new Error('Failed to get tasks');
+	}
+}
+
+// TODO: Ver como cargar el turno
+export const assignTask = async (taskIds, userId) => {
+	try {
+		const response = await axios.post('/checklist', {
+			taskIds,
+			userId,
+			shift: 'morning'
+		});
+		return response.data;
+	} catch (error) {
+		console.error('Failed to assign task:', error);
+		throw new Error('Failed to assign task');
 	}
 }
