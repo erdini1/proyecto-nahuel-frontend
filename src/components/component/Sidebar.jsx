@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 export default function Sidebar() {
 
 	const pathname = usePathname();
-	
+
 	return (
 		<div className="hidden border-r bg-gray-100/40 lg:block">
 			<div className="flex flex-col gap-2">
@@ -22,22 +22,22 @@ export default function Sidebar() {
 						{/* ---- Empleados ----- */}
 
 						<div className="grid gap-1 mt-4">
-							<div className="text-gray-500 px-3 py-2">Employees</div>
+							<div className="text-gray-500 px-3 py-2">Empleados</div>
 							<Link
-								href="#"
-								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+								href="/admin/employee/register"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/employee/register" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								prefetch={false}
 							>
 								<UserPlusIcon className="h-4 w-4" />
-								Create User
+								Crear usuario
 							</Link>
-							<Link
+							{/* <Link
 								href="#"
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								prefetch={false}
 							>
 								<UserCheckIcon className="h-4 w-4" />
-								Modify User
+								Modificar usuario
 							</Link>
 							<Link
 								href="#"
@@ -46,7 +46,7 @@ export default function Sidebar() {
 							>
 								<UserXIcon className="h-4 w-4" />
 								Delete User
-							</Link>
+							</Link> */}
 						</div>
 
 						{/* ---- Tareas ----- */}
@@ -56,20 +56,14 @@ export default function Sidebar() {
 							<Link
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/tasks" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="/admin/tasks">
-								<PlusIcon className="h-4 w-4" />
+								<InboxIcon className="h-4 w-4" />
 								Ver Tareas
 							</Link>
 							<Link
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/tasks/assign" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="/admin/tasks/assign">
-								<UserIcon className="h-4 w-4" />
+								<PlusIcon className="h-4 w-4" />
 								Asignar Tareas
-							</Link>
-							<Link
-								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
-								href="#">
-								<EyeIcon className="h-4 w-4" />
-								Ver Tareas por usuario
 							</Link>
 							<Link
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
@@ -80,7 +74,7 @@ export default function Sidebar() {
 							<Link
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
-								<InboxIcon className="h-4 w-4" />
+								<UserIcon className="h-4 w-4" />
 								Tareas sin asignar
 							</Link>
 						</div>
