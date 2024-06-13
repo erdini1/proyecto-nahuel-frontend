@@ -1,9 +1,8 @@
 // import FormRegister from "@/components/component/formRegister"
-import UserTable from "@/components/component/user-table"
+import EmployeeCrud from "@/components/component/employee-crud"
 
 export default function RegisterPage() {
 	return (
-		<UserTable />
-		// <FormRegister />
+		<EmployeeCrud />
 	)
 }

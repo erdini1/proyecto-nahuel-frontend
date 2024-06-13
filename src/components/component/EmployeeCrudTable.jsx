@@ -1,7 +1,7 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 
-export default function EmployeeTable({ employees, handleUpdateEmployee, handleDeleteEmployee }) {
+export default function EmployeeCrudTable({ employees, handleUpdateEmployee, handleDeleteEmployee }) {
 	const roles = {
 		admin: "Admin",
 		employee: "Empleado",

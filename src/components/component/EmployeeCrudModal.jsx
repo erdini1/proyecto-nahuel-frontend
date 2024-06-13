@@ -6,7 +6,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { Button } from "@/components/ui/button";
 import { EyeOpenIcon, EyeClosedIcon, Pencil1Icon } from "@radix-ui/react-icons";
 
-export default function EmployeeModal({ isEditing, newEmployee, setNewEmployee, handleSaveEmployee, setShowCreateModal, employees }) {
+export default function EmployeeCrudModal({ isEditing, newEmployee, setNewEmployee, handleSaveEmployee, setShowCreateModal, employees }) {
 	const [showPassword, setShowPassword] = useState(false);
 	const [editPassword, setEditPassword] = useState(!isEditing);
 	const [isNumberDuplicate, setIsNumberDuplicate] = useState(false);

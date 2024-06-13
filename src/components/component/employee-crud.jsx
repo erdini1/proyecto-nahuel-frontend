@@ -2,11 +2,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import EmployeeTable from "@/components/component/EmployeeTable";
-import EmployeeModal from "@/components/component/EmployeeModal";
+import EmployeeCrudTable from "@/components/component/EmployeeCrudTable";
+import EmployeeCrudModal from "@/components/component/EmployeeCrudModal";
 import { getUsers, createUser, updateUser, deleteUser } from "@/service/userService";
 
-export default function UserTable() {
+export default function EmployeeCrud() {
     const [employees, setEmployees] = useState([]);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [newEmployee, setNewEmployee] = useState({
@@ -87,7 +87,7 @@ export default function UserTable() {
                     </Button>
                 </header>
                 <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-                    <EmployeeTable
+                    <EmployeeCrudTable
                         employees={employees}
                         handleUpdateEmployee={handleUpdateEmployee}
                         handleDeleteEmployee={handleDeleteEmployee}
@@ -95,7 +95,7 @@ export default function UserTable() {
                 </main>
             </div>
             {showCreateModal && (
-                <EmployeeModal
+                <EmployeeCrudModal
                     isEditing={isEditing}
                     newEmployee={newEmployee}
                     setNewEmployee={setNewEmployee}
