@@ -20,22 +20,22 @@ export const createUser = async (data) => {
 	}
 };
 
-// export const updateUser = async (id, data) => {
-// 	try {
-// 		const response = await axios.put(`/user/${id}`, data);
-// 		return response.data;
-// 	} catch (error) {
-// 		console.error('Failed to update task:', error);
-// 		throw new Error('Failed to update task');
-// 	}
-// };
+export const updateUser = async (id, data) => {
+	try {
+		const response = await axios.put(`/auth/update?userId=${id}`, data);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to update task:', error);
+		throw new Error('Failed to update task');
+	}
+};
 
-// export const deleteUser = async (id) => {
-// 	try {
-// 		const response = await axios.delete(`/user/${id}`);
-// 		return response.data;
-// 	} catch (error) {
-// 		console.error('Failed to delete task:', error);
-// 		throw new Error('Failed to delete task');
-// 	}
-// };
+export const deleteUser = async (id) => {
+	try {
+		const response = await axios.delete(`/auth/delete?userId=${id}`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to delete task:', error);
+		throw new Error('Failed to delete task');
+	}
+};

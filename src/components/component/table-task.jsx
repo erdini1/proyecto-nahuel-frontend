@@ -136,20 +136,20 @@ export function TableTask() {
                 </main>
             </div>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="sm:max-w-[450px]">
                     <form className="py-3" onSubmit={handleSubmit}>
                         <DialogHeader className={`py-3`}>
                             <DialogTitle>Crear Tarea</DialogTitle>
                             <DialogDescription>Complete el formulario para crear una tarea.</DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-6 py-4">
-                            <div className="grid gap-1.5">
+                            <div className="grid gap-3">
                                 <Label htmlFor="description">Descripción</Label>
                                 <div className="relative">
                                     <SearchIcon
-                                        className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                                        className="absolute left-2.5 top-2.5 h-5 w-4 text-gray-500" />
                                     <Input
-                                        className="pl-8"
+                                        className="pl-8 "
                                         id="taskDescription"
                                         placeholder="Ingrese la descripción"
                                         type="text"
@@ -157,8 +157,8 @@ export function TableTask() {
                                         onChange={(e) => setTaskDescription(e.target.value)}
                                     />
                                 </div>
-                                {taskDescription && (
-                                    <div className="bg-white border border-gray-200 rounded-md shadow-sm p-2 mt-2">
+                                {taskDescription ? (
+                                    <div className="bg-white border border-gray-200 rounded-md shadow-sm p-2 ">
                                         <div className="text-sm text-gray-500 mb-2">Tareas similares:</div>
                                         <ul className="space-y-1">
                                             {filteredTasks.map((task) => (
@@ -166,9 +166,9 @@ export function TableTask() {
                                             ))}
                                         </ul>
                                     </div>
-                                )}
+                                ) : ""}
                             </div>
-                            <div className="grid gap-1.5">
+                            <div className="grid gap-3">
                                 <Label htmlFor="sector">Sector</Label>
                                 <Select id="sector" value={sector} onValueChange={(value) => setSector(value)}>
                                     <SelectTrigger className="w-full">

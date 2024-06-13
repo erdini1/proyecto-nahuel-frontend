@@ -29,7 +29,7 @@ export default function Sidebar() {
 								prefetch={false}
 							>
 								<UserPlusIcon className="h-4 w-4" />
-								Crear usuario
+								Gestionar usuarios
 							</Link>
 							{/* <Link
 								href="#"
