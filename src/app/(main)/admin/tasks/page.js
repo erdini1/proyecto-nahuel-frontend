@@ -1,8 +1,8 @@
-import { TableTask } from "@/components/component/table-task";
+import TaskCrud from "@/components/component/task-crud";
 
 const CreateTaskPage = () => {
 	return (
-		<TableTask />
+		<TaskCrud />
 	)
 };
 

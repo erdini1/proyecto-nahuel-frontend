@@ -46,11 +46,31 @@ export const assignTask = async (taskIds, userId) => {
 		const response = await axios.post('/checklist', {
 			taskIds,
 			userId,
-			shift: 'morning'
+			shift: 'Mañana'
 		});
 		return response.data;
 	} catch (error) {
 		console.error('Failed to assign task:', error);
 		throw new Error('Failed to assign task');
+	}
+}
+
+export const deleteTask = async (taskId) => {
+	try {
+		const response = await axios.delete(`/task/${taskId}`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to delete task:', error);
+		throw new Error('Failed to delete task');
+	}
+}
+
+export const updateTask = async (taskId, task) => {
+	try {
+		const response = await axios.put(`/task/${taskId}`, task);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to update task:', error);
+		throw new Error('Failed to update task');
 	}
 }

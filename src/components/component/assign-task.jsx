@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import EmployeeDateSelector from "@/components/component/EmployeeDateSelector";
 import AssignTaskDialog from "@/components/component/AssignTaskDialog";
-import TaskTableAdmin from "@/components/component/TaskTableAdmin";
+import AssignTaskTable from "@/components/component/AssignTaskTable";
 import { getUserTasks, getAllTasks, assignTask } from "@/service/taskService";
 import { Button } from "@/components/ui/button";
 
@@ -83,10 +83,7 @@ export default function AssignTasks() {
         handleCloseDialog();
     };
 
-
-    // TODO: Agregar la opción para eliminar una tarea
-    // TODO: Ver de poner en el listado un select donde se pueda ver quien tiene asignado esa tarea. ver si lo hago desde la pagina para mostrar las tareas o para asignarlas
-
+    // TODO: Agregar validación para que solo se pueda asignar tareas en el dia actual
     return (
         <div className="min-h-screen">
             {!employee ? (
@@ -129,7 +126,7 @@ export default function AssignTasks() {
                                     </div>
                                 </div>
                             </div>
-                            <TaskTableAdmin tasks={userTasks} />
+                            <AssignTaskTable tasks={userTasks} />
                         </div>
                     </main>
                     <AssignTaskDialog
