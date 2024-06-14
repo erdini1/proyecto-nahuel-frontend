@@ -1,6 +1,6 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 
-const TaskTableAdmin = ({ tasks }) => (
+const AssignTaskTable = ({ tasks }) => (
     <Table>
         <TableHeader>
             <TableRow>
@@ -71,4 +71,4 @@ function XIcon(props) {
 }
 
 
-export default TaskTableAdmin;
+export default AssignTaskTable;

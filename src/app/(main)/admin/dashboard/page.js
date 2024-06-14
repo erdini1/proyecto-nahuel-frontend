@@ -1,4 +1,4 @@
-import { AdminHome } from "@/components/component/tasks-home"
+import { AdminHome } from "@/components/component/admin-home"
 
 export default function Component() {
 	return (

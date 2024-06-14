@@ -1,10 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import EmployeeCrudTable from "@/components/component/EmployeeCrudTable";
 import EmployeeCrudModal from "@/components/component/EmployeeCrudModal";
 import { getUsers, createUser, updateUser, deleteUser } from "@/service/userService";
+import { Input } from "@/components/ui/input";
 
 export default function EmployeeCrud() {
     const [employees, setEmployees] = useState([]);
@@ -18,6 +19,7 @@ export default function EmployeeCrud() {
         password: ""
     });
     const [isEditing, setIsEditing] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         const fetchEmployees = async () => {
@@ -30,6 +32,13 @@ export default function EmployeeCrud() {
         };
         fetchEmployees();
     }, []);
+
+    const filteredEmployees = useMemo(() => {
+        return employees.filter((employee) => {
+            const fullName = `${employee.firstName} ${employee.lastName}`.toLowerCase();
+            return fullName.includes(searchQuery.toLowerCase());
+        });
+    }, [employees, searchQuery]);
 
     const handleCreateEmployee = () => {
         setNewEmployee({ firstName: "", lastName: "", number: "", role: "", password: "" });
@@ -81,14 +90,28 @@ export default function EmployeeCrud() {
                     <div className="flex-1">
                         <h1 className="font-semibold text-lg">Empleados</h1>
                     </div>
-                    <Button onClick={handleCreateEmployee}>
-                        <PlusIcon className="h-4 w-4 mr-2" />
-                        Crear empleado
-                    </Button>
+                    <div className="flex flex-1 items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+                        <form className="ml-auto flex-1 sm:flex-initial">
+                            <div className="relative">
+                                <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                                <Input
+                                    className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px] bg-white"
+                                    placeholder="Buscar empleado..."
+                                    type="search"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                            </div>
+                        </form>
+                        <Button onClick={handleCreateEmployee}>
+                            <PlusIcon className="h-4 w-4 mr-2" />
+                            Crear empleado
+                        </Button>
+                    </div>
                 </header>
                 <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
                     <EmployeeCrudTable
-                        employees={employees}
+                        employees={filteredEmployees}
                         handleUpdateEmployee={handleUpdateEmployee}
                         handleDeleteEmployee={handleDeleteEmployee}
                     />
@@ -148,6 +171,25 @@ function PlusIcon(props) {
         >
             <path d="M5 12h14" />
             <path d="M12 5v14" />
+        </svg>
+    );
+}
+
+function SearchIcon(props) {
+    return (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
         </svg>
     );
 }

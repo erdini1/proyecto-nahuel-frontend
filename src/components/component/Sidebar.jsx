@@ -175,25 +175,6 @@ function DollarSignIcon(props) {
 }
 
 
-function EyeIcon(props) {
-	return (
-		(<svg
-			{...props}
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round">
-			<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-			<circle cx="12" cy="12" r="3" />
-		</svg>)
-	);
-}
-
 
 function InboxIcon(props) {
 	return (
@@ -275,26 +256,6 @@ function UserIcon(props) {
 	);
 }
 
-function UserCheckIcon(props) {
-	return (
-		<svg
-			{...props}
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-			<circle cx="9" cy="7" r="4" />
-			<polyline points="16 11 18 13 22 9" />
-		</svg>
-	)
-}
 
 function UserPlusIcon(props) {
 	return (
@@ -318,27 +279,6 @@ function UserPlusIcon(props) {
 	)
 }
 
-function UserXIcon(props) {
-	return (
-		<svg
-			{...props}
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-			<circle cx="9" cy="7" r="4" />
-			<line x1="17" x2="22" y1="8" y2="13" />
-			<line x1="22" x2="17" y1="8" y2="13" />
-		</svg>
-	)
-}
 
 function UsersIcon(props) {
 	return (
