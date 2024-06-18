@@ -65,7 +65,7 @@ export default function Sidebar() {
 								<PlusIcon className="h-4 w-4" />
 								Asignar Tareas
 							</Link>
-							<Link
+							{/* <Link
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<UsersIcon className="h-4 w-4" />
@@ -76,7 +76,7 @@ export default function Sidebar() {
 								href="#">
 								<UserIcon className="h-4 w-4" />
 								Tareas sin asignar
-							</Link>
+							</Link> */}
 						</div>
 
 						{/* ---- Caja ----- */}
@@ -87,19 +87,25 @@ export default function Sidebar() {
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<DollarSignIcon className="h-4 w-4" />
-								Invoices
+								Movimientos de Caja
 							</Link>
 							<Link
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<ReceiptIcon className="h-4 w-4" />
-								Payments
+								Anulaciones
 							</Link>
 							<Link
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<BarChartIcon className="h-4 w-4" />
-								Reports
+								Terminales
+							</Link>
+							<Link
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+								href="#">
+								<BarChartIcon className="h-4 w-4" />
+								Proveedores
 							</Link>
 						</div>
 					</nav>

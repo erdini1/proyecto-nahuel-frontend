@@ -1,7 +1,8 @@
-export default function Component() {
+// import CashRegisterForm from "@/components/component/cash-register-form"
+
+export default function Page() {
 	return (
-		<div className="flex h-[100dvh] w-full flex-col items-center justify-center bg-gray-100 px-4 ">
-			<h1>Ruta: /CASHIER/</h1>
-		</div>
+		<h1>Hola mundo</h1>
+		// <CashRegisterForm />
 	)
 }

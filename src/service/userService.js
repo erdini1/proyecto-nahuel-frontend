@@ -5,8 +5,8 @@ export const getUsers = async () => {
 		const response = await axios.get(`/user`);
 		return response.data;
 	} catch (error) {
-		console.error('Failed to get tasks:', error);
-		throw new Error('Failed to get tasks');
+		console.error('Failed to get users:', error);
+		throw new Error('Failed to get users');
 	}
 };
 
@@ -15,8 +15,8 @@ export const createUser = async (data) => {
 		const response = await axios.post(`/auth/register`, data);
 		return response.data;
 	} catch (error) {
-		console.error('Failed to create task:', error);
-		throw new Error('Failed to create task');
+		console.error('Failed to create user:', error);
+		throw new Error('Failed to create user');
 	}
 };
 
@@ -25,8 +25,8 @@ export const updateUser = async (id, data) => {
 		const response = await axios.put(`/auth/update?userId=${id}`, data);
 		return response.data;
 	} catch (error) {
-		console.error('Failed to update task:', error);
-		throw new Error('Failed to update task');
+		console.error('Failed to update user:', error);
+		throw new Error('Failed to update user');
 	}
 };
 
@@ -35,7 +35,7 @@ export const deleteUser = async (id) => {
 		const response = await axios.delete(`/auth/delete?userId=${id}`);
 		return response.data;
 	} catch (error) {
-		console.error('Failed to delete task:', error);
-		throw new Error('Failed to delete task');
+		console.error('Failed to delete user:', error);
+		throw new Error('Failed to delete user');
 	}
 };
