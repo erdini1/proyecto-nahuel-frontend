@@ -9,3 +9,23 @@ export const createCashRegister = async (cashRegisterData) => {
 		throw new Error('Failed to create cash register');
 	}
 };
+
+export const checkIfCashRegisterExists = async () => {
+	try {
+		const response = await axios.get(`/cash-register/check`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get cash register', error);
+		throw new Error('Failed to get cash register');
+	}
+}
+
+export const getLastCashRegister = async () => {
+	try {
+		const response = await axios.get(`/cash-register/user`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get cash register', error);
+		throw new Error('Failed to get cash register');
+	}
+}

@@ -1,9 +1,9 @@
 "use client"
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { getCashMovements, createCashMovement } from "@/service/cashMovementsService";
+import { getCashMovements, createCashMovement, updateCashMovement, deleteCashMovement } from "@/service/cashMovementsService";
 import { getProviders } from "@/service/providerService";
-import { useEffect, useState } from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -25,6 +25,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getLastCashRegister } from "@/service/cashRegisterService";
 
 export default function Movements() {
 	const [cashMovements, setCashMovements] = useState([]);
@@ -32,6 +33,8 @@ export default function Movements() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [selectedProvider, setSelectedProvider] = useState(null);
+	const [editingMovement, setEditingMovement] = useState(null);
+	const [cashRegisterId, setCashRegisterId] = useState(null);
 	const [newMovement, setNewMovement] = useState({
 		type: 'payment',
 		amount: '',
@@ -47,6 +50,9 @@ export default function Movements() {
 
 				const providers = await getProviders();
 				setProviders(providers);
+
+				const cashRegisters = await getLastCashRegister();
+				setCashRegisterId(cashRegisters.id);
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -66,17 +72,54 @@ export default function Movements() {
 		setOpen(false);
 	};
 
+	const handleModalClose = () => {
+		setIsModalOpen(false);
+		setNewMovement({
+			type: 'payment',
+			amount: '',
+			providerId: '',
+			cashRegisterId: ""
+		});
+		setSelectedProvider(null);
+		setEditingMovement(null);
+	};
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		newMovement.cashRegisterId = cashMovements[0].CashRegister.id;
+		newMovement.cashRegisterId = cashRegisterId;
 		try {
-			await createCashMovement(newMovement);
-			console.log('New movement:', newMovement);
-			setIsModalOpen(false);
+			if (editingMovement) {
+				await updateCashMovement(editingMovement.id, newMovement);
+			} else {
+				await createCashMovement(newMovement);
+			}
+			const movements = await getCashMovements();
+			setCashMovements(movements);
+			handleModalClose();
+		} catch (error) {
+			console.error('Error creating or updating movement:', error);
+		}
+	};
+
+	const handleEdit = (movement) => {
+		setEditingMovement(movement);
+		setNewMovement({
+			type: movement.type,
+			amount: movement.amount,
+			providerId: movement.Provider.id,
+			cashRegisterId: movement.CashRegister.id
+		});
+		setSelectedProvider(movement.Provider);
+		setIsModalOpen(true);
+	};
+
+	const handleDelete = async (id) => {
+		try {
+			await deleteCashMovement(id);
 			const movements = await getCashMovements();
 			setCashMovements(movements);
 		} catch (error) {
-			console.error('Error creating movement:', error);
+			console.error('Error deleting movement:', error);
 		}
 	};
 
@@ -109,40 +152,45 @@ export default function Movements() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{cashMovements.map(movement => (
-							<TableRow key={movement.id}>
-								<TableCell className="font-medium pl-8 w-1/6">{movement.id}</TableCell>
-								<TableCell className="w-1/6">{movement.type}</TableCell>
-								<TableCell className="w-1/6">{movement.Provider.name}</TableCell>
-								<TableCell className="w-1/6">{movement.time}</TableCell>
-								<TableCell className="w-1/6">${movement.amount}</TableCell>
-								<TableCell className="w-1/6">
-									<Button variant="outline" size="icon">
-										<FilePenIcon className="h-4 w-4" />
-										<span className="sr-only">Modificar</span>
-									</Button>
-									<Button variant="outline" size="icon">
-										<TrashIcon className="h-4 w-4" />
-										<span className="sr-only">Eliminar</span>
-									</Button>
-								</TableCell>
+						{cashMovements.length === 0 ? (
+							<TableRow>
+								<TableCell colSpan="6" className="text-center">No hay movimientos</TableCell>
 							</TableRow>
-						))}
+						) :
+							(cashMovements.map(movement => (
+								<TableRow key={movement.id}>
+									<TableCell className="font-medium pl-8 w-1/6">{movement.id}</TableCell>
+									<TableCell className="w-1/6">{movement.type}</TableCell>
+									<TableCell className="w-1/6">{movement.Provider.name}</TableCell>
+									<TableCell className="w-1/6">{movement.time}</TableCell>
+									<TableCell className="w-1/6">${movement.amount}</TableCell>
+									<TableCell className="w-1/6">
+										<Button variant="outline" size="icon" onClick={() => handleEdit(movement)}>
+											<FilePenIcon className="h-4 w-4" />
+											<span className="sr-only">Modificar</span>
+										</Button>
+										<Button variant="outline" size="icon" onClick={() => handleDelete(movement.id)}>
+											<TrashIcon className="h-4 w-4" />
+											<span className="sr-only">Eliminar</span>
+										</Button>
+									</TableCell>
+								</TableRow>
+							)))}
 					</TableBody>
 				</Table>
 			</div>
 			{isModalOpen && (
-				<Dialog onOpenChange={setIsModalOpen} open={isModalOpen}>
+				<Dialog onOpenChange={handleModalClose} open={isModalOpen}>
 					<DialogContent>
 						<DialogHeader>
-							<DialogTitle>Crear Nuevo Movimiento</DialogTitle>
-							<DialogDescription>Complete el formulario para crear un nuevo movimiento.</DialogDescription>
+							<DialogTitle>{editingMovement ? 'Editar Movimiento' : 'Crear Nuevo Movimiento'}</DialogTitle>
+							<DialogDescription>Complete el formulario para {editingMovement ? 'editar el' : 'crear un nuevo'} movimiento.</DialogDescription>
 						</DialogHeader>
 						<form onSubmit={handleSubmit}>
 							<div className="grid gap-4">
 								<div className="grid gap-2">
 									<label className="text-sm font-medium">Tipo</label>
-									<Tabs defaultValue="payment" onValueChange={(value) => handleInputChange({ target: { name: 'type', value } })}>
+									<Tabs defaultValue={newMovement.type} onValueChange={(value) => handleInputChange({ target: { name: 'type', value } })}>
 										<TabsList className="border w-full h-14 p-1 shadow">
 											<TabsTrigger value="payment" className="w-1/2 h-full">Pago</TabsTrigger>
 											<TabsTrigger value="withdrawal" className="w-1/2 h-full">Retiro</TabsTrigger>
@@ -200,6 +248,7 @@ export default function Movements() {
 										name="amount"
 										id="amount"
 										min="0"
+										step="0.01"
 										value={newMovement.amount}
 										onChange={handleInputChange}
 										required
@@ -212,7 +261,7 @@ export default function Movements() {
 									className="mt-4"
 									disabled={!newMovement.type || !newMovement.providerId || !newMovement.amount}
 								>Guardar</Button>
-								<Button variant="outline" onClick={() => setIsModalOpen(false)} className="mt-4">Cancelar</Button>
+								<Button variant="outline" onClick={handleModalClose} className="mt-4">Cancelar</Button>
 							</DialogFooter>
 						</form>
 					</DialogContent>
