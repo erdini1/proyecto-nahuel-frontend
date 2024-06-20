@@ -6,8 +6,8 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export default function CashRegister({ onCreated }) {
 	const [cashRegisterNumber, setCashRegisterNumber] = useState('');
-	const [initialAmount, setInitialAmount] = useState('');
-	const [changeAmount, setChangeAmount] = useState('');
+	const [initialAmount, setInitialAmount] = useState("");
+	const [changeAmount, setChangeAmount] = useState(0);
 	const [disabledButtons, setDisabledButtons] = useState(false);
 
 	const handleCashRegisterNumberChange = (number) => {
@@ -24,7 +24,7 @@ export default function CashRegister({ onCreated }) {
 		};
 		try {
 			await createCashRegister(formData);
-			alert('Caja creada correctamente');
+			// alert('Caja creada correctamente');
 			onCreated();
 		} catch (error) {
 			console.error('Error al crear la caja:', error);
@@ -36,7 +36,7 @@ export default function CashRegister({ onCreated }) {
 			<h2 className="text-xl font-bold mb-4">Datos de la Caja</h2>
 			<form className="grid gap-4" onSubmit={handleSubmit}>
 				<div className="grid gap-2">
-					<label className="text-sm font-medium" htmlFor='cashNumber'>Número de caja</label>
+					<label className="text-sm font-medium" htmlFor='cashNumber'>Número de caja{/* <span className='text-red-300'> *</span> */}</label>
 					<ToggleGroup type="single" className="justify-center">
 						{[1, 2, 3, 4].map((num) => (
 							<ToggleGroupItem
@@ -56,7 +56,7 @@ export default function CashRegister({ onCreated }) {
 				</div>
 				<div className="flex gap-1">
 					<div className="grid gap-2 w-1/2">
-						<label className="text-sm font-medium" htmlFor='initialAmount'>Monto inicial</label>
+						<label className="text-sm font-medium" htmlFor='initialAmount'>Monto inicial{/* <span className='text-red-300'> *</span> */}</label>
 						<Input
 							id="initialAmount"
 							type="number"

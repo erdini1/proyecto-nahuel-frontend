@@ -33,6 +33,7 @@ export default function Page() {
 		setSelectedTab("movements");
 	};
 
+	// TODO: Agregar un cargando mientras se verifica si existe la caja	
 	return (
 		<div className="w-full p-4">
 			<div className="flex flex-col gap-6">

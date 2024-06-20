@@ -42,6 +42,17 @@ export default function Movements() {
 		cashRegisterId: ""
 	});
 
+	const translateType = (type) => {
+		switch (type) {
+			case 'payment':
+				return 'Pago';
+			case 'withdrawal':
+				return 'Retiro';
+			default:
+				return type;
+		}
+	};
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -65,13 +76,6 @@ export default function Movements() {
 		setNewMovement({ ...newMovement, [name]: value });
 	};
 
-	const handleSelectChange = (value) => {
-		const selected = providers.find(provider => provider.id === value);
-		setNewMovement({ ...newMovement, providerId: value });
-		setSelectedProvider(selected);
-		setOpen(false);
-	};
-
 	const handleModalClose = () => {
 		setIsModalOpen(false);
 		setNewMovement({
@@ -82,6 +86,13 @@ export default function Movements() {
 		});
 		setSelectedProvider(null);
 		setEditingMovement(null);
+	};
+
+	const handleSelectChange = (value) => {
+		const selected = providers.find(provider => provider.id === value);
+		setNewMovement({ ...newMovement, providerId: value });
+		setSelectedProvider(selected);
+		setOpen(false);
 	};
 
 	const handleSubmit = async (e) => {
@@ -123,8 +134,11 @@ export default function Movements() {
 		}
 	};
 
+	// TODO: Add a loading spinner
+	// TODO: Ver si esta bien tener el campo proveedor para los retiros 
+
 	return (
-		<div className="w-1/2">
+		<div className="w-1/2 max-h-40">
 			<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
 				<div className="flex-1">
 					<h1 className="font-semibold text-lg">Movimientos de caja</h1>
@@ -160,7 +174,7 @@ export default function Movements() {
 							(cashMovements.map(movement => (
 								<TableRow key={movement.id}>
 									<TableCell className="font-medium pl-8 w-1/6">{movement.id}</TableCell>
-									<TableCell className="w-1/6">{movement.type}</TableCell>
+									<TableCell className="w-1/6">{translateType(movement.type)}</TableCell>
 									<TableCell className="w-1/6">{movement.Provider.name}</TableCell>
 									<TableCell className="w-1/6">{movement.time}</TableCell>
 									<TableCell className="w-1/6">${movement.amount}</TableCell>
@@ -256,12 +270,12 @@ export default function Movements() {
 								</div>
 							</div>
 							<DialogFooter>
+								<Button variant="outline" onClick={handleModalClose} className="mt-4">Cancelar</Button>
 								<Button
 									type="submit"
 									className="mt-4"
 									disabled={!newMovement.type || !newMovement.providerId || !newMovement.amount}
 								>Guardar</Button>
-								<Button variant="outline" onClick={handleModalClose} className="mt-4">Cancelar</Button>
 							</DialogFooter>
 						</form>
 					</DialogContent>
