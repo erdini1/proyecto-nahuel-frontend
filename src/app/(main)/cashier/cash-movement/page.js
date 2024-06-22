@@ -1,9 +1,9 @@
 "use client"
 import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import Movements from "@/components/component/tabs/Movements";
-import Cancellations from "@/components/component/tabs/Cancellation";
-import CashRegister from "@/components/component/tabs/CashRegister";
+import Movements from "@/components/component/tabsCashRegister/Movements";
+import Cancellations from "@/components/component/tabsCashRegister/Cancellation";
+import CashRegister from "@/components/component/tabsCashRegister/CashRegister";
 import { checkIfCashRegisterExists } from "@/service/cashRegisterService";
 
 export default function Page() {
@@ -37,7 +37,11 @@ export default function Page() {
 	return (
 		<div className="w-full p-4">
 			<div className="flex flex-col gap-6">
-				<h1 className="text-2xl font-bold tracking-tight">Gestión de Caja</h1>
+				// Agregar un boton para cerrar la caja y que no se pueda volver a abrir
+				<div className="flex justify-between px-2">
+					<h1 className="text-2xl font-bold tracking-tight">Gestión de Caja</h1>
+					<button className="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 " onClick={() => setHasCashRegister(false)}>Cerrar Caja</button>
+				</div>
 				<Tabs value={selectedTab} onValueChange={handleTabChange}>
 					<TabsList className="border-b">
 						<TabsTrigger value="cashRegister">Datos iniciales</TabsTrigger>
