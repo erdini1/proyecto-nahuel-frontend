@@ -25,33 +25,21 @@ import {
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getLastCashRegister } from "@/service/cashRegisterService";
+import { translateType } from "@/helpers/movement.helper";
 
-export default function Movements() {
+export default function Movements({ cashRegisterId }) {
 	const [cashMovements, setCashMovements] = useState([]);
 	const [providers, setProviders] = useState([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [selectedProvider, setSelectedProvider] = useState(null);
 	const [editingMovement, setEditingMovement] = useState(null);
-	const [cashRegisterId, setCashRegisterId] = useState(null);
 	const [newMovement, setNewMovement] = useState({
 		type: 'payment',
 		amount: '',
 		providerId: '',
 		cashRegisterId: ""
 	});
-
-	const translateType = (type) => {
-		switch (type) {
-			case 'payment':
-				return 'Pago';
-			case 'withdrawal':
-				return 'Retiro';
-			default:
-				return type;
-		}
-	};
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -62,8 +50,6 @@ export default function Movements() {
 				const providers = await getProviders();
 				setProviders(providers);
 
-				const cashRegister = await getLastCashRegister();
-				setCashRegisterId(cashRegister.id);
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -146,7 +132,8 @@ export default function Movements() {
 				<div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
 					<Button
 						onClick={() => setIsModalOpen(true)}
-						className="flex items-center gap-1.5 align-middle"
+						className="flex items-center gap-1.5 align-middle shadow"
+						variant="outline"
 					>
 						<PlusIcon className="h-4 w-4 mr-2" />
 						Cargar Movimiento
@@ -197,7 +184,7 @@ export default function Movements() {
 				<Dialog onOpenChange={handleModalClose} open={isModalOpen}>
 					<DialogContent>
 						<DialogHeader>
-							<DialogTitle>{editingMovement ? 'Editar Movimiento' : 'Crear Nuevo Movimiento'}</DialogTitle>
+							<DialogTitle>{editingMovement ? 'Editar Movimiento' : 'Crear Nuevo Novimiento'}</DialogTitle>
 							<DialogDescription>Complete el formulario para {editingMovement ? 'editar el' : 'crear un nuevo'} movimiento.</DialogDescription>
 						</DialogHeader>
 						<form onSubmit={handleSubmit}>
@@ -266,6 +253,7 @@ export default function Movements() {
 										value={newMovement.amount}
 										onChange={handleInputChange}
 										required
+										placeholder="$0.00"
 									/>
 								</div>
 							</div>

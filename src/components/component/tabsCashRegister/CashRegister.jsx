@@ -36,7 +36,7 @@ export default function CashRegister({ onCreated }) {
 			<h2 className="text-xl font-bold mb-4">Datos de la Caja</h2>
 			<form className="grid gap-4" onSubmit={handleSubmit}>
 				<div className="grid gap-2">
-					<label className="text-sm font-medium" htmlFor='cashNumber'>Número de caja{/* <span className='text-red-300'> *</span> */}</label>
+					<label className="text-sm font-medium" htmlFor='cashNumber'>Número de caja</label>
 					<ToggleGroup type="single" className="justify-center">
 						{[1, 2, 3, 4].map((num) => (
 							<ToggleGroupItem
@@ -56,15 +56,17 @@ export default function CashRegister({ onCreated }) {
 				</div>
 				<div className="flex gap-1">
 					<div className="grid gap-2 w-1/2">
-						<label className="text-sm font-medium" htmlFor='initialAmount'>Monto inicial{/* <span className='text-red-300'> *</span> */}</label>
+						<label className="text-sm font-medium" htmlFor='initialAmount'>Monto inicial</label>
 						<Input
 							id="initialAmount"
 							type="number"
 							min="0"
 							step="0.01"
 							value={initialAmount}
+							placeholder="$0.00"
 							onChange={(e) => setInitialAmount(e.target.value)}
 							className="p-2 border rounded"
+							// disabled={hasCashRegister}
 						/>
 					</div>
 					<div className="grid gap-2 w-1/2">
@@ -77,6 +79,7 @@ export default function CashRegister({ onCreated }) {
 							value={changeAmount}
 							onChange={(e) => setChangeAmount(e.target.value)}
 							className="p-2 border rounded"
+							placeholder="$0.00"
 						/>
 					</div>
 				</div>

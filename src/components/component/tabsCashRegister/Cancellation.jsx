@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { createCancellation, deleteCancellation, getCancellations, updateCancellation, /* updateCancellation, deleteCancellation */ } from "@/service/cancellationService";
+import { createCancellation, deleteCancellation, getCancellations, updateCancellation } from "@/service/cancellationService";
 import {
 	Dialog,
 	DialogContent,
@@ -23,13 +23,10 @@ import {
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getLastCashRegister } from "@/service/cashRegisterService";
-import { getTerminals } from "@/service/terminalService";
+import { translateType } from "@/helpers/cancellation.helper";
 
-export default function Cancellations() {
+export default function Cancellations({ terminals, cashRegisterId }) {
 	const [cancellations, setCancellations] = useState([]);
-	const [cashRegisterId, setCashRegisterId] = useState(null);
-	const [terminals, setTerminals] = useState([]);
 	const [open, setOpen] = useState(false);
 	const [selectedTerminal, setSelectedTerminal] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,29 +38,11 @@ export default function Cancellations() {
 		cashRegisterId: '',
 	});
 
-	// Traducir tipos de anulaciones
-	const translateType = (type) => {
-		switch (type) {
-			case 'cancellation':
-				return 'Anulación';
-			case 'return':
-				return 'Devolución';
-			default:
-				return type;
-		}
-	};
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const cancellations = await getCancellations();
 				setCancellations(cancellations);
-
-				const cashRegister = await getLastCashRegister();
-				setCashRegisterId(cashRegister.id);
-
-				const terminals = await getTerminals(cashRegister.id);
-				setTerminals(terminals);
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -112,15 +91,14 @@ export default function Cancellations() {
 		}
 	};
 
-	const handleEdit = async(cancellation) => {
-		// const terminals = await getTerminals(cashRegister.id);
-		// setTerminals(terminals);
+	const handleEdit = async (cancellation) => {
 		setEditingCancellation(cancellation);
 		setNewCancellation({
 			type: cancellation.type,
 			method: cancellation.terminalId,
 			amount: cancellation.amount,
 		});
+		// setSelectedTerminal(cancellation.method);
 		setIsModalOpen(true);
 	};
 
@@ -143,7 +121,8 @@ export default function Cancellations() {
 				<div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
 					<Button
 						onClick={() => setIsModalOpen(true)}
-						className="flex items-center gap-1.5 align-middle"
+						className="flex items-center gap-1.5 align-middle shadow"
+						variant="outline"
 					>
 						<PlusIcon className="h-4 w-4 mr-2" />
 						Cargar Anulación
@@ -264,6 +243,7 @@ export default function Cancellations() {
 										value={newCancellation.amount}
 										onChange={handleInputChange}
 										required
+										placeholder="$0.00"
 									/>
 								</div>
 							</div>
