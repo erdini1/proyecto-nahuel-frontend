@@ -31,30 +31,35 @@ export default function Page() {
 						<PaymentType
 							name="efectivo"
 							description=""
+							details={["Ventas", "Ingresos", "Retiros", "A rendir"]}
 						/>
 					</TabsContent>
 					<TabsContent value="cuentaCorriente" className="p-4">
 						<PaymentType
 							name="cuenta corriente"
 							description=""
+							details={["Ventas", "Retiros", "A rendir"]}
 						/>
 					</TabsContent>
 					<TabsContent value="tarjetas" className="p-4">
 						<PaymentType
 							name="tarjetas"
 							description="Clover / QR - TDF - La red"
+							details={["Ventas", "Retiros", "A rendir"]}
 						/>
 					</TabsContent>
 					<TabsContent value="mercadoPago" className="p-4">
 						<PaymentType
 							name="mercado pago"
 							description="QR - Link - Tarjeta debito y credito"
+							details={["Ventas", "Retiros", "A rendir"]}
 						/>
 					</TabsContent>
 					<TabsContent value="pointMaxiconsumo" className="p-4">
 						<PaymentType
 							name="point maxiconsumo"
 							description="Tarjeta debito y credito"
+							details={["Ventas", "Retiros", "A rendir"]}
 						/>
 					</TabsContent>
 					<TabsContent value="resumen" className="p-4">

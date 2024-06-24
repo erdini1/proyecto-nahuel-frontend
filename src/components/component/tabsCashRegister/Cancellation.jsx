@@ -59,10 +59,10 @@ export default function Cancellations() {
 				const cancellations = await getCancellations();
 				setCancellations(cancellations);
 
-				const cashRegisters = await getLastCashRegister();
-				setCashRegisterId(cashRegisters.id);
+				const cashRegister = await getLastCashRegister();
+				setCashRegisterId(cashRegister.id);
 
-				const terminals = await getTerminals();
+				const terminals = await getTerminals(cashRegister.id);
 				setTerminals(terminals);
 			} catch (error) {
 				console.error('Error fetching data:', error);
@@ -112,7 +112,9 @@ export default function Cancellations() {
 		}
 	};
 
-	const handleEdit = (cancellation) => {
+	const handleEdit = async(cancellation) => {
+		// const terminals = await getTerminals(cashRegister.id);
+		// setTerminals(terminals);
 		setEditingCancellation(cancellation);
 		setNewCancellation({
 			type: cancellation.type,
@@ -266,12 +268,12 @@ export default function Cancellations() {
 								</div>
 							</div>
 							<DialogFooter>
-								<Button variant="outline" onClick={handleModalClose} className="mt-4">Cancelar</Button>
 								<Button
 									type="submit"
 									className="mt-4"
 									disabled={!newCancellation.type || !newCancellation.method || !newCancellation.amount}
 								>Guardar</Button>
+								<Button variant="outline" onClick={handleModalClose} className="mt-4">Cancelar</Button>
 							</DialogFooter>
 						</form>
 					</DialogContent>

@@ -1,24 +1,31 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Movements from "@/components/component/tabsCashRegister/Movements";
 import Cancellations from "@/components/component/tabsCashRegister/Cancellation";
 import CashRegister from "@/components/component/tabsCashRegister/CashRegister";
 import { checkIfCashRegisterExists } from "@/service/cashRegisterService";
+import ModalTerminals from "@/components/component/ModalTerminal";
+import { TERMINALS } from "@/constants/terminals.constant";
 
 export default function Page() {
 	const [hasCashRegister, setHasCashRegister] = useState(false);
 	const [selectedTab, setSelectedTab] = useState("cashRegister");
+	const [terminals, setTerminals] = useState([]);
 
 	useEffect(() => {
-		const checkCashRegister = async () => {
-			const cashRegisterExists = await checkIfCashRegisterExists();
-			if (cashRegisterExists) {
-				setHasCashRegister(true);
-				setSelectedTab("movements");
+		const fetchData = async () => {
+			try {
+				const cashRegisterExists = await checkIfCashRegisterExists();
+				if (cashRegisterExists) {
+					setHasCashRegister(true);
+					setSelectedTab("movements");
+				}
+			} catch (error) {
+				console.error('Error fetching data:', error);
 			}
 		};
-		checkCashRegister();
+		fetchData();
 	}, []);
 
 	const handleTabChange = (value) => {
@@ -33,26 +40,35 @@ export default function Page() {
 		setSelectedTab("movements");
 	};
 
-	// TODO: Agregar un cargando mientras se verifica si existe la caja	
 	return (
 		<div className="w-full p-4">
 			<div className="flex flex-col gap-6">
-				// Agregar un boton para cerrar la caja y que no se pueda volver a abrir
 				<div className="flex justify-between px-2">
 					<h1 className="text-2xl font-bold tracking-tight">Gestión de Caja</h1>
-					<button className="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 " onClick={() => setHasCashRegister(false)}>Cerrar Caja</button>
+					<button className="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" onClick={() => setHasCashRegister(false)}>Cerrar Caja</button>
 				</div>
 				<Tabs value={selectedTab} onValueChange={handleTabChange}>
-					<TabsList className="border-b">
-						<TabsTrigger value="cashRegister">Datos iniciales</TabsTrigger>
-						<TabsTrigger value="movements" disabled={!hasCashRegister}>Movimientos de Caja</TabsTrigger>
-					</TabsList>
+					<div className="flex justify-between">
+						<TabsList className="border-b">
+							<TabsTrigger value="cashRegister">Datos iniciales</TabsTrigger>
+							<TabsTrigger value="movements" disabled={!hasCashRegister}>Movimientos de Caja</TabsTrigger>
+						</TabsList>
+						{selectedTab === "movements" && (
+							<div>
+								<ModalTerminals
+								// options={terminalOptions}
+								/>
+							</div>
+						)}
+					</div>
 					<TabsContent value="cashRegister" className="p-4">
 						<CashRegister onCreated={onCashRegisterCreated} />
 					</TabsContent>
-					<TabsContent value="movements" className="p-4 flex gap-2">
-						<Movements />
-						<Cancellations />
+					<TabsContent value="movements">
+						<div className="p-4 flex gap-2">
+							<Movements />
+							<Cancellations />
+						</div>
 					</TabsContent>
 				</Tabs>
 			</div>
@@ -61,84 +77,81 @@ export default function Page() {
 }
 
 
-// "use client"
-// import Link from "next/link"
+// "use client";
+// import { useState, useEffect } from "react";
 // import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-// import Movements from "@/components/component/tabs/Movements";
-// import Cancellations from "@/components/component/tabs/Cancellation";
-// import CashRegister from "@/components/component/tabs/CashRegister";
-// import { useState } from "react";
+// import Movements from "@/components/component/tabsCashRegister/Movements";
+// import Cancellations from "@/components/component/tabsCashRegister/Cancellation";
+// import CashRegister from "@/components/component/tabsCashRegister/CashRegister";
+// import { checkIfCashRegisterExists } from "@/service/cashRegisterService";
+// import ModalTerminals from "@/components/component/ModalTerminal";
+// import { TERMINALS } from "@/constants/terminals.constant";
 
-// // TODO: cuando se completen los datos iniciales redirigir a la página de movimientos y en cashRegister deshabilitar los campos
 // export default function Page() {
-// 	return (
-// 		<div className="w-full p-4">
-// 			<div className="flex flex-col gap-6">
-// 				<h1 className="text-2xl font-bold tracking-tight">Gestión de Caja</h1>
-// 				<Tabs defaultValue="cashRegister">
-// 					<TabsList className="border-b">
-// 						<TabsTrigger value="cashRegister">Datos iniciales</TabsTrigger>
-// 						<TabsTrigger value="movements">Movimientos de Caja</TabsTrigger>
-// 					</TabsList>
-// 					<TabsContent value="cashRegister" className="p-4">
-// 						<CashRegister />
-// 					</TabsContent>
-// 					<TabsContent value="movements" className="p-4 flex gap-2">
-// 						<Movements />
-// 						<Cancellations />
-// 					</TabsContent>
-// 				</Tabs>
-// 			</div>
-// 		</div >
-// 	)
-// }
+// 	const [hasCashRegister, setHasCashRegister] = useState(false);
+// 	const [selectedTab, setSelectedTab] = useState("cashRegister");
 
-// ----------------------------------
+// 	useEffect(() => {
+// 		const fetchData = async () => {
+// 			try {
+// 				const cashRegisterExists = await checkIfCashRegisterExists();
+// 				if (cashRegisterExists) {
+// 					setHasCashRegister(true);
+// 					setSelectedTab("movements");
+// 				}
+// 			} catch (error) {
+// 				console.error('Error fetching data:', error);
+// 			}
+// 		};
+// 		fetchData();
+// 	}, []);
 
-// "use client"
-// import Link from "next/link"
-// import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-// import Movements from "@/components/component/tabs/Movements";
-// import Cancellations from "@/components/component/tabs/Cancellation";
-// import CashRegister from "@/components/component/tabs/CashRegister";
-// import { useState } from "react";
-
-// // TODO: cuando se completen los datos iniciales redirigir a la página de movimientos y en cashRegister deshabilitar los campos
-// export default function Page() {
-// 	const [cashRegisterId, setCashRegisterId] = useState(null);
-
-// 	const handleCreateCashRegister = () => {
-// 		setCashRegisterId(true);
+// 	const handleTabChange = (value) => {
+// 		if (value === "movements" && !hasCashRegister) {
+// 			return;
+// 		}
+// 		setSelectedTab(value);
 // 	};
 
+// 	const onCashRegisterCreated = () => {
+// 		setHasCashRegister(true);
+// 		setSelectedTab("movements");
+// 	};
+
+// 	const terminalOptions = TERMINALS;
+
 // 	return (
 // 		<div className="w-full p-4">
 // 			<div className="flex flex-col gap-6">
-// 				<h1 className="text-2xl font-bold tracking-tight">Gestión de Caja</h1>
-// 				<Tabs
-// 					defaultValue="cashRegister"
-// 					// redirigir a la página de movimientos cuando se cree la caja
-// 					value={cashRegisterId ? "movements" : "cashRegister"}
-// 				>
-// 					<TabsList className="border-b">
-// 						<TabsTrigger value="cashRegister">Datos iniciales</TabsTrigger>
-// 						<TabsTrigger value="movements">Movimientos de Caja</TabsTrigger>
-// 						{/* <TabsTrigger value="cancellations">Anulaciones</TabsTrigger> */}
-// 					</TabsList>
+// 				<div className="flex justify-between px-2">
+// 					<h1 className="text-2xl font-bold tracking-tight">Gestión de Caja</h1>
+// 					<button className="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" onClick={() => setHasCashRegister(false)}>Cerrar Caja</button>
+// 				</div>
+// 				<Tabs value={selectedTab} onValueChange={handleTabChange}>
+// 					<div className="flex justify-between">
+// 						<TabsList className="border-b">
+// 							<TabsTrigger value="cashRegister">Datos iniciales</TabsTrigger>
+// 							<TabsTrigger value="movements" disabled={!hasCashRegister}>Movimientos de Caja</TabsTrigger>
+// 						</TabsList>
+// 						{selectedTab === "movements" && (
+// 							<div>
+// 								<ModalTerminals
+// 									options={terminalOptions}
+// 								/>
+// 							</div>
+// 						)}
+// 					</div>
 // 					<TabsContent value="cashRegister" className="p-4">
-// 						<CashRegister
-// 							handleCreateCashRegister={handleCreateCashRegister}
-// 						/>
+// 						<CashRegister onCreated={onCashRegisterCreated} />
 // 					</TabsContent>
-// 					<TabsContent value="movements" className="p-4 flex gap-2">
-// 						<Movements />
-// 						<Cancellations />
+// 					<TabsContent value="movements">
+// 						<div className="p-4 flex gap-2">
+// 							<Movements />
+// 							<Cancellations />
+// 						</div>
 // 					</TabsContent>
-// 					{/* <TabsContent value="cancellations" className="p-4">
-// 						<Cancellations />
-// 					</TabsContent> */}
 // 				</Tabs>
 // 			</div>
 // 		</div>
-// 	)
+// 	);
 // }

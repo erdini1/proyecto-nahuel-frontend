@@ -62,8 +62,8 @@ export default function Movements() {
 				const providers = await getProviders();
 				setProviders(providers);
 
-				const cashRegisters = await getLastCashRegister();
-				setCashRegisterId(cashRegisters.id);
+				const cashRegister = await getLastCashRegister();
+				setCashRegisterId(cashRegister.id);
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -270,12 +270,12 @@ export default function Movements() {
 								</div>
 							</div>
 							<DialogFooter>
-								<Button variant="outline" onClick={handleModalClose} className="mt-4">Cancelar</Button>
 								<Button
 									type="submit"
 									className="mt-4"
 									disabled={!newMovement.type || !newMovement.providerId || !newMovement.amount}
 								>Guardar</Button>
+								<Button variant="outline" onClick={handleModalClose} className="mt-4">Cancelar</Button>
 							</DialogFooter>
 						</form>
 					</DialogContent>
