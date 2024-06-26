@@ -47,8 +47,16 @@ export default function TaskCrudDialog({ isEditing, newTask, setNewTask, handleS
 						type="submit"
 						onClick={handleSaveTask}
 						disabled={!newTask.description || !newTask.sector}
+						className="w-1/4"
 					>
 						{isEditing ? 'Actualizar' : 'Crear'}
+					</Button>
+					<Button
+						variant="outline"
+						onClick={() => setShowCreateDialog(false)}
+						className="w-1/4 border shadow"
+					>
+						Cancelar
 					</Button>
 				</DialogFooter>
 			</DialogContent>

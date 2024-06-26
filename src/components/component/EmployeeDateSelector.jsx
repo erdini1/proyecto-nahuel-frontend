@@ -14,7 +14,8 @@ import {
 	CommandItem,
 	CommandList,
 } from "@/components/ui/command";
-import { Check, ChevronsUpDown, CalendarDaysIcon } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react"
+import { CalendarDaysIcon, CheckIcon } from "@/components/icons/index";
 
 const EmployeeDateSelector = ({ onSelection }) => {
 	const [employees, setEmployees] = useState([]);
@@ -50,7 +51,7 @@ const EmployeeDateSelector = ({ onSelection }) => {
 	};
 
 	return (
-		<div className="flex flex-col items-center p-4 bg-white shadow-md rounded-lg w-[700px] mx-auto">
+		<div className="flex flex-col items-center p-4 bg-white shadow-md rounded-lg w-[700px] mx-auto border">
 			<div className="flex gap-2 align-middle items-center w-full">
 				<Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>
@@ -78,7 +79,7 @@ const EmployeeDateSelector = ({ onSelection }) => {
 											value={employee.id}
 											onSelect={() => handleSelectEmployee(employee.id)}
 										>
-											<Check
+											<CheckIcon
 												className={cn(
 													"mr-2 h-4 w-4",
 													value === employee.id ? "opacity-100" : "opacity-0"

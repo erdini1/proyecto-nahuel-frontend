@@ -7,6 +7,8 @@ import TaskCrudDialog from "@/components/component/TaskCrudDialog";
 import { getAllTasks, createTask, updateTask, deleteTask } from "@/service/taskService";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import Spinner from "@/components/component/Spinner";
+import { SearchIcon, PlusIcon, ClipboardListIcon } from "@/components/icons/index";
 
 export default function TaskCrud() {
     const [tasks, setTasks] = useState([]);
@@ -19,6 +21,7 @@ export default function TaskCrud() {
     const [isEditing, setIsEditing] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [sectorFilter, setSectorFilter] = useState("all");
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -27,6 +30,8 @@ export default function TaskCrud() {
                 setTasks(tasks);
             } catch (error) {
                 console.log('Failed to fetch tasks:', error);
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchTasks();
@@ -72,7 +77,7 @@ export default function TaskCrud() {
         try {
             await deleteTask(id);
             setTasks(tasks.filter((task) => task.id !== id));
-            alert('Tarea eliminada');
+            // alert('Tarea eliminada');
         } catch (error) {
             console.log('Failed to delete task:', error);
         }
@@ -131,11 +136,17 @@ export default function TaskCrud() {
                     </div>
                 </header>
                 <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-                    <TaskCrudTable
-                        tasks={filteredTasksBySector}
-                        handleUpdateTask={handleUpdateTask}
-                        handleDeleteTask={handleDeleteTask}
-                    />
+                    {isLoading ? (
+                        <div className="flex justify-center items-center h-64">
+                            <Spinner />
+                        </div>
+                    ) : (
+                        <TaskCrudTable
+                            tasks={filteredTasksBySector}
+                            handleUpdateTask={handleUpdateTask}
+                            handleDeleteTask={handleDeleteTask}
+                        />
+                    )}
                 </main>
             </div>
             {showCreateDialog && (
@@ -148,68 +159,5 @@ export default function TaskCrud() {
                 />
             )}
         </div>
-    );
-}
-
-function ClipboardListIcon(props) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-            <path d="M12 11h4" />
-            <path d="M12 16h4" />
-            <path d="M8 11h.01" />
-            <path d="M8 16h.01" />
-        </svg>
-    );
-}
-
-function PlusIcon(props) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M5 12h14" />
-            <path d="M12 5v14" />
-        </svg>
-    );
-}
-
-function SearchIcon(props) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.3-4.3" />
-        </svg>
     );
 }

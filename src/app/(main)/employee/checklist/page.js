@@ -1,26 +1,38 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import { completeTask, getUserTasks } from '@/service/taskService';
+"use client";
+import { useState, useEffect, useMemo } from "react";
+import { getUserTasks, completeTask } from "@/service/taskService";
+import TaskTableComplete from "@/components/component/TaskTableComplete";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import Spinner from "@/components/component/Spinner";
+import { getMyUser } from "@/service/userService";
+import { UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
 
-const ChecklistPage = () => {
+export default function AssignTasks() {
 	const [userTasks, setUserTasks] = useState([]);
-	const [searchQuery, setSearchQuery] = useState('');
-	const [userName, setUserName] = useState('Empleado');
-
-	const date = new Date().toISOString().split('T')[0];
+	const [userName, setUserName] = useState('');
+	const [searchTerm, setSearchTerm] = useState('');
+	const [filterByStatus, setFilterByStatus] = useState('all');
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchUserTasks = async () => {
 			try {
-				const data = await getUserTasks(date);
+				setIsLoading(true);
+				const data = await getUserTasks(new Date().toLocaleDateString('en-CA'));
 				setUserTasks(data);
-				setUserName(data[0]?.User.firstName + " " + data[0]?.User.lastName);
+
+				const user = await getMyUser()
+				setUserName(user.firstName + " " + user.lastName);
 			} catch (error) {
 				console.log('Failed to fetch tasks:', error);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 		fetchUserTasks();
-	}, [date]);
+	}, []);
 
 	const handleCompleteUserTask = async (taskId) => {
 		try {
@@ -31,59 +43,80 @@ const ChecklistPage = () => {
 		}
 	};
 
-	const handleSearchChange = (e) => {
-		setSearchQuery(e.target.value);
-	};
+	const filteredTasks = useMemo(() => {
+		return userTasks.filter((userTask) => {
+			const matchesDescription = userTask.Task.description.toLowerCase().includes(searchTerm.toLowerCase());
+			const matchesStatus = filterByStatus === 'all' ? true : userTask.isCompleted === filterByStatus;
+			return matchesDescription && matchesStatus;
+		});
+	}, [userTasks, searchTerm, filterByStatus]);
 
-	const filteredTasks = userTasks.filter(userTask =>
-		userTask.Task.description.toLowerCase().includes(searchQuery.toLowerCase())
-	);
 
 	return (
-		<div className="container mx-auto p-6 bg-white rounded-lg shadow-md">
-			<h1 className="text-2xl font-bold text-center mb-6">Tareas Diarias</h1>
-			<div className="flex justify-between items-center mb-4">
-				<p className="text-lg"><strong>Turno:</strong> {userTasks[0]?.shift || 'N/A'}</p>
-				<p className="text-lg"><strong>Fecha:</strong> {date}</p>
-				<p className="text-lg"><strong>Responsable:</strong> {userName}</p>
-			</div>
-			<input
-				type="text"
-				className="w-full p-2 mb-4 border border-gray-300 rounded-md"
-				placeholder="Buscar Tareas"
-				value={searchQuery}
-				onChange={handleSearchChange}
-			/>
-			{filteredTasks.length === 0 ? (
-				<p className="text-center text-lg">No se encontraron tareas</p>
-			) : (
-				<table className="min-w-full bg-white">
-					<thead>
-						<tr>
-							<th className="py-2 px-4 border-b-2 border-gray-300 text-center">Descripción</th>
-							<th className="py-2 px-4 border-b-2 border-gray-300 text-center">Estado</th>
-						</tr>
-					</thead>
-					<tbody>
-						{filteredTasks.map((userTask) => (
-							<tr key={userTask.id}>
-								<td className="py-2 px-4 border-b border-gray-300 text-center">{userTask.Task.description}</td>
-								<td className="py-2 px-4 border-b border-gray-300 text-center">
-									<button
-										className={`py-2 px-4 rounded-md ${userTask.isCompleted ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 text-white'}`}
-										onClick={() => handleCompleteUserTask(userTask.Task.id)}
-										disabled={userTask.isCompleted}
-									>
-										{userTask.isCompleted ? 'Completado' : 'Completar'}
-									</button>
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			)}
+		<div className="w-full mx-auto">
+			<header className="flex h-14 lg:h-[60px] items-center border-b bg-gray-100/40 px-6 mb-5">
+				<div className="flex-1">
+					<h1 className="font-semibold text-lg">Tareas</h1>
+				</div>
+				<div className="px-3 flex items-center w-1/3">
+					<div className="w-1/3 mb-2 my-2 shadow">
+						<Select id="filterByStatus" value={filterByStatus} onValueChange={(value) => setFilterByStatus(value)}>
+							<SelectTrigger className="w-full">
+								<SelectValue placeholder="Filtrar por sector" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all">- Estado -</SelectItem>
+								<SelectItem value={true}>Completados</SelectItem>
+								<SelectItem value={false}>Pendientes</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
+					<div className="w-2/3">
+						<Label htmlFor="search" className="sr-only">Buscar tareas</Label>
+						<Input
+							id="search"
+							placeholder="Buscar tareas..."
+							value={searchTerm}
+							onChange={(e) => setSearchTerm(e.target.value)}
+							className="mb-2 mx-4 my-2 shadow"
+						/>
+					</div>
+				</div>
+			</header>
+			<main className="flex gap-4 p-4 md:gap-8 md:p-6">
+				<div className="border shadow-sm rounded-lg w-[1000px] mx-auto">
+					{isLoading ? (
+						<div className="flex justify-center items-center h-64">
+							<Spinner />
+						</div>
+					) : (
+						<>
+							<div className="flex items-center justify-between bg-gray-100/40 px-6 py-4">
+								<div className="flex items-center gap-4">
+									<div className="font-semibold flex items-center gap-2">
+										<UserIcon className="h-4 w-4" />
+										{`${userName}`}
+									</div>
+									<div className="text-gray-500 flex items-center gap-2">
+										<CalendarDaysIcon className="h-4 w-4" />
+										{new Date().toLocaleDateString()}
+									</div>
+									{userTasks[0]?.shift && (
+										<div className="text-gray-500 flex items-center gap-2">
+											<ClockIcon className="h-4 w-4" />
+											{userTasks[0]?.shift}
+										</div>
+									)}
+								</div>
+							</div>
+							<TaskTableComplete
+								tasks={filteredTasks}
+								handleCompleteUserTask={handleCompleteUserTask}
+							/>
+						</>
+					)}
+				</div>
+			</main>
 		</div>
 	);
-};
-
-export default ChecklistPage;
+}

@@ -1,13 +1,9 @@
-"use client";
-
-import Navbar from '@/components/Navbar';
-import { useState } from 'react';
+import Navbar from '@/components/component/Navbar';
 
 function Layout({ children }) {
-	const [userName, setUserName] = useState('Empleado');
 	return (
 		<div>
-			<Navbar userName={userName} />
+			<Navbar />
 			{children}
 		</div>
 	)

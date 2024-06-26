@@ -29,3 +29,13 @@ export const getLastCashRegister = async () => {
 		throw new Error('Failed to get cash register');
 	}
 }
+
+export const updateCashRegister = async (cashRegisterId, cashRegisterData) => {
+	try {
+		const response = await axios.put(`/cash-register/${cashRegisterId}`, cashRegisterData);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to update cash register', error);
+		throw new Error('Failed to update cash register');
+	}
+}

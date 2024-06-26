@@ -1,7 +1,11 @@
 "use client"
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/contexts/authContext";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import axios from "@/config/axios.js";
 import { decode } from '@/helpers/token.helper';
 
@@ -26,7 +30,7 @@ export default function SignIn() {
 					router.push("/admin/dashboard");
 					break;
 				case 'cashier':
-					router.push("/");
+					router.push("/cashier");
 					break;
 				case 'employee':
 					router.push("/employee/checklist");
@@ -35,68 +39,66 @@ export default function SignIn() {
 					router.push("/unauthorized");
 			}
 		} catch (error) {
-			console.error('Error during login:', error);
+			// console.error('Error during login:', error);
+			setPassword('');
 			alert('Error al iniciar sesión. Por favor, verifica tus credenciales.');
 		}
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-100">
-			<div className="max-w-md w-full space-y-8 p-6 bg-white rounded-lg shadow-md">
-				<div className="flex justify-center">
-					<div className="bg-blue-500 text-white rounded-full p-3">
-						<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14v8m0-8H8m4 0h4m-4 0a4 4 0 004-4v4a4 4 0 00-4-4m0 0a4 4 0 00-4 4v4a4 4 0 004-4z"></path>
-						</svg>
-					</div>
+		<div className="flex min-h-[100dvh] items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+			<Card className="w-full max-w-md space-y-8 shadow-lg rounded-2xl mx-4 sm:mx-0 p-6">
+				<div>
+					{/* <h3 className=' mx-auto text-center text-3xl font-extrabold text-gray-900'>Tintin</h3> */}
+					<h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-foreground">
+						Inicia sesión
+					</h2>
 				</div>
-				<h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-					Sign in
-				</h2>
-				<form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-					<div className="rounded-md shadow-sm -space-y-px">
-						<div>
-							<label htmlFor="number" className="sr-only">
-								Numero de Empleado
-							</label>
-							<input
+				<form className="space-y-6 px-4 sm:px-0" onSubmit={handleSubmit}>
+					<div>
+						<Label htmlFor="number" className="block text-sm font-medium text-muted-foreground">
+							Numero de Empleado
+						</Label>
+						<div className="mt-1">
+							<Input
 								id="number"
 								name="number"
 								type="text"
 								value={number}
 								onChange={(e) => setNumber(e.target.value)}
 								required
-								className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+								className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 placeholder-muted-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-primary sm:text-sm"
 								placeholder="Numero de Empleado"
 							/>
 						</div>
-						<div>
-							<label htmlFor="password" className="sr-only">
-								Password
-							</label>
-							<input
+					</div>
+					<div>
+						<Label htmlFor="password" className="block text-sm font-medium text-muted-foreground">
+							Contraseña
+						</Label>
+						<div className="mt-1">
+							<Input
 								id="password"
 								name="password"
 								type="password"
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 								required
-								className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-								placeholder="Password"
+								className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 placeholder-muted-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-primary sm:text-sm"
+								placeholder="••••••••"
 							/>
 						</div>
 					</div>
 					<div>
-						<button
+						<Button
 							type="submit"
-							className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+							className="w-full justify-center rounded-md py-2 px-4 text-sm "
 						>
-							Sign In
-						</button>
+							Iniciar sesión
+						</Button>
 					</div>
 				</form>
-			</div>
+			</Card>
 		</div>
-	);
+	)
 }

@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 // import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CustomNumberInput from "../ui/CustomNumberInput";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown } from "@radix-ui/react-icons";
 
 export default function CashRegisterFinishForm() {
 	const paymentTypes = [

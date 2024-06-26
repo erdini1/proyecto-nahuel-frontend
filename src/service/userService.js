@@ -10,6 +10,16 @@ export const getUsers = async () => {
 	}
 };
 
+export const getMyUser = async () => {
+	try {
+		const response = await axios.get(`/user/profile`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get my user:', error);
+		throw new Error('Failed to get my user');
+	}
+}
+
 export const createUser = async (data) => {
 	try {
 		const response = await axios.post(`/auth/register`, data);

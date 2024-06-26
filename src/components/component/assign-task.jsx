@@ -6,6 +6,8 @@ import AssignTaskDialog from "@/components/component/AssignTaskDialog";
 import AssignTaskTable from "@/components/component/AssignTaskTable";
 import { getUserTasks, getAllTasks, assignTask } from "@/service/taskService";
 import { Button } from "@/components/ui/button";
+import ProgressChecklist from "./progressChecklist";
+import { ClipboardListIcon, PlusIcon, ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
 
 export default function AssignTasks() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -84,10 +86,22 @@ export default function AssignTasks() {
     };
 
     // TODO: Agregar validación para que solo se pueda asignar tareas en el dia actual
+    // TODO: Hacer que se pueda seleccionar todas las tareas de un sector, para que no deba ser una por una
     return (
         <div className="min-h-screen">
             {!employee ? (
-                <EmployeeDateSelector onSelection={handleSelection} />
+                <div>
+                    <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 mb-5">
+                        <Link href="#" className="lg:hidden" prefetch={false}>
+                            <ClipboardListIcon className="h-6 w-6" />
+                            <span className="sr-only">Home</span>
+                        </Link>
+                        <div className="flex-1">
+                            <h1 className="font-semibold text-lg">Tareas</h1>
+                        </div>
+                    </header>
+                    <EmployeeDateSelector onSelection={handleSelection} />
+                </div>
             ) : (
                 <div className="flex flex-col">
                     <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
@@ -116,17 +130,31 @@ export default function AssignTasks() {
                             </Button>
                         </div>
                     </header>
-                    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-                        <div className="border shadow-sm rounded-lg">
+                    <main className="flex gap-4 p-4 md:gap-8 md:p-6">
+                        <div className="border shadow-sm rounded-lg w-3/4">
                             <div className="flex items-center justify-between bg-gray-100/40 px-6 py-4">
-                                <div className="flex items-center gap-2">
-                                    <div className="font-semibold">{`${employee.firstName} ${employee.lastName}`}</div>
-                                    <div className="text-gray-500">
-                                        {date.toLocaleDateString()} - {userTasks[0]?.shift}
+                                <div className="flex items-center gap-4">
+                                    <div className="font-semibold flex items-center gap-2">
+                                        <UserIcon className="h-4 w-4" />
+                                        {`${employee.firstName} ${employee.lastName}`}
+                                    </div>
+                                    <div className="text-gray-500 flex items-center gap-2">
+                                        <CalendarDaysIcon className="h-4 w-4" />
+                                        {new Date().toLocaleDateString()}
+                                    </div>
+                                    <div className="text-gray-500 flex items-center gap-2">
+                                        <ClockIcon className="h-4 w-4" />
+                                        {userTasks[0]?.shift}
                                     </div>
                                 </div>
                             </div>
                             <AssignTaskTable tasks={userTasks} />
+                        </div>
+                        <div className="w-1/4">
+                            <ProgressChecklist
+                                tasksCompleted={userTasks.filter(task => task.isCompleted).length}
+                                totalTasks={userTasks.length}
+                            />
                         </div>
                     </main>
                     <AssignTaskDialog
@@ -140,46 +168,3 @@ export default function AssignTasks() {
         </div>
     );
 }
-
-function ClipboardListIcon(props) {
-    return (
-        <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-            <path d="M12 11h4" />
-            <path d="M12 16h4" />
-            <path d="M8 11h.01" />
-            <path d="M8 16h.01" />
-        </svg>
-    );
-}
-
-function PlusIcon(props) {
-    return (
-        <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12h14" />
-            <path d="M12 5v14" />
-        </svg>
-    );
-}
-
-function ArrowLeftIcon(props) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="m12 19-7-7 7-7" />
-            <path d="M19 12H5" />
-        </svg>
-    );
-}
-

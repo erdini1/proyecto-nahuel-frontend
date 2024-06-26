@@ -24,6 +24,8 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { translateType } from "@/helpers/cancellation.helper";
+import Spinner from "@/components/component/Spinner";
+import { FilePenIcon, TrashIcon, PlusIcon } from "@/components/icons";
 
 export default function Cancellations({ terminals, cashRegisterId }) {
 	const [cancellations, setCancellations] = useState([]);
@@ -37,6 +39,7 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 		amount: '',
 		cashRegisterId: '',
 	});
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -45,6 +48,8 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 				setCancellations(cancellations);
 			} catch (error) {
 				console.error('Error fetching data:', error);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 		fetchData();
@@ -98,7 +103,6 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 			method: cancellation.terminalId,
 			amount: cancellation.amount,
 		});
-		// setSelectedTerminal(cancellation.method);
 		setIsModalOpen(true);
 	};
 
@@ -130,45 +134,51 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 				</div>
 			</header>
 			<div className="border shadow-sm rounded-lg">
-				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead className="pl-8 w-1/6">ID</TableHead>
-							<TableHead className="w-1/6">Tipo</TableHead>
-							<TableHead className="w-1/6">Metodo</TableHead>
-							<TableHead className="w-1/6">Hora</TableHead>
-							<TableHead className="w-1/6">Monto</TableHead>
-							<TableHead className="w-1/6">Acciones</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{cancellations.length === 0 ? (
+				{isLoading ? (
+					<div className="flex justify-center items-center h-64">
+						<Spinner />
+					</div>
+				) : (
+					<Table>
+						<TableHeader>
 							<TableRow>
-								<TableCell colSpan="6" className="text-center">No hay anulaciones</TableCell>
+								<TableHead className="pl-8 w-1/6">ID</TableHead>
+								<TableHead className="w-1/6">Tipo</TableHead>
+								<TableHead className="w-1/6">Metodo</TableHead>
+								<TableHead className="w-1/6">Hora</TableHead>
+								<TableHead className="w-1/6">Monto</TableHead>
+								<TableHead className="w-1/6">Acciones</TableHead>
 							</TableRow>
-						) : (
-							cancellations.map(cancellation => (
-								<TableRow key={cancellation.id}>
-									<TableCell className="font-medium pl-8 w-1/6">{cancellation.id}</TableCell>
-									<TableCell className="w-1/6">{translateType(cancellation.type)}</TableCell>
-									<TableCell className="w-1/6">{cancellation.method}</TableCell>
-									<TableCell className="w-1/6">{cancellation.time}</TableCell>
-									<TableCell className="w-1/6">${cancellation.amount}</TableCell>
-									<TableCell className="w-1/6">
-										<Button variant="outline" size="icon" onClick={() => handleEdit(cancellation)}>
-											<FilePenIcon className="h-4 w-4" />
-											<span className="sr-only">Modificar</span>
-										</Button>
-										<Button variant="outline" size="icon" onClick={() => handleDelete(cancellation.id)}>
-											<TrashIcon className="h-4 w-4" />
-											<span className="sr-only">Eliminar</span>
-										</Button>
-									</TableCell>
+						</TableHeader>
+						<TableBody>
+							{cancellations.length === 0 ? (
+								<TableRow>
+									<TableCell colSpan="6" className="text-center">No hay anulaciones</TableCell>
 								</TableRow>
-							))
-						)}
-					</TableBody>
-				</Table>
+							) : (
+								cancellations.map(cancellation => (
+									<TableRow key={cancellation.id}>
+										<TableCell className="font-medium pl-8 w-1/6">{cancellation.id}</TableCell>
+										<TableCell className="w-1/6">{translateType(cancellation.type)}</TableCell>
+										<TableCell className="w-1/6">{cancellation.method}</TableCell>
+										<TableCell className="w-1/6">{cancellation.time}</TableCell>
+										<TableCell className="w-1/6">${cancellation.amount}</TableCell>
+										<TableCell className="w-1/6">
+											<Button variant="outline" size="icon" onClick={() => handleEdit(cancellation)}>
+												<FilePenIcon className="h-4 w-4" />
+												<span className="sr-only">Modificar</span>
+											</Button>
+											<Button variant="outline" size="icon" onClick={() => handleDelete(cancellation.id)}>
+												<TrashIcon className="h-4 w-4" />
+												<span className="sr-only">Eliminar</span>
+											</Button>
+										</TableCell>
+									</TableRow>
+								))
+							)}
+						</TableBody>
+					</Table>
+				)}
 			</div>
 			{isModalOpen && (
 				<Dialog onOpenChange={handleModalClose} open={isModalOpen}>
@@ -263,57 +273,57 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 	);
 }
 
-function FilePenIcon(props) {
-	return (
-		<svg
-			{...props}
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<path d="M12 20h9" />
-			<path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
-		</svg>
-	);
-}
+// function FilePenIcon(props) {
+// 	return (
+// 		<svg
+// 			{...props}
+// 			xmlns="http://www.w3.org/2000/svg"
+// 			width="24"
+// 			height="24"
+// 			viewBox="0 0 24 24"
+// 			fill="none"
+// 			stroke="currentColor"
+// 			strokeWidth="2"
+// 			strokeLinecap="round"
+// 			strokeLinejoin="round"
+// 		>
+// 			<path d="M12 20h9" />
+// 			<path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+// 		</svg>
+// 	);
+// }
 
-function TrashIcon(props) {
-	return (
-		<svg
-			{...props}
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<polyline points="3 6 5 6 21 6" />
-			<path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6" />
-			<path d="M10 11v6" />
-			<path d="M14 11v6" />
-			<path d="M5 6l1-2h12l1 2" />
-		</svg>
-	);
-}
+// function TrashIcon(props) {
+// 	return (
+// 		<svg
+// 			{...props}
+// 			xmlns="http://www.w3.org/2000/svg"
+// 			width="24"
+// 			height="24"
+// 			viewBox="0 0 24 24"
+// 			fill="none"
+// 			stroke="currentColor"
+// 			strokeWidth="2"
+// 			strokeLinecap="round"
+// 			strokeLinejoin="round"
+// 		>
+// 			<polyline points="3 6 5 6 21 6" />
+// 			<path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6" />
+// 			<path d="M10 11v6" />
+// 			<path d="M14 11v6" />
+// 			<path d="M5 6l1-2h12l1 2" />
+// 		</svg>
+// 	);
+// }
 
-function PlusIcon(props) {
-	return (
-		<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-			<path d="M5 12h14" />
-			<path d="M12 5v14" />
-		</svg>
-	);
-}
+// function PlusIcon(props) {
+// 	return (
+// 		<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+// 			<path d="M5 12h14" />
+// 			<path d="M12 5v14" />
+// 		</svg>
+// 	);
+// }
 
 
 // import { useState, useEffect } from "react";
