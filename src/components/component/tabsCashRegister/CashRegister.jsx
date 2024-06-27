@@ -3,12 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createCashRegister } from "@/service/cashRegisterService";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useToast } from "@/components/ui/use-toast"
 
 export default function CashRegister({ onCreated }) {
 	const [cashRegisterNumber, setCashRegisterNumber] = useState('');
 	const [initialAmount, setInitialAmount] = useState("");
 	const [changeAmount, setChangeAmount] = useState(0);
 	const [disabledButtons, setDisabledButtons] = useState(false);
+
+	const { toast } = useToast();
 
 	const handleCashRegisterNumberChange = (number) => {
 		setCashRegisterNumber(number);
@@ -24,10 +27,18 @@ export default function CashRegister({ onCreated }) {
 		};
 		try {
 			await createCashRegister(formData);
-			// alert('Caja creada correctamente');
+			toast({
+				title: "Caja creada",
+				description: "La caja fue creada correctamente",
+			});
 			onCreated();
 		} catch (error) {
 			console.error('Error al crear la caja:', error);
+			toast({
+				variant: "destructive",
+				title: "Error",
+				description: "Ocurrió un error al crear la caja",
+			});
 		}
 	};
 
@@ -66,7 +77,6 @@ export default function CashRegister({ onCreated }) {
 							placeholder="$0.00"
 							onChange={(e) => setInitialAmount(e.target.value)}
 							className="p-2 border rounded"
-							// disabled={hasCashRegister}
 						/>
 					</div>
 					<div className="grid gap-2 w-1/2">
@@ -86,7 +96,7 @@ export default function CashRegister({ onCreated }) {
 				<Button
 					className="w-full"
 					type="submit"
-					disabled={cashRegisterNumber === '' || initialAmount === '' /* || changeAmount === '' */}
+					disabled={cashRegisterNumber === '' || initialAmount === ''}
 				>Guardar Datos Iniciales</Button>
 			</form>
 		</div>

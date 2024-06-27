@@ -20,8 +20,8 @@ export default function AssignTasks() {
 		const fetchUserTasks = async () => {
 			try {
 				setIsLoading(true);
-				const data = await getUserTasks(new Date().toLocaleDateString('en-CA'));
-				setUserTasks(data);
+				const userTasks = await getUserTasks(new Date().toLocaleDateString('en-CA'));
+				setUserTasks(userTasks);
 
 				const user = await getMyUser()
 				setUserName(user.firstName + " " + user.lastName);
@@ -37,7 +37,7 @@ export default function AssignTasks() {
 	const handleCompleteUserTask = async (taskId) => {
 		try {
 			await completeTask(taskId);
-			setUserTasks(userTasks.map(userTask => userTask.Task.id === taskId ? { ...userTask, isCompleted: true } : userTask));
+			setUserTasks(userTasks.map(userTask => userTask.Task.id === taskId ? { ...userTask, isCompleted: !userTask.isCompleted } : userTask));
 		} catch (error) {
 			console.error('Failed to complete task:', error);
 		}
@@ -50,7 +50,6 @@ export default function AssignTasks() {
 			return matchesDescription && matchesStatus;
 		});
 	}, [userTasks, searchTerm, filterByStatus]);
-
 
 	return (
 		<div className="w-full mx-auto">

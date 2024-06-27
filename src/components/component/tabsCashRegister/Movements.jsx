@@ -28,6 +28,18 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { translateType } from "@/helpers/movement.helper";
 import Spinner from "@/components/component/Spinner";
 import { FilePenIcon, TrashIcon, PlusIcon } from "@/components/icons";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function Movements({ cashRegisterId }) {
 	const [cashMovements, setCashMovements] = useState([]);
@@ -44,6 +56,8 @@ export default function Movements({ cashRegisterId }) {
 	});
 	const [isLoading, setIsLoading] = useState(true);
 
+	const { toast } = useToast();
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -55,6 +69,11 @@ export default function Movements({ cashRegisterId }) {
 
 			} catch (error) {
 				console.error('Error fetching data:', error);
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: "Ocurrió un error al mostrar los movimientos de caja",
+				})
 			} finally {
 				setIsLoading(false);
 			}
@@ -92,14 +111,27 @@ export default function Movements({ cashRegisterId }) {
 		try {
 			if (editingMovement) {
 				await updateCashMovement(editingMovement.id, newMovement);
+				toast({
+					title: "Movimiento actualizado",
+					description: "El movimiento fue actualizado correctamente",
+				})
 			} else {
 				await createCashMovement(newMovement);
+				toast({
+					title: "Movimiento creado",
+					description: "El movimiento fue creado correctamente",
+				})
 			}
 			const movements = await getCashMovements();
 			setCashMovements(movements);
 			handleModalClose();
 		} catch (error) {
 			console.error('Error creating or updating movement:', error);
+			toast({
+				variant: "destructive",
+				title: "Error",
+				description: "Ocurrió un error al guardar el movimiento",
+			})
 		}
 	};
 
@@ -120,12 +152,19 @@ export default function Movements({ cashRegisterId }) {
 			await deleteCashMovement(id);
 			const movements = await getCashMovements();
 			setCashMovements(movements);
+			toast({
+				title: "Movimiento eliminado",
+				description: "El movimiento fue eliminado correctamente",
+			})
 		} catch (error) {
 			console.error('Error deleting movement:', error);
+			toast({
+				variant: "destructive",
+				title: "Error",
+				description: "Ocurrió un error al eliminar el movimiento",
+			})
 		}
 	};
-
-	// TODO: Ver si esta bien tener el campo proveedor para los retiros 
 
 	return (
 		<div className="w-1/2 max-h-40">
@@ -179,10 +218,26 @@ export default function Movements({ cashRegisterId }) {
 												<FilePenIcon className="h-4 w-4" />
 												<span className="sr-only">Modificar</span>
 											</Button>
-											<Button variant="outline" size="icon" onClick={() => handleDelete(movement.id)}>
-												<TrashIcon className="h-4 w-4" />
-												<span className="sr-only">Eliminar</span>
-											</Button>
+											<AlertDialog>
+												<AlertDialogTrigger asChild>
+													<Button variant="outline" size="icon" >
+														<TrashIcon className="h-4 w-4" />
+														<span className="sr-only">Eliminar</span>
+													</Button>
+												</AlertDialogTrigger>
+												<AlertDialogContent>
+													<AlertDialogHeader>
+														<AlertDialogTitle>¿Está seguro que desea eliminar este movimiento?</AlertDialogTitle>
+														<AlertDialogDescription>Esta acción no se puede deshacer.</AlertDialogDescription>
+													</AlertDialogHeader>
+													<AlertDialogFooter>
+														<AlertDialogCancel>Cancelar</AlertDialogCancel>
+														<AlertDialogAction
+															onClick={() => handleDelete(movement.id)}
+														>Continuar</AlertDialogAction>
+													</AlertDialogFooter>
+												</AlertDialogContent>
+											</AlertDialog>
 										</TableCell>
 									</TableRow>
 								)))}

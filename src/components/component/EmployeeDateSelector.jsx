@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/command";
 import { ChevronsUpDown } from "lucide-react"
 import { CalendarDaysIcon, CheckIcon } from "@/components/icons/index";
+import { useToast } from "@/components/ui/use-toast"
 
 const EmployeeDateSelector = ({ onSelection }) => {
 	const [employees, setEmployees] = useState([]);
@@ -23,6 +24,8 @@ const EmployeeDateSelector = ({ onSelection }) => {
 	const [date, setDate] = useState(new Date());
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState("");
+
+	const { toast } = useToast()
 
 	useEffect(() => {
 		const fetchEmployees = async () => {
@@ -32,6 +35,11 @@ const EmployeeDateSelector = ({ onSelection }) => {
 				setEmployees(filteredData);
 			} catch (error) {
 				console.log('Failed to fetch employees:', error);
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: "Ocurrió un error al mostrar los empleados",
+				})
 			}
 		};
 		fetchEmployees();

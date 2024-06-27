@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/alert-dialog"
 import { FilePenIcon, TrashIcon } from "@/components/icons/index";
 
-
 export default function TaskCrudTable({ tasks, handleUpdateTask, handleDeleteTask }) {
 	return (
 		<div className="border shadow-sm rounded-lg">

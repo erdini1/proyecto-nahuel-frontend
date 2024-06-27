@@ -1,8 +1,7 @@
 "use client";
-
 import Link from "next/link"
 import { usePathname } from "next/navigation";
-import { ClipboardListIcon, UserPlusIcon, InboxIcon, DollarSignIcon, PlusIcon, BarChartIcon, ReceiptIcon } from "@/components/icons";
+import { ClipboardListIcon, UserPlusIcon, InboxIcon, DollarSignIcon, PlusIcon, BarChartIcon, ReceiptIcon, CalendarDaysIcon } from "@/components/icons";
 
 export default function Sidebar() {
 
@@ -45,6 +44,12 @@ export default function Sidebar() {
 								href="/admin/tasks/assign">
 								<PlusIcon className="h-4 w-4" />
 								Asignar Tareas
+							</Link>
+							<Link
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/tasks/historic" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+								href="/admin/tasks/historic">
+								<CalendarDaysIcon className="h-4 w-4" />
+								Historico de Tareas
 							</Link>
 						</div>
 						{/* ---- Caja ----- */}

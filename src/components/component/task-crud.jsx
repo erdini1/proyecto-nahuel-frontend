@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import Spinner from "@/components/component/Spinner";
 import { SearchIcon, PlusIcon, ClipboardListIcon } from "@/components/icons/index";
+import { useToast } from "@/components/ui/use-toast"
 
 export default function TaskCrud() {
     const [tasks, setTasks] = useState([]);
@@ -23,6 +24,8 @@ export default function TaskCrud() {
     const [sectorFilter, setSectorFilter] = useState("all");
     const [isLoading, setIsLoading] = useState(true);
 
+    const { toast } = useToast()
+
     useEffect(() => {
         const fetchTasks = async () => {
             try {
@@ -30,6 +33,11 @@ export default function TaskCrud() {
                 setTasks(tasks);
             } catch (error) {
                 console.log('Failed to fetch tasks:', error);
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: "Ocurrió un error al mostrar las tareas",
+                })
             } finally {
                 setIsLoading(false);
             }
@@ -61,15 +69,26 @@ export default function TaskCrud() {
         try {
             if (isEditing) {
                 await updateTask(newTask.id, newTask);
-                alert('Tarea actualizada');
+                toast({
+                    title: "Tarea actualizada",
+                    description: "La tarea ha sido actualizada correctamente",
+                })
             } else {
                 await createTask(newTask);
+                toast({
+                    title: "Tarea creada",
+                    description: "La tarea ha sido creada correctamente",
+                })
             }
             const updatedTasks = await getAllTasks();
             setTasks(updatedTasks);
             setShowCreateDialog(false);
         } catch (error) {
-            console.log('Failed to save task:', error);
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Ocurrió un error al guardar la tarea",
+            })
         }
     };
 
@@ -77,7 +96,10 @@ export default function TaskCrud() {
         try {
             await deleteTask(id);
             setTasks(tasks.filter((task) => task.id !== id));
-            // alert('Tarea eliminada');
+            toast({
+                title: "Tarea eliminada",
+                description: "La tarea ha sido eliminada correctamente",
+            })
         } catch (error) {
             console.log('Failed to delete task:', error);
         }

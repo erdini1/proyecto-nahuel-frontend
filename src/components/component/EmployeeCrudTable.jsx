@@ -1,26 +1,20 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { FilePenIcon, TrashIcon } from "@/components/icons/index";
+import { translateRole } from "@/helpers/role.helper";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export default function EmployeeCrudTable({ employees, handleUpdateEmployee, handleDeleteEmployee }) {
-	const roles = {
-		admin: "Admin",
-		employee: "Empleado",
-		cashier: "Cajero"
-	};
-
-	const translateRole = (role) => {
-		switch (role) {
-			case "admin":
-				return roles.admin;
-			case "employee":
-				return roles.employee;
-			case "cashier":
-				return roles.cashier;
-			default:
-				return role;
-		}
-	};
 
 	return (
 		<div className="border shadow-sm rounded-lg">
@@ -49,14 +43,32 @@ export default function EmployeeCrudTable({ employees, handleUpdateEmployee, han
 										<FilePenIcon className="h-4 w-4" />
 										<span className="sr-only">Editar</span>
 									</Button>
-									<Button
-										variant="outline"
-										size="icon"
-										onClick={() => handleDeleteEmployee(employee.id)}
-									>
-										<TrashIcon className="h-4 w-4" />
-										<span className="sr-only">Eliminar</span>
-									</Button>
+
+									<AlertDialog>
+										<AlertDialogTrigger asChild>
+											<Button
+												variant="outline"
+												size="icon"
+											>
+												<TrashIcon className="h-4 w-4" />
+												<span className="sr-only">Eliminar</span>
+											</Button>
+										</AlertDialogTrigger>
+										<AlertDialogContent>
+											<AlertDialogHeader>
+												<AlertDialogTitle>Esta seguro que desea eliminar el usuario?</AlertDialogTitle>
+												<AlertDialogDescription>
+													Esta acción no se puede deshacer. Esto eliminará permanentemente su cuenta y removerá los datos de los servidores.
+												</AlertDialogDescription>
+											</AlertDialogHeader>
+											<AlertDialogFooter>
+												<AlertDialogCancel>Cancelar</AlertDialogCancel>
+												<AlertDialogAction
+													onClick={() => handleDeleteEmployee(employee.id)}
+												>Continuar</AlertDialogAction>
+											</AlertDialogFooter>
+										</AlertDialogContent>
+									</AlertDialog>
 								</div>
 							</TableCell>
 						</TableRow>

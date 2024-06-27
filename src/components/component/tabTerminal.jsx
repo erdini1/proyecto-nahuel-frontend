@@ -1,3 +1,4 @@
+// TODO: Ver, me parece que este componente no se usa en nignun lado
 import React from 'react'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { TERMINALS } from '@/constants/terminals.constant';

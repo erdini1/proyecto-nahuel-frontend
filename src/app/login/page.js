@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axios from "@/config/axios.js";
 import { decode } from '@/helpers/token.helper';
+import { useToast } from "@/components/ui/use-toast"
 
 // TODO: Modificar un poco la estetica
 export default function SignIn() {
@@ -15,6 +16,7 @@ export default function SignIn() {
 	const [password, setPassword] = useState('');
 	const router = useRouter();
 	const { login } = useAuthContext();
+	const { toast } = useToast();
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -39,9 +41,12 @@ export default function SignIn() {
 					router.push("/unauthorized");
 			}
 		} catch (error) {
-			// console.error('Error during login:', error);
 			setPassword('');
-			alert('Error al iniciar sesión. Por favor, verifica tus credenciales.');
+			toast({
+				variant: "destructive",
+				title: "Error al iniciar sesión",
+				description: "Por favor, verifica tus credenciales.",
+			})
 		}
 	};
 

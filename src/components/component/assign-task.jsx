@@ -8,6 +8,7 @@ import { getUserTasks, getAllTasks, assignTask } from "@/service/taskService";
 import { Button } from "@/components/ui/button";
 import ProgressChecklist from "./progressChecklist";
 import { ClipboardListIcon, PlusIcon, ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
+import { useToast } from "@/components/ui/use-toast"
 
 export default function AssignTasks() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -16,6 +17,8 @@ export default function AssignTasks() {
     const [tasks, setTasks] = useState([]);
     const [userTasks, setUserTasks] = useState([]);
     const [filteredTasks, setFilteredTasks] = useState([]);
+    
+    const { toast } = useToast()
 
     useEffect(() => {
         const fetchAllTasks = async () => {
@@ -24,6 +27,11 @@ export default function AssignTasks() {
                 setTasks(allTasks);
             } catch (error) {
                 console.log('Failed to fetch all tasks:', error);
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: "Ocurrió un error al mostrar las tareas",
+                })
             }
         };
         fetchAllTasks();
@@ -77,7 +85,10 @@ export default function AssignTasks() {
     const handleAssignTasks = async (selectedTasks) => {
         try {
             await assignTask(selectedTasks, employee.id);
-            alert("Tareas asignadas correctamente");
+            toast({
+                title: "Tareas Asignadas",
+                description: "Tareas asignadas correctamente",
+            })
             await fetchUserTasks();
         } catch (error) {
             console.log('Failed to assign tasks:', error);
@@ -87,6 +98,10 @@ export default function AssignTasks() {
 
     // TODO: Agregar validación para que solo se pueda asignar tareas en el dia actual
     // TODO: Hacer que se pueda seleccionar todas las tareas de un sector, para que no deba ser una por una
+    // TODO: Permitir eliminar tareas asignadas
+    // TODO: Poner grafico de varios usuarios con el progreso o desempeño semanal de las tareas realizadas
+    // TODO: Poner que no se cree una caja nueva hasta que se cierre. luego de cerrar se puede crear una nueva y sacar que solo se puede crear por dia
+    // TODO: Poner que las tareas se actualicen cada 12 horas. cuando se indique un nuevo turno se actualice 
     return (
         <div className="min-h-screen">
             {!employee ? (

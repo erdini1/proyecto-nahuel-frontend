@@ -15,3 +15,4 @@ export { default as UserPlusIcon } from './UserPlusIcon';
 export { default as InboxIcon } from './InboxIcon';
 export { default as DollarSignIcon } from './DollarSignIcon';
 export { default as BarChartIcon } from './BarChartIcon';
+export { default as CircleCheckIcon } from './CircleCheckIcon';

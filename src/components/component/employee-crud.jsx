@@ -7,6 +7,7 @@ import { getUsers, createUser, updateUser, deleteUser } from "@/service/userServ
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/component/Spinner";
 import { SearchIcon, PlusIcon } from "@/components/icons/index";
+import { useToast } from "@/components/ui/use-toast"
 
 export default function EmployeeCrud() {
     const [employees, setEmployees] = useState([]);
@@ -22,6 +23,8 @@ export default function EmployeeCrud() {
     const [isEditing, setIsEditing] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [isLoading, setIsLoading] = useState(true);
+
+    const { toast } = useToast()
 
     useEffect(() => {
         const fetchEmployees = async () => {
@@ -54,12 +57,19 @@ export default function EmployeeCrud() {
         try {
             if (isEditing) {
                 await updateUser(newEmployee.id, newEmployee);
-                alert('Empleado actualizado')
+                toast({
+                    title: "Empleado actualizado",
+                    description: "El empleado ha sido actualizado correctamente",
+                })
             } else {
                 await createUser(newEmployee);
+                toast({
+                    title: "Empleado creado",
+                    description: "El empleado ha sido creado correctamente",
+                })
             }
             const updatedEmployees = await getUsers();
-            setEmployees(updatedEmployees);
+            setEmployees(updatedEmployees.filter((employee) => employee.role !== "admin"))
             setShowCreateModal(false);
         } catch (error) {
             console.log('Failed to save employee:', error);
@@ -70,7 +80,10 @@ export default function EmployeeCrud() {
         try {
             await deleteUser(id);
             setEmployees(employees.filter((employee) => employee.id !== id));
-            alert('Empleado eliminado')
+            toast({
+                title: "Empleado eliminado",
+                description: "El empleado ha sido eliminado correctamente",
+            })
         } catch (error) {
             console.log('Failed to delete employee:', error);
         }

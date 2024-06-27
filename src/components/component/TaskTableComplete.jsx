@@ -1,7 +1,7 @@
 "use client"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { CheckIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button";
+import { ClockIcon, CircleCheckIcon } from "@/components/icons";
 
 const TaskTableComplete = ({ tasks, handleCompleteUserTask }) => {
 
@@ -25,13 +25,23 @@ const TaskTableComplete = ({ tasks, handleCompleteUserTask }) => {
 							<TableCell>
 								<Button
 									onClick={() => handleCompleteUserTask(userTask.Task.id)}
-									className={`flex items-center gap-1.5 ${userTask.isCompleted ? "text-green-500 bg-gray-100/30 " : ""}`}
-									variant={userTask.isCompleted ? "outline" : ""}
+									className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-300 ${userTask.isCompleted
+										? "text-white bg-green-500 hover:bg-green-600"
+										: "text-white bg-yellow-500 hover:bg-yellow-600"
+										}`}
 								>
-									{userTask.isCompleted ? "": <CheckIcon className="h-4 w-4 mr-2" />}
-									{userTask.isCompleted ? "Completado" : "Pendiente"}
+									{userTask.isCompleted ? (
+										<>
+											<CircleCheckIcon className="h-5 w-5" />
+											Completado
+										</>
+									) : (
+										<>
+											<ClockIcon className="h-5 w-5" />
+											Pendiente
+										</>
+									)}
 								</Button>
-
 							</TableCell>
 						</TableRow>
 					)))}

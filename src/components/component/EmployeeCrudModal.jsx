@@ -4,9 +4,27 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { EyeOpenIcon, EyeClosedIcon, Pencil1Icon } from "@radix-ui/react-icons";
 
-export default function EmployeeCrudModal({ isEditing, newEmployee, setNewEmployee, handleSaveEmployee, setShowCreateModal, employees }) {
+export default function EmployeeCrudModal({
+	isEditing,
+	newEmployee,
+	setNewEmployee,
+	handleSaveEmployee,
+	setShowCreateModal,
+	employees
+}) {
 	const [showPassword, setShowPassword] = useState(false);
 	const [editPassword, setEditPassword] = useState(!isEditing);
 	const [isNumberDuplicate, setIsNumberDuplicate] = useState(false);
@@ -153,10 +171,28 @@ export default function EmployeeCrudModal({ isEditing, newEmployee, setNewEmploy
 								)}
 							</div>
 							{isEditing && (
-								<Button onClick={toggleEditPassword} variant="outline" className="px-2 w-1/5 h-12 shadow">
-									<Pencil1Icon className="h-4 w-4 text-gray-400 mr-2 " />
-									Editar
-								</Button>
+								<AlertDialog>
+									<AlertDialogTrigger asChild>
+										<Button variant="outline" className="px-2 w-1/5 h-12 shadow">
+											<Pencil1Icon className="h-4 w-4 text-gray-400 mr-2 " />
+											Editar
+										</Button>
+									</AlertDialogTrigger>
+									<AlertDialogContent>
+										<AlertDialogHeader>
+											<AlertDialogTitle>¿Está seguro que desea cambiar la contraseña?</AlertDialogTitle>
+											<AlertDialogDescription>
+												La contraseña del empleado será modificada.
+											</AlertDialogDescription>
+										</AlertDialogHeader>
+										<AlertDialogFooter>
+											<AlertDialogCancel>Cancelar</AlertDialogCancel>
+											<AlertDialogAction
+												onClick={toggleEditPassword}
+											>Continuar</AlertDialogAction>
+										</AlertDialogFooter>
+									</AlertDialogContent>
+								</AlertDialog>
 							)}
 						</div>
 					</div>

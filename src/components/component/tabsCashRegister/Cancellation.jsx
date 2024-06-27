@@ -25,7 +25,19 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { translateType } from "@/helpers/cancellation.helper";
 import Spinner from "@/components/component/Spinner";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { FilePenIcon, TrashIcon, PlusIcon } from "@/components/icons";
+import { useToast } from "@/components/ui/use-toast"
 
 export default function Cancellations({ terminals, cashRegisterId }) {
 	const [cancellations, setCancellations] = useState([]);
@@ -41,6 +53,8 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 	});
 	const [isLoading, setIsLoading] = useState(true);
 
+	const { toast } = useToast();
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -48,6 +62,11 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 				setCancellations(cancellations);
 			} catch (error) {
 				console.error('Error fetching data:', error);
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: "Ocurrió un error al mostrar las anulaciones",
+				})
 			} finally {
 				setIsLoading(false);
 			}
@@ -85,14 +104,27 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 		try {
 			if (editingCancellation) {
 				await updateCancellation(editingCancellation.id, newCancellation);
+				toast({
+					title: "Anulación actualizada",
+					description: "La anulación fue actualizada correctamente",
+				})
 			} else {
 				await createCancellation(newCancellation);
+				toast({
+					title: "Anulación cargada",
+					description: "La anulación fue cargada correctamente",
+				})
 			}
 			const cancellations = await getCancellations();
 			setCancellations(cancellations);
 			handleModalClose();
 		} catch (error) {
 			console.error('Error creating or updating cancellation:', error);
+			toast({
+				variant: "destructive",
+				title: "Error",
+				description: "Ocurrió un error al guardar la anulación",
+			})
 		}
 	};
 
@@ -111,8 +143,17 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 			await deleteCancellation(id);
 			const cancellationsData = await getCancellations();
 			setCancellations(cancellationsData);
+			toast({
+				title: "Anulación eliminada",
+				description: "La anulación fue eliminada correctamente",
+			})
 		} catch (error) {
 			console.error('Error deleting cancellation:', error);
+			toast({
+				variant: "destructive",
+				title: "Error",
+				description: "Ocurrió un error al eliminar la anulación",
+			})
 		}
 	};
 
@@ -168,10 +209,27 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 												<FilePenIcon className="h-4 w-4" />
 												<span className="sr-only">Modificar</span>
 											</Button>
-											<Button variant="outline" size="icon" onClick={() => handleDelete(cancellation.id)}>
-												<TrashIcon className="h-4 w-4" />
-												<span className="sr-only">Eliminar</span>
-											</Button>
+
+											<AlertDialog>
+												<AlertDialogTrigger asChild>
+													<Button variant="outline" size="icon" >
+														<TrashIcon className="h-4 w-4" />
+														<span className="sr-only">Eliminar</span>
+													</Button>
+												</AlertDialogTrigger>
+												<AlertDialogContent>
+													<AlertDialogHeader>
+														<AlertDialogTitle>¿Está seguro que desea eliminarla?</AlertDialogTitle>
+														<AlertDialogDescription>Esta acción no se puede deshacer.</AlertDialogDescription>
+													</AlertDialogHeader>
+													<AlertDialogFooter>
+														<AlertDialogCancel>Cancelar</AlertDialogCancel>
+														<AlertDialogAction
+															onClick={() => handleDelete(cancellation.id)}
+														>Continuar</AlertDialogAction>
+													</AlertDialogFooter>
+												</AlertDialogContent>
+											</AlertDialog>
 										</TableCell>
 									</TableRow>
 								))

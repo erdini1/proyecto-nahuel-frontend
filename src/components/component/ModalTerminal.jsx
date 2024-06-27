@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { createTerminal, deleteTerminal } from '@/service/terminalService';
 import { CardStackIcon } from '@radix-ui/react-icons';
 import { TrashIcon } from '@/components/icons';
+import { useToast } from "@/components/ui/use-toast"
 import { TERMINALS } from '@/constants/terminals.constant';
 
 // TODO: Agregar validación para no poder eliminar terminales si hay transacciones asociadas
@@ -14,6 +15,8 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 	const [loading, setLoading] = useState(false);
 
 	const terminalOptions = TERMINALS;
+
+	const { toast } = useToast()
 
 	const handleAdd = async () => {
 		const option = terminalOptions.find(o => o.terminalNumber === selectedOption);
@@ -29,6 +32,11 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 				setSelectedOption('');
 			} catch (error) {
 				console.error('Error adding terminal:', error);
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: "Ocurrió un error al agregar la terminal",
+				})
 			} finally {
 				setLoading(false);
 			}
@@ -43,8 +51,17 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 			const updatedTerminals = [...terminals];
 			updatedTerminals.splice(index, 1);
 			onTerminalsChange(updatedTerminals);
+			toast({
+				title: "Terminal eliminada",
+				description: "La terminal fue eliminada correctamente",
+			})
 		} catch (error) {
 			console.error('Error removing terminal:', error);
+			toast({
+				variant: "destructive",
+				title: "Error",
+				description: "Ocurrió un error al eliminar la terminal",
+			})
 		} finally {
 			setLoading(false);
 		}
