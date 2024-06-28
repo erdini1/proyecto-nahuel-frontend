@@ -9,7 +9,7 @@ import Spinner from "@/components/component/Spinner";
 import { getMyUser } from "@/service/userService";
 import { UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
 
-export default function AssignTasks() {
+export default function ChecklistPage() {
 	const [userTasks, setUserTasks] = useState([]);
 	const [userName, setUserName] = useState('');
 	const [searchTerm, setSearchTerm] = useState('');

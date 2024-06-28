@@ -20,6 +20,16 @@ export const getMyUser = async () => {
 	}
 }
 
+export const getUser = async (id) => {
+	try {
+		const response = await axios.get(`/user/${id}`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get user:', error);
+		throw new Error('Failed to get user');
+	}
+}
+
 export const createUser = async (data) => {
 	try {
 		const response = await axios.post(`/auth/register`, data);

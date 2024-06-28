@@ -40,16 +40,21 @@ export default function Sidebar() {
 								Ver Tareas
 							</Link>
 							<Link
-								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/tasks/assign" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+								// Indicar que se resalte el link cuando se encuentre en la ruta /admin/tasks/assign y para las rutas dinámicas
+								className={`
+									flex items-center gap-3 rounded-lg px-3 py-2 transition-all 
+									${pathname === "/admin/tasks/assign"
+										? "bg-gray-900 text-gray-50"
+										: "text-gray-500 hover:text-gray-900"}`}
 								href="/admin/tasks/assign">
 								<PlusIcon className="h-4 w-4" />
 								Asignar Tareas
 							</Link>
 							<Link
-								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/tasks/historic" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
-								href="/admin/tasks/historic">
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/tasks/archived" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+								href="/admin/tasks/archived">
 								<CalendarDaysIcon className="h-4 w-4" />
-								Historico de Tareas
+								Historial de Tareas
 							</Link>
 						</div>
 						{/* ---- Caja ----- */}

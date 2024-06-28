@@ -20,6 +20,26 @@ export const completeTask = async (taskId) => {
 	}
 };
 
+export const getUserTasksByDate = async (date) => {
+	try {
+		const response = await axios.get(`/checklist/date/all?date=${date}`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get tasks:', error);
+		throw new Error('Failed to get tasks');
+	}
+}
+
+export const deleteUserTask = async (taskId) => {
+	try {
+		const response = await axios.delete(`/checklist/${taskId}`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to delete task:', error);
+		throw new Error('Failed to delete task');
+	}
+}
+
 export const createTask = async (task) => {
 	try {
 		const response = await axios.post('/task', task);

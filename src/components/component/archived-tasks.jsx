@@ -10,14 +10,14 @@ import ProgressChecklist from "./progressChecklist";
 import { ClipboardListIcon, PlusIcon, ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
 import { useToast } from "@/components/ui/use-toast"
 
-export default function AssignTasks() {
+export default function ArchivedTasks() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [employee, setEmployee] = useState(null);
     const [date, setDate] = useState(new Date());
     const [tasks, setTasks] = useState([]);
     const [userTasks, setUserTasks] = useState([]);
     const [filteredTasks, setFilteredTasks] = useState([]);
-    
+
     const { toast } = useToast()
 
     useEffect(() => {
@@ -50,6 +50,7 @@ export default function AssignTasks() {
     const fetchUserTasks = async () => {
         try {
             const formattedDate = date.toLocaleDateString('en-CA');
+            // setDate(formattedDate);
             const data = await getUserTasks(formattedDate, employee.id);
             setUserTasks(data);
         } catch (error) {
@@ -107,10 +108,6 @@ export default function AssignTasks() {
             {!employee ? (
                 <div>
                     <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 mb-5">
-                        <Link href="#" className="lg:hidden" prefetch={false}>
-                            <ClipboardListIcon className="h-6 w-6" />
-                            <span className="sr-only">Home</span>
-                        </Link>
                         <div className="flex-1">
                             <h1 className="font-semibold text-lg">Tareas</h1>
                         </div>
@@ -120,10 +117,6 @@ export default function AssignTasks() {
             ) : (
                 <div className="flex flex-col">
                     <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
-                        <Link href="#" className="lg:hidden" prefetch={false}>
-                            <ClipboardListIcon className="h-6 w-6" />
-                            <span className="sr-only">Home</span>
-                        </Link>
                         <div className="flex-1">
                             <h1 className="font-semibold text-lg">Tareas</h1>
                         </div>
@@ -155,7 +148,7 @@ export default function AssignTasks() {
                                     </div>
                                     <div className="text-gray-500 flex items-center gap-2">
                                         <CalendarDaysIcon className="h-4 w-4" />
-                                        {new Date().toLocaleDateString()}
+                                        {date.toLocaleDateString()}
                                     </div>
                                     <div className="text-gray-500 flex items-center gap-2">
                                         <ClockIcon className="h-4 w-4" />

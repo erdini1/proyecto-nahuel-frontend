@@ -1,18 +1,20 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { CheckIcon, XIcon } from "@/components/icons/index";
+import { CheckIcon, XIcon, TrashIcon } from "@/components/icons/index";
+import { Button } from "@/components/ui/button";
 
-const AssignTaskTable = ({ tasks }) => (
+const AssignTaskTable = ({ tasks, handleDeleteUserTask }) => (
     <Table>
         <TableHeader>
             <TableRow>
-                <TableHead>Descripción</TableHead>
-                <TableHead>Completado</TableHead>
+                <TableHead className="w-4/6">Descripción</TableHead>
+                <TableHead className="w-1/6">Completado</TableHead>
+                <TableHead className="w-1/6">Acciones</TableHead>
             </TableRow>
         </TableHeader>
         <TableBody>
             {tasks.length === 0 ? (
                 <TableRow>
-                    <TableCell colSpan="2" className="text-center">No posee tareas asignadas</TableCell>
+                    <TableCell colSpan="3" className="text-center">No posee tareas asignadas</TableCell>
                 </TableRow>
             ) : (
                 tasks.map((task) => (
@@ -30,6 +32,18 @@ const AssignTaskTable = ({ tasks }) => (
                                     <span>No</span>
                                 </div>
                             )}
+                        </TableCell>
+                        <TableCell>
+                            {/* <div className="flex items-center gap-2"> */}
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    onClick={() => handleDeleteUserTask(task.id)}
+                                >
+                                    <TrashIcon className="h-4 w-4" />
+                                    <span className="sr-only">Eliminar</span>
+                                </Button>
+                            {/* </div> */}
                         </TableCell>
                     </TableRow>
                 )))}
