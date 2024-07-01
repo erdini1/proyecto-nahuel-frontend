@@ -34,16 +34,14 @@ const AssignTaskTable = ({ tasks, handleDeleteUserTask }) => (
                             )}
                         </TableCell>
                         <TableCell>
-                            {/* <div className="flex items-center gap-2"> */}
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => handleDeleteUserTask(task.id)}
-                                >
-                                    <TrashIcon className="h-4 w-4" />
-                                    <span className="sr-only">Eliminar</span>
-                                </Button>
-                            {/* </div> */}
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                onClick={() => handleDeleteUserTask(task.id)}
+                            >
+                                <TrashIcon className="h-4 w-4" />
+                                <span className="sr-only">Eliminar</span>
+                            </Button>
                         </TableCell>
                     </TableRow>
                 )))}

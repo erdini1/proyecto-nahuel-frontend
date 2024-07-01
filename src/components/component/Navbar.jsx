@@ -2,6 +2,7 @@ import Link from "next/link"
 import { HomeIcon } from "@radix-ui/react-icons"
 import { PowerIcon } from "@/components/icons"
 
+// TODO: Modificar la ruta de inicio para los empleados
 export default function Navbar() {
 	return (
 		<header className="bg-gray-900 shadow">

@@ -1,8 +1,8 @@
 "use client"
 import { useState, useEffect } from "react";
-import AssignTasksTableEmployes from "./AssignTasksTableEmployes";
 import { getUserTasksByDate } from "@/service/taskService";
 import { getUsers } from "@/service/userService";
+import SummaryCard from "@/components/component/SummaryCard"
 
 export default function AssignTasks() {
     const [employees, setEmployees] = useState([]);
@@ -30,18 +30,33 @@ export default function AssignTasks() {
             <div className="flex flex-col">
                 <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
                     <div className="flex-1">
-                        <h1 className="font-semibold text-lg">Tareas</h1>
+                        <h1 className="font-semibold text-lg">Asginación de tareas</h1>
                     </div>
                 </header>
                 <main className="flex gap-4 p-4 md:gap-8 md:p-6">
-                    <div className="w-full">
-                        <AssignTasksTableEmployes employees={employees} userTasks={userTasks} />
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full">
+                        {employees.map((employee) => {
+                            const tasksForEmployee = userTasks.filter(userTask => (userTask.User.id === employee.id));
+                            const completedTasks = tasksForEmployee.filter(userTask => userTask.isCompleted).length;
+                            const totalTasks = tasksForEmployee.length;
+
+                            return (
+                                <SummaryCard
+                                    key={employee.id}
+                                    title={`${employee.firstName} ${employee.lastName}`}
+                                    completedTasks={completedTasks}
+                                    totalTasks={totalTasks}
+                                    linkUrl={`/admin/tasks/assign/${employee.id}`}
+                                />
+                            );
+                        })}
                     </div>
                 </main>
             </div>
         </div>
     );
 }
+
 
 
 // "use client";

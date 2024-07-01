@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import Movements from "@/components/component/tabsCashRegister/Movements";
-import Cancellations from "@/components/component/tabsCashRegister/Cancellation";
-import CashRegister from "@/components/component/tabsCashRegister/CashRegister";
+import Movements from "@/components/component/cash-movement/tabsCashRegister/Movements";
+import Cancellations from "@/components/component/cash-movement/tabsCashRegister/Cancellation";
+import CashRegister from "@/components/component/cash-movement/tabsCashRegister/CashRegister";
 import { checkIfCashRegisterExists, getLastCashRegister } from "@/service/cashRegisterService";
 import ModalTerminals from "@/components/component/ModalTerminal";
 import { getTerminals } from "@/service/terminalService";

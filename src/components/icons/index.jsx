@@ -18,3 +18,7 @@ export { default as BarChartIcon } from './BarChartIcon';
 export { default as CircleCheckIcon } from './CircleCheckIcon';
 export { default as MoveHorizontalIcon } from './MoveHorizontalIcon';
 export { default as ListTodoIcon } from './ListTodoIcon';
+export { default as ChartIcon } from './ChartIcon';
+export { default as ChevronDownIcon } from './ChevronDownIcon';
+export { default as ArrowUpIcon } from './ArrowUpIcon';
+export { default as PercentIcon } from './PercentIcon';

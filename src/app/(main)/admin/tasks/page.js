@@ -1,4 +1,4 @@
-import TaskCrud from "@/components/component/task-crud";
+import TaskCrud from "@/components/component/task/task-crud";
 
 const CreateTaskPage = () => {
 	return (

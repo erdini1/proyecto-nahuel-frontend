@@ -30,6 +30,16 @@ export const getUserTasksByDate = async (date) => {
 	}
 }
 
+export const getUserTasksByRange = async (userId, startDate, endDate) => {
+	try {
+		const response = await axios.get(`/checklist/date/range?startDate=${startDate}&endDate=${endDate}&userId=${userId}`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get tasks:', error);
+		throw new Error('Failed to get tasks');
+	}
+}
+
 export const deleteUserTask = async (taskId) => {
 	try {
 		const response = await axios.delete(`/checklist/${taskId}`);

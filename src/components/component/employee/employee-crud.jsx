@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import EmployeeCrudTable from "@/components/component/EmployeeCrudTable";
-import EmployeeCrudModal from "@/components/component/EmployeeCrudModal";
+import EmployeeCrudTable from "@/components/component/employee/EmployeeCrudTable";
+import EmployeeCrudModal from "@/components/component/employee/EmployeeCrudModal";
 import { getUsers, createUser, updateUser, deleteUser } from "@/service/userService";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/component/Spinner";

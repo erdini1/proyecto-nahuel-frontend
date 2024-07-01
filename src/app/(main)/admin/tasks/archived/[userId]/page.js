@@ -10,30 +10,29 @@ import { PlusIcon, ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "
 import { useToast } from "@/components/ui/use-toast"
 import { getUser } from "@/service/userService";
 import Spinner from "@/components/component/Spinner";
+import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz'
+import { useSearchParams } from 'next/navigation'
 
 export default function Page({ params }) {
-	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [employee, setEmployee] = useState(params.userId);
 	const [date, setDate] = useState(new Date());
-	const [tasks, setTasks] = useState([]);
 	const [userTasks, setUserTasks] = useState([]);
-	const [filteredTasks, setFilteredTasks] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	const { toast } = useToast()
+	const searchParams = useSearchParams()
 
 	useEffect(() => {
 		const fetchUserTasks = async () => {
+			const dateSearch = searchParams.get('date')
 			try {
 				const employee = await getUser(params.userId);
 				setEmployee(employee);
 
-				setDate(date.toLocaleDateString('en-CA'))
-				const userTasks = await getUserTasks(date, employee.id);
+				setDate(dateSearch)
+				const userTasks = await getUserTasks(dateSearch, employee.id);
 				setUserTasks(userTasks);
-
-				const tasks = await getAllTasks();
-				setTasks(tasks)
 
 			} catch (error) {
 				console.log('Failed to fetch all tasks:', error);
@@ -48,24 +47,6 @@ export default function Page({ params }) {
 		};
 		fetchUserTasks();
 	}, []);
-
-	useEffect(() => {
-		filterUnassignedTasks();
-	}, [tasks, userTasks]);
-
-	const handleOpenDialog = () => {
-		setIsDialogOpen(true);
-	};
-
-	const handleCloseDialog = () => {
-		setIsDialogOpen(false);
-	};
-
-	const filterUnassignedTasks = () => {
-		const assignedTaskIds = userTasks.map(usertTask => usertTask.Task.id);
-		const unassignedTasks = tasks.filter(task => !assignedTaskIds.includes(task.id));
-		setFilteredTasks(unassignedTasks);
-	};
 
 	const handleDeleteUserTask = async (userTaskId) => {
 		try {
@@ -82,50 +63,23 @@ export default function Page({ params }) {
 		}
 	};
 
-	const handleAssignTasks = async (selectedTasks) => {
-		try {
-			await assignTask(selectedTasks, employee.id);
-			toast({
-				title: "Tareas Asignadas",
-				description: "Tareas asignadas correctamente",
-			})
-			const userTasks = await getUserTasks(date, employee.id);
-			setUserTasks(userTasks);
-		} catch (error) {
-			console.log('Failed to assign tasks:', error);
-			toast({
-				variant: "destructive",
-				title: "Error",
-				description: "Ocurrió un error al asignar las tareas",
-			})
-		}
-		handleCloseDialog();
-	};
-
 	return (
 		<div className="min-h-screen">
 			<div className="flex flex-col">
 				<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
 					<div className="flex-1">
-						<h1 className="font-semibold text-lg">Tareas</h1>
+						<h1 className="font-semibold text-lg">Historial de Tareas</h1>
 					</div>
 					<div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-						<Link href="/admin/tasks/assign">
+						<Link href="/admin/tasks/archived">
 							<Button
 								variant="outline"
 								className="flex items-center gap-1.5"
 							>
 								<ArrowLeftIcon className="h-4 w-4" />
-								Seleccionar otro empleado
+								Seleccionar otra fecha
 							</Button>
 						</Link>
-						<Button
-							onClick={handleOpenDialog}
-							className="flex items-center gap-1.5"
-						>
-							<PlusIcon className="h-4 w-4 mr-2" />
-							Asignar Tareas
-						</Button>
 					</div>
 				</header>
 				{isLoading ? (
@@ -143,7 +97,7 @@ export default function Page({ params }) {
 									</div>
 									<div className="text-gray-500 flex items-center gap-2">
 										<CalendarDaysIcon className="h-4 w-4" />
-										{new Date().toLocaleDateString()}
+										{format(toZonedTime(date, 'America/Argentina/Ushuaia'), 'dd/MM/yyyy')}
 									</div>
 									<div className="text-gray-500 flex items-center gap-2">
 										<ClockIcon className="h-4 w-4" />
@@ -164,12 +118,6 @@ export default function Page({ params }) {
 						</div>
 					</main>
 				)}
-				<AssignTaskDialog
-					isOpen={isDialogOpen}
-					onClose={handleCloseDialog}
-					tasks={filteredTasks}
-					onAssignTasks={handleAssignTasks}
-				/>
 			</div>
 		</div>
 	);

@@ -2,8 +2,8 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import TaskCrudTable from "@/components/component/TaskCrudTable";
-import TaskCrudDialog from "@/components/component/TaskCrudDialog";
+import TaskCrudTable from "@/components/component/task/TaskCrudTable";
+import TaskCrudDialog from "@/components/component/task/TaskCrudDialog";
 import { getAllTasks, createTask, updateTask, deleteTask } from "@/service/taskService";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
@@ -110,10 +110,6 @@ export default function TaskCrud() {
         <div className="">
             <div className="flex flex-col">
                 <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
-                    <Link href="#" className="lg:hidden" prefetch={false}>
-                        <ClipboardListIcon className="h-6 w-6" />
-                        <span className="sr-only">Home</span>
-                    </Link>
                     <div className="flex-1">
                         <h1 className="font-semibold text-lg">Tareas</h1>
                     </div>
