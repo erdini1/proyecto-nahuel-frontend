@@ -12,7 +12,7 @@ import { ChevronDown } from "@radix-ui/react-icons";
 export default function CashRegisterFinishForm() {
 	const paymentTypes = [
 		{ name: "Efectivo", details: ["Ventas", "Ingresos", "Retiros", "A rendir"], description: "" },
-		{ name: "Cuenta corriente", details: ["Ventas", "Retiros", "A rendir"], description: "" },
+		{ name: "Cuenta corriente", details: ["Ventas", "A rendir"], description: "" },
 		{ name: "Tarjetas", details: ["Ventas", "Retiros", "A rendir"], description: "Clover / QR - TDF - La red" },
 		{ name: "Mercado Pago", details: ["Ventas", "Retiros", "A rendir"], description: "QR - Link - Tarjeta debito y credito" },
 		{ name: "Point Maxiconsumo", details: ["Ventas", "Retiros", "A rendir"], description: "Tarjeta debito y credito" }

@@ -9,7 +9,7 @@ const TaskChart = ({ data }) => {
 			margin={{ top: 10, right: 0, bottom: 40, left: 40 }}
 			padding={0.15} // Ajuste del tamaño de las barras
 			// groupMode="grouped"
-			colors={({ id }) => (id === "completadas" ? "green" : "red")}
+			colors={({ id }) => (id === "completadas" ? "#1daa06" : "#dc2626")}
 			axisBottom={{
 				tickSize: 0,
 				tickPadding: 16,

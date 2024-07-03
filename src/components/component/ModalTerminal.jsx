@@ -20,7 +20,7 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 
 	const handleAdd = async () => {
 		const option = terminalOptions.find(o => o.terminalNumber === selectedOption);
-		if (option && !terminals.some(t => t.terminalNumber === option.terminalNumber) && terminals.length < 3) {
+		if (option && !terminals.some(t => t.terminalNumber === option.terminalNumber) && terminalsFiltered.length < 3) {
 			setLoading(true);
 			try {
 				const newTerminal = await createTerminal({
@@ -71,6 +71,9 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 		(option) => !terminals.some((t) => t.description === option.description)
 	);
 
+	// hACER UN FILTRO PARA QUE EN LAS TERMIANLES, NO SE MUESTRE EL METODO EFECTIVO
+	const terminalsFiltered = terminals.filter((terminal) => terminal.terminalNumber !== 'cash');
+
 	return (
 		<Dialog className="max-h-96">
 			<DialogTrigger asChild>
@@ -86,7 +89,7 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 				<div className="flex gap-2">
 					<Select
 						onValueChange={(val) => setSelectedOption(val)} value={selectedOption}
-						disabled={loading || terminals.length >= 3}
+						disabled={loading || terminalsFiltered.length >= 3}
 
 					>
 						<SelectTrigger className="px-4 py-2 border rounded-md">
@@ -100,7 +103,7 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 							))}
 						</SelectContent>
 					</Select>
-					<Button onClick={handleAdd} disabled={!selectedOption || loading || terminals.length >= 3}>
+					<Button onClick={handleAdd} disabled={!selectedOption || loading || terminalsFiltered.length >= 3}>
 						{loading ? 'Agregando...' : 'Agregar'}
 					</Button>
 				</div>
@@ -114,12 +117,12 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{terminals.length === 0 ? (
+							{terminalsFiltered.length === 0 ? (
 								<TableRow>
 									<TableCell colSpan="3" className="text-center">No hay terminales seleccionadas</TableCell>
 								</TableRow>
 							) : (
-								terminals.map((terminal, index) => (
+								terminalsFiltered.map((terminal, index) => (
 									<TableRow key={index}>
 										<TableCell className="font-medium w-1/4">{terminal.terminalNumber}</TableCell>
 										<TableCell className="w-1/2">{terminal.description}</TableCell>

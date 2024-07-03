@@ -10,6 +10,7 @@ import { getTerminals } from "@/service/terminalService";
 import Link from "next/link";
 import Spinner from "@/components/component/Spinner";
 
+// TODO: Agregar un svg del signo de pesos en los inputs de dinero
 export default function Page() {
 	const [hasCashRegister, setHasCashRegister] = useState(false);
 	const [selectedTab, setSelectedTab] = useState("cashRegister");
@@ -24,12 +25,10 @@ export default function Page() {
 				if (cashRegisterExists) {
 					setHasCashRegister(true);
 					setSelectedTab("movements");
-				}
 
-				const cashRegister = await getLastCashRegister();
-				setCashRegisterId(cashRegister.id);
+					const cashRegister = await getLastCashRegister();
+					setCashRegisterId(cashRegister.id);
 
-				if (cashRegister.id) {
 					const terminals = await getTerminals(cashRegister.id);
 					setTerminals(terminals);
 				}

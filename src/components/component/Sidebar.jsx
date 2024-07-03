@@ -32,7 +32,7 @@ export default function Sidebar() {
 						</div>
 						{/* ---- Tareas ----- */}
 						<div className="grid gap-1 mt-4">
-							<div className="text-gray-500 px-3 py-2 ">Tareas</div>
+							<div className="text-gray-500 px-3 py-2 ">Tareas Checklist</div>
 							<Link
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/tasks" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="/admin/tasks">
@@ -63,14 +63,14 @@ export default function Sidebar() {
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<DollarSignIcon className="h-4 w-4" />
-								Movimientos de Caja
+								Registro de Caja
 							</Link>
-							<Link
+							{/* <Link
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<ReceiptIcon className="h-4 w-4" />
 								Anulaciones
-							</Link>
+							</Link> */}
 							<Link
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
