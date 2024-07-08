@@ -1,15 +1,33 @@
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ListTodoIcon } from "@/components/icons/index";
+import { ListTodoIcon, ClockIcon, LockClosedIcon, LockOpenIcon } from "@/components/icons/index";
 import Link from "next/link";
 
-const SummaryCard = ({ title, completedTasks, totalTasks, linkUrl }) => {
+const SummaryCard = ({ name, shift, isClosed, completedTasks, totalTasks, linkUrl }) => {
 	const completionPercentage = totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100;
 
 	return (
-		<div className="bg-white rounded-lg shadow-md border p-4 flex flex-col">
+		<div className="bg-white rounded-lg shadow-md border p-5 flex flex-col ">
 			<div className="flex items-center justify-between mb-4">
-				<div className="font-semibold text-lg">{title}</div>
+				<div>
+					<div className="font-semibold text-lg">{name}</div>
+					{shift && (
+						<div className="text-gray-500 flex items-center gap-1 text-sm">
+							<ClockIcon className="h-3.5 w-3.5" />
+							{shift} {isClosed ? (
+								<span className="flex items-center gap-1">
+									- <LockClosedIcon className="h-3.5 w-3.5" />
+									Cerrado
+								</span>
+							) : (
+								<span className="flex items-center gap-1">
+									- <LockOpenIcon className="h-3.5 w-3.5" />
+									Abierto
+								</span>
+							)}
+						</div>
+					)}
+				</div>
 				<Link href={linkUrl}>
 					<Button variant="outline" size="icon">
 						<ListTodoIcon className="w-5 h-5" />

@@ -22,3 +22,6 @@ export { default as ChartIcon } from './ChartIcon';
 export { default as ChevronDownIcon } from './ChevronDownIcon';
 export { default as ArrowUpIcon } from './ArrowUpIcon';
 export { default as PercentIcon } from './PercentIcon';
+export { default as TintinIcon } from './TintinIcon';
+export { default as LockOpenIcon } from './LockOpenIcon';
+export { default as LockClosedIcon } from './LockClosedIcon';

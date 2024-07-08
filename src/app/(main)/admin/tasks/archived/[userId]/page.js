@@ -1,12 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import AssignTaskDialog from "@/components/component/assign/AssignTaskDialog";
 import AssignTaskTable from "@/components/component/assign/AssignTaskTable";
-import { getUserTasks, getAllTasks, assignTask, deleteUserTask } from "@/service/taskService";
+import { getUserTasks, deleteUserTask, getUserTasksByDateAndShift } from "@/service/taskService";
 import { Button } from "@/components/ui/button";
 import ProgressChecklist from "@/components/component/progressChecklist";
-import { PlusIcon, ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
+import { ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
 import { useToast } from "@/components/ui/use-toast"
 import { getUser } from "@/service/userService";
 import Spinner from "@/components/component/Spinner";
@@ -17,8 +16,10 @@ import { useSearchParams } from 'next/navigation'
 export default function Page({ params }) {
 	const [employee, setEmployee] = useState(params.userId);
 	const [date, setDate] = useState(new Date());
+	const [shift, setShift] = useState(new Date());
 	const [userTasks, setUserTasks] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isArchived, setIsArchived] = useState(true);
 
 	const { toast } = useToast()
 	const searchParams = useSearchParams()
@@ -26,12 +27,14 @@ export default function Page({ params }) {
 	useEffect(() => {
 		const fetchUserTasks = async () => {
 			const dateSearch = searchParams.get('date')
+			const shiftSearch = searchParams.get('shift')
 			try {
 				const employee = await getUser(params.userId);
 				setEmployee(employee);
 
 				setDate(dateSearch)
-				const userTasks = await getUserTasks(dateSearch, employee.id);
+				setShift(shiftSearch)
+				const userTasks = await getUserTasksByDateAndShift(employee.id, dateSearch, shiftSearch);
 				setUserTasks(userTasks);
 
 			} catch (error) {
@@ -101,13 +104,14 @@ export default function Page({ params }) {
 									</div>
 									<div className="text-gray-500 flex items-center gap-2">
 										<ClockIcon className="h-4 w-4" />
-										{userTasks[0]?.shift}
+										{shift}
 									</div>
 								</div>
 							</div>
 							<AssignTaskTable
 								tasks={userTasks}
 								handleDeleteUserTask={handleDeleteUserTask}
+								isArchived={isArchived}
 							/>
 						</div>
 						<div className="w-1/4">

@@ -1,8 +1,13 @@
 "use client"
 import { useState, useEffect } from "react";
-import { getUserTasksByDate } from "@/service/taskService";
+import { getUserTaskByTaskSet, getUserTasksByTaskSets } from "@/service/taskService";
 import { getUsers } from "@/service/userService";
 import SummaryCard from "@/components/component/SummaryCard"
+import { format } from "date-fns";
+import { toZonedTime } from 'date-fns-tz';
+import { es } from 'date-fns/locale';
+import { CalendarDaysIcon } from "@/components/icons";
+
 
 export default function AssignTasks() {
     const [employees, setEmployees] = useState([]);
@@ -11,10 +16,8 @@ export default function AssignTasks() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const date = new Date();
-                const formattedDate = date.toLocaleDateString('en-CA');
-                const userTasks = await getUserTasksByDate(formattedDate);
-                setUserTasks(userTasks);
+                const userTasks = await getUserTasksByTaskSets();
+                setUserTasks(userTasks.filter(userTask => userTask.isActive));
 
                 const employees = await getUsers();
                 setEmployees(employees.filter((employee) => employee.role !== "admin"));
@@ -29,8 +32,12 @@ export default function AssignTasks() {
         <div className="min-h-screen">
             <div className="flex flex-col">
                 <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
-                    <div className="flex-1">
+                    <div className="">
                         <h1 className="font-semibold text-lg">Asginación de tareas</h1>
+                    </div>
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <CalendarDaysIcon className="h-4 w-4" />
+                        <span>{format(toZonedTime(new Date(), 'America/Argentina/Ushuaia'), 'dd/MM')}</span>
                     </div>
                 </header>
                 <main className="flex gap-4 p-4 md:gap-8 md:p-6">
@@ -43,7 +50,9 @@ export default function AssignTasks() {
                             return (
                                 <SummaryCard
                                     key={employee.id}
-                                    title={`${employee.firstName} ${employee.lastName}`}
+                                    name={`${employee.firstName} ${employee.lastName}`}
+                                    shift={tasksForEmployee[0]?.TaskSet.shift}
+                                    isClosed={tasksForEmployee[0]?.TaskSet.isClosed}
                                     completedTasks={completedTasks}
                                     totalTasks={totalTasks}
                                     linkUrl={`/admin/tasks/assign/${employee.id}`}

@@ -2,13 +2,13 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { CheckIcon, XIcon, TrashIcon } from "@/components/icons/index";
 import { Button } from "@/components/ui/button";
 
-const AssignTaskTable = ({ tasks, handleDeleteUserTask }) => (
+const AssignTaskTable = ({ tasks, handleDeleteUserTask, isArchived }) => (
     <Table>
         <TableHeader>
             <TableRow>
                 <TableHead className="w-4/6">Descripción</TableHead>
                 <TableHead className="w-1/6">Completado</TableHead>
-                <TableHead className="w-1/6">Acciones</TableHead>
+                {!isArchived && <TableHead className="w-1/6">Acciones</TableHead>}
             </TableRow>
         </TableHeader>
         <TableBody>
@@ -19,7 +19,7 @@ const AssignTaskTable = ({ tasks, handleDeleteUserTask }) => (
             ) : (
                 tasks.map((task) => (
                     <TableRow key={task.id}>
-                        <TableCell>{task.Task.description}</TableCell>
+                        <TableCell className={`${!task.isActive ? "text-gray-400" : ""}`}>{task.Task.description}</TableCell>
                         <TableCell>
                             {task.isCompleted ? (
                                 <div className="flex items-center gap-2">
@@ -29,20 +29,23 @@ const AssignTaskTable = ({ tasks, handleDeleteUserTask }) => (
                             ) : (
                                 <div className="flex items-center gap-2">
                                     <XIcon className="h-4 w-4 text-red-500" />
-                                    <span>No</span>
+                                    {task.isActive ? <span>No</span> : <span className="text-gray-400">Deshabiltado</span>}
                                 </div>
                             )}
                         </TableCell>
-                        <TableCell>
-                            <Button
-                                variant="outline"
-                                size="icon"
-                                onClick={() => handleDeleteUserTask(task.id)}
-                            >
-                                <TrashIcon className="h-4 w-4" />
-                                <span className="sr-only">Eliminar</span>
-                            </Button>
-                        </TableCell>
+                        {!isArchived && (
+                            <TableCell>
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    onClick={() => handleDeleteUserTask(task.id)}
+                                    disabled={task.isCompleted || !task.isActive}
+                                >
+                                    <TrashIcon className="h-4 w-4" />
+                                    <span className="sr-only">Eliminar</span>
+                                </Button>
+                            </TableCell>
+                        )}
                     </TableRow>
                 )))}
         </TableBody>

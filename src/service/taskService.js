@@ -1,8 +1,9 @@
 import axios from "../config/axios";
 
-export const getUserTasks = async (date, userId) => {
+// NO VA
+export const getUserTasks = async (date, userId) => { // TODO: Eliminar cuando no se use mas
 	try {
-		const response = await axios.get(`/checklist/date?date=${date}${userId ? `&userId=${userId}` : ''}`);
+		const response = await axios.get(`/checklist/date?${userId ? `&userId=${userId}` : ''}`);
 		return response.data;
 	} catch (error) {
 		console.error('Failed to get tasks:', error);
@@ -10,6 +11,30 @@ export const getUserTasks = async (date, userId) => {
 	}
 };
 
+// REVISADO - OBTIENE LAS TAREAS DEL USUARIO LOGUEADO O DE UN USUARIO ESPECIFICO
+export const getUserTaskByTaskSet = async (userId) => {
+	try {
+		const response = await axios.get(`/checklist/user/task-set?${userId ? `&userId=${userId}` : ''}`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get tasks:', error);
+		throw new Error('Failed to get tasks');
+	}
+};
+
+// Obtener las usertasks con un userId, date and shift
+export const getUserTasksByDateAndShift = async (userId, date, shift) => {
+	try {
+		const response = await axios.get(`/checklist/date/shift?userId=${userId}&date=${date}&shift=${shift}`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get tasks:', error);
+		throw new Error('Failed to get tasks');
+	}
+}
+
+
+// REVISADO
 export const completeTask = async (taskId) => {
 	try {
 		const response = await axios.put(`/checklist/${taskId}/completed`);
@@ -20,7 +45,8 @@ export const completeTask = async (taskId) => {
 	}
 };
 
-export const getUserTasksByDate = async (date) => {
+// NO VA
+export const getUserTasksByDate = async (date) => { // TODO: Eliminar cuando no se use mas
 	try {
 		const response = await axios.get(`/checklist/date/all?date=${date}`);
 		return response.data;
@@ -30,6 +56,18 @@ export const getUserTasksByDate = async (date) => {
 	}
 }
 
+// REVISADO - OBTIENE TODAS LAS TAREAS DE TODOS LOS USUARIOS POR TASK SETS (TURNO) 
+export const getUserTasksByTaskSets = async () => {
+	try {
+		const response = await axios.get(`/checklist/task-set`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get tasks:', error);
+		throw new Error('Failed to get tasks');
+	}
+}
+
+// REVISADO - OBTIENE LAS TAREAS DE UN USUARIO POR RANGO DE FECHAS
 export const getUserTasksByRange = async (userId, startDate, endDate) => {
 	try {
 		const response = await axios.get(`/checklist/date/range?startDate=${startDate}&endDate=${endDate}&userId=${userId}`);
@@ -70,13 +108,12 @@ export const getAllTasks = async () => {
 	}
 }
 
-// TODO: Ver como cargar el turno
+// REVISADO
 export const assignTask = async (taskIds, userId) => {
 	try {
 		const response = await axios.post('/checklist', {
 			taskIds,
 			userId,
-			shift: 'Mañana'
 		});
 		return response.data;
 	} catch (error) {

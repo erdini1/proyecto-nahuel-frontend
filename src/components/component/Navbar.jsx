@@ -1,6 +1,5 @@
 import Link from "next/link"
-import { HomeIcon } from "@radix-ui/react-icons"
-import { PowerIcon } from "@/components/icons"
+import { PowerIcon, TintinIcon } from "@/components/icons"
 
 // TODO: Modificar la ruta de inicio para los empleados
 export default function Navbar() {
@@ -9,7 +8,8 @@ export default function Navbar() {
 			<div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8 flex items-center justify-between">
 				<div>
 					<Link href="/cashier" className="flex items-center gap-2 text-gray-700 hover:text-gray-900 " prefetch={false}>
-						<HomeIcon className="h-5 w-5 text-white" />
+						{/* TODO: Ver bien el tema del icono */}
+						<TintinIcon className="h-8 w-8 text-white" />
 						<span className="text-xl font-bold text-white">INICIO</span>
 					</Link>
 				</div>

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import AssignTaskDialog from "@/components/component/assign/AssignTaskDialog";
 import AssignTaskTable from "@/components/component/assign/AssignTaskTable";
-import { getUserTasks, getAllTasks, assignTask, deleteUserTask } from "@/service/taskService";
+import { getAllTasks, assignTask, deleteUserTask, getUserTaskByTaskSet } from "@/service/taskService";
 import { Button } from "@/components/ui/button";
 import ProgressChecklist from "@/components/component/progressChecklist";
 import { PlusIcon, ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
@@ -14,7 +14,6 @@ import Spinner from "@/components/component/Spinner";
 export default function Page({ params }) {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [employee, setEmployee] = useState(params.userId);
-	const [date, setDate] = useState(new Date());
 	const [tasks, setTasks] = useState([]);
 	const [userTasks, setUserTasks] = useState([]);
 	const [filteredTasks, setFilteredTasks] = useState([]);
@@ -28,15 +27,13 @@ export default function Page({ params }) {
 				const employee = await getUser(params.userId);
 				setEmployee(employee);
 
-				setDate(date.toLocaleDateString('en-CA'))
-				const userTasks = await getUserTasks(date, employee.id);
+				const userTasks = await getUserTaskByTaskSet(employee.id);
 				setUserTasks(userTasks);
 
 				const tasks = await getAllTasks();
 				setTasks(tasks)
 
 			} catch (error) {
-				console.log('Failed to fetch all tasks:', error);
 				toast({
 					variant: "destructive",
 					title: "Error",
@@ -70,10 +67,9 @@ export default function Page({ params }) {
 	const handleDeleteUserTask = async (userTaskId) => {
 		try {
 			await deleteUserTask(userTaskId);
-			const userTasks = await getUserTasks(date, employee.id);
+			const userTasks = await getUserTaskByTaskSet(employee.id);
 			setUserTasks(userTasks);
 		} catch (error) {
-			console.log('Failed to delete task:', error);
 			toast({
 				variant: "destructive",
 				title: "Error",
@@ -89,7 +85,7 @@ export default function Page({ params }) {
 				title: "Tareas Asignadas",
 				description: "Tareas asignadas correctamente",
 			})
-			const userTasks = await getUserTasks(date, employee.id);
+			const userTasks = await getUserTaskByTaskSet(employee.id);
 			setUserTasks(userTasks);
 		} catch (error) {
 			console.log('Failed to assign tasks:', error);
@@ -159,7 +155,7 @@ export default function Page({ params }) {
 						<div className="w-1/4">
 							<ProgressChecklist
 								tasksCompleted={userTasks.filter(task => task.isCompleted).length}
-								totalTasks={userTasks.length}
+								totalTasks={userTasks.filter(task => task.isActive).length}
 							/>
 						</div>
 					</main>

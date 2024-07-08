@@ -16,13 +16,13 @@ const TaskTableComplete = ({ tasks, handleCompleteUserTask }) => {
 			<TableBody>
 				{tasks.length === 0 ? (
 					<TableRow>
-						<TableCell colSpan="2" className="text-center">No posee tareas asignadas</TableCell>
+						<TableCell colSpan="2" className="text-center">No hay tareas para mostrar</TableCell>
 					</TableRow>
 				) : (
 					tasks.map((userTask) => (
 						<TableRow key={userTask.id}>
-							<TableCell>{userTask.Task.description}</TableCell>
-							<TableCell>
+							<TableCell colSpan={1}>{userTask.Task.description}</TableCell>
+							<TableCell colSpan={1}>
 								<Button
 									onClick={() => handleCompleteUserTask(userTask.Task.id)}
 									className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-300 ${userTask.isCompleted
@@ -46,7 +46,7 @@ const TaskTableComplete = ({ tasks, handleCompleteUserTask }) => {
 						</TableRow>
 					)))}
 			</TableBody>
-		</Table>
+		</Table >
 	);
 };
 
