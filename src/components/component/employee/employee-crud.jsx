@@ -18,7 +18,8 @@ export default function EmployeeCrud() {
         lastName: "",
         number: "",
         role: "",
-        password: ""
+        sector: "",
+        password: "",
     });
     const [isEditing, setIsEditing] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -48,7 +49,7 @@ export default function EmployeeCrud() {
     }, [employees, searchQuery]);
 
     const handleCreateEmployee = () => {
-        setNewEmployee({ firstName: "", lastName: "", number: "", role: "", password: "" });
+        setNewEmployee({ firstName: "", lastName: "", number: "", role: "", sector: "", password: "" });
         setIsEditing(false);
         setShowCreateModal(true);
     };

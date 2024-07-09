@@ -10,7 +10,6 @@ import axios from "@/config/axios.js";
 import { decode } from '@/helpers/token.helper';
 import { useToast } from "@/components/ui/use-toast"
 
-// TODO: Modificar un poco la estetica
 export default function SignIn() {
 	const [number, setNumber] = useState('');
 	const [password, setPassword] = useState('');

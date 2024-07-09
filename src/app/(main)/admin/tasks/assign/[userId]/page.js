@@ -10,12 +10,14 @@ import { PlusIcon, ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "
 import { useToast } from "@/components/ui/use-toast"
 import { getUser } from "@/service/userService";
 import Spinner from "@/components/component/Spinner";
+import { getAllSectors } from "@/service/sectorService";
 
 export default function Page({ params }) {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [employee, setEmployee] = useState(params.userId);
 	const [tasks, setTasks] = useState([]);
 	const [userTasks, setUserTasks] = useState([]);
+	const [sectors, setSectors] = useState([]);
 	const [filteredTasks, setFilteredTasks] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -32,6 +34,9 @@ export default function Page({ params }) {
 
 				const tasks = await getAllTasks();
 				setTasks(tasks)
+
+				const sectors = await getAllSectors()
+				setSectors(sectors)
 
 			} catch (error) {
 				toast({
@@ -164,6 +169,7 @@ export default function Page({ params }) {
 					isOpen={isDialogOpen}
 					onClose={handleCloseDialog}
 					tasks={filteredTasks}
+					sectors={sectors}
 					onAssignTasks={handleAssignTasks}
 				/>
 			</div>

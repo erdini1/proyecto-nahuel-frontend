@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
-export default function TaskCrudDialog({ isEditing, newTask, setNewTask, handleSaveTask, setShowCreateDialog, filteredTasks }) {
+export default function TaskCrudDialog({ isEditing, newTask, setNewTask, sectors, handleSaveTask, setShowCreateDialog, filteredTasks }) {
 	const [isTyping, setIsTyping] = useState(false);
 	const isDuplicate = filteredTasks.some(task => task.description.toLowerCase() === newTask.description.toLowerCase());
 
@@ -54,10 +54,11 @@ export default function TaskCrudDialog({ isEditing, newTask, setNewTask, handleS
 								<SelectValue placeholder="Selecciona un sector" />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="general">General</SelectItem>
-								<SelectItem value="caja">Caja</SelectItem>
-								<SelectItem value="polleria">Polleria</SelectItem>
-								<SelectItem value="repositor">Repositor</SelectItem>
+								{sectors.map(sector => (
+									<SelectItem key={sector.id} value={sector.id}>
+										{sector.name}
+									</SelectItem>
+								))}
 							</SelectContent>
 						</Select>
 					</div>
@@ -66,7 +67,7 @@ export default function TaskCrudDialog({ isEditing, newTask, setNewTask, handleS
 					<Button
 						type="submit"
 						onClick={handleSaveTask}
-						disabled={!newTask.description || !newTask.sector || isDuplicate}
+						disabled={isEditing ? !newTask.description : !newTask.description || !newTask.sector || isDuplicate}
 						className="w-1/4"
 					>
 						{isEditing ? 'Actualizar' : 'Crear'}

@@ -1,16 +1,5 @@
 import axios from "../config/axios";
 
-// NO VA
-export const getUserTasks = async (date, userId) => { // TODO: Eliminar cuando no se use mas
-	try {
-		const response = await axios.get(`/checklist/date?${userId ? `&userId=${userId}` : ''}`);
-		return response.data;
-	} catch (error) {
-		console.error('Failed to get tasks:', error);
-		throw new Error('Failed to get tasks');
-	}
-};
-
 // REVISADO - OBTIENE LAS TAREAS DEL USUARIO LOGUEADO O DE UN USUARIO ESPECIFICO
 export const getUserTaskByTaskSet = async (userId) => {
 	try {
@@ -44,17 +33,6 @@ export const completeTask = async (taskId) => {
 		throw new Error('Failed to get tasks');
 	}
 };
-
-// NO VA
-export const getUserTasksByDate = async (date) => { // TODO: Eliminar cuando no se use mas
-	try {
-		const response = await axios.get(`/checklist/date/all?date=${date}`);
-		return response.data;
-	} catch (error) {
-		console.error('Failed to get tasks:', error);
-		throw new Error('Failed to get tasks');
-	}
-}
 
 // REVISADO - OBTIENE TODAS LAS TAREAS DE TODOS LOS USUARIOS POR TASK SETS (TURNO) 
 export const getUserTasksByTaskSets = async () => {

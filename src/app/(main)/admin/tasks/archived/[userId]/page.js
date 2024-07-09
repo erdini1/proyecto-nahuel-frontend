@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import AssignTaskTable from "@/components/component/assign/AssignTaskTable";
-import { getUserTasks, deleteUserTask, getUserTasksByDateAndShift } from "@/service/taskService";
+import { deleteUserTask, getUserTasksByDateAndShift } from "@/service/taskService";
 import { Button } from "@/components/ui/button";
 import ProgressChecklist from "@/components/component/progressChecklist";
 import { ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
@@ -34,6 +34,7 @@ export default function Page({ params }) {
 
 				setDate(dateSearch)
 				setShift(shiftSearch)
+
 				const userTasks = await getUserTasksByDateAndShift(employee.id, dateSearch, shiftSearch);
 				setUserTasks(userTasks);
 
@@ -54,7 +55,7 @@ export default function Page({ params }) {
 	const handleDeleteUserTask = async (userTaskId) => {
 		try {
 			await deleteUserTask(userTaskId);
-			const userTasks = await getUserTasks(date, employee.id);
+			const userTasks = await getUserTasksByDateAndShift(employee.id, date, shift);
 			setUserTasks(userTasks);
 		} catch (error) {
 			console.log('Failed to delete task:', error);
