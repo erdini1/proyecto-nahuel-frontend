@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/use-toast"
 
 export default function EmployeeCrud() {
     const [employees, setEmployees] = useState([]);
+    const [sectors, setSectors] = useState([]);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [newEmployee, setNewEmployee] = useState({
         id: null,
@@ -33,7 +34,11 @@ export default function EmployeeCrud() {
                 const employees = await getUsers();
                 setEmployees(employees.filter((employee) => employee.role !== "admin"));
             } catch (error) {
-                console.log('Failed to fetch employees:', error);
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: "Ocurrió un error al mostrar los empleados",
+                })
             } finally {
                 setIsLoading(false);
             }

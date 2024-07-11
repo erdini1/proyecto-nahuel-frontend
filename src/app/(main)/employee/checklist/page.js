@@ -44,7 +44,7 @@ export default function ChecklistPage() {
 				setIsModalOpen(!isShiftSet);
 			} catch (error) {
 				toast({
-					variant: "error",
+					variant: "destructive",
 					title: "Error",
 					description: "Ocurrió un error al cargar las tareas",
 				});
@@ -63,7 +63,7 @@ export default function ChecklistPage() {
 			));
 		} catch (error) {
 			toast({
-				variant: "error",
+				variant: "destructive",
 				title: "Error",
 				description: "Ocurrió un error al completar la tarea",
 			});
@@ -82,13 +82,12 @@ export default function ChecklistPage() {
 			taskSet.shift === "" ? await updateTaskSet({ shift: selectedShift }) : await setShift({ shift: selectedShift });
 			setTaskSet({ ...taskSet, shift: selectedShift });
 			toast({
-				variant: "error",
-				title: "Error",
+				title: "Turno seleccionado",
 				description: "Turno seleccionado correctamente",
 			});
 		} catch (error) {
 			toast({
-				variant: "error",
+				variant: "destructive",
 				title: "Error",
 				description: "Ocurrió un error al seleccionar el turno",
 			});
@@ -100,9 +99,17 @@ export default function ChecklistPage() {
 			await updateTaskSet({ isClosed: true });
 			setTaskSet({ ...taskSet, isClosed: true });
 			setIsShiftSelected(false);
+			toast({
+				title: "Checklist cerrado",
+				description: "Checklist cerrado correctamente",
+			});
 
 		} catch (error) {
-			console.error('Failed to close checklist:', error);
+			toast({
+				variant: "error",
+				title: "Error",
+				description: "Ocurrió un error al cerrar el checklist",
+			});
 		}
 	}
 

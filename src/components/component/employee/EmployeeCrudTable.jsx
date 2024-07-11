@@ -23,7 +23,8 @@ export default function EmployeeCrudTable({ employees, handleUpdateEmployee, han
 					<TableRow>
 						<TableHead className="w-1/4">Nombre y Apellido</TableHead>
 						<TableHead className="w-1/4">Numero de ingreso</TableHead>
-						<TableHead className="w-1/4">Rol</TableHead>
+						{/* <TableHead className="w-1/5">Rol</TableHead> */}
+						<TableHead className="w-1/4">Sector</TableHead>
 						<TableHead className="w-1/4">Acciones</TableHead>
 					</TableRow>
 				</TableHeader>
@@ -37,7 +38,12 @@ export default function EmployeeCrudTable({ employees, handleUpdateEmployee, han
 							<TableRow key={employee.id}>
 								<TableCell className="w-1/4">{employee.firstName} {employee.lastName}</TableCell>
 								<TableCell className="w-1/4">{employee.number}</TableCell>
-								<TableCell className="w-1/4">{translateRole(employee.role)}</TableCell>
+								{/* <TableCell className="w-1/5">{translateRole(employee.role)}</TableCell> */}
+								<TableCell className="w-1/4">
+									{employee.Sectors?.map((sector) => (
+										<p key={sector.id}>{sector.name}</p>
+									))}
+								</TableCell>
 								<TableCell className="w-1/4">
 									<div className="flex items-center gap-2">
 										<Button

@@ -103,10 +103,16 @@ export default function Page({ params }) {
 										<CalendarDaysIcon className="h-4 w-4" />
 										{format(toZonedTime(date, 'America/Argentina/Ushuaia'), 'dd/MM/yyyy')}
 									</div>
-									<div className="text-gray-500 flex items-center gap-2">
+									{shift && (
+										<div className="text-gray-500 flex items-center gap-2">
+											<ClockIcon className="h-4 w-4" />
+											{shift}
+										</div>
+									)}
+									{/* <div className="text-gray-500 flex items-center gap-2">
 										<ClockIcon className="h-4 w-4" />
 										{shift}
-									</div>
+									</div> */}
 								</div>
 							</div>
 							<AssignTaskTable
