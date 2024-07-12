@@ -19,7 +19,8 @@ export default function TaskCrud() {
     const [newTask, setNewTask] = useState({
         id: null,
         description: "",
-        sector: ""
+        sector: "",
+        type: "general"
     });
     const [isEditing, setIsEditing] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -59,9 +60,14 @@ export default function TaskCrud() {
     }, [tasks, searchQuery, sectorFilter]);
 
     const handleCreateTask = () => {
-        setNewTask({ description: "", sector: "" });
+        setNewTask({ description: "", sector: "", type: "general" });
         setIsEditing(false);
         setShowCreateDialog(true);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewTask({ ...newTask, [name]: value });
     };
 
     const handleSaveTask = async () => {
@@ -171,6 +177,7 @@ export default function TaskCrud() {
                     setNewTask={setNewTask}
                     sectors={sectors}
                     handleSaveTask={handleSaveTask}
+                    handleInputChange={handleInputChange}
                     setShowCreateDialog={setShowCreateDialog}
                     filteredTasks={tasks.filter((task) => task.description.toLowerCase().includes(newTask.description.toLowerCase())).slice(0, 3)}
                 />

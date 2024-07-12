@@ -4,8 +4,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export default function TaskCrudDialog({ isEditing, newTask, setNewTask, sectors, handleSaveTask, setShowCreateDialog, filteredTasks }) {
+export default function TaskCrudDialog({ isEditing, newTask, setNewTask, sectors, handleSaveTask, handleInputChange, setShowCreateDialog, filteredTasks }) {
 	const [isTyping, setIsTyping] = useState(false);
 	const isDuplicate = filteredTasks.some(task => task.description.toLowerCase() === newTask.description.toLowerCase());
 
@@ -61,6 +62,15 @@ export default function TaskCrudDialog({ isEditing, newTask, setNewTask, sectors
 								))}
 							</SelectContent>
 						</Select>
+					</div>
+					<div className="grid gap-2">
+						<label className="text-sm font-medium">Tipo</label>
+						<Tabs defaultValue={newTask.type} onValueChange={(value) => handleInputChange({ target: { name: 'type', value } })}>
+							<TabsList className="border w-full h-14 p-1 shadow">
+								<TabsTrigger value="general" className="w-1/2 h-full">General</TabsTrigger>
+								<TabsTrigger value="elaboration" className="w-1/2 h-full">Elaboración</TabsTrigger>
+							</TabsList>
+						</Tabs>
 					</div>
 				</div>
 				<DialogFooter>

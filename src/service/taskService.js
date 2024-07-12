@@ -24,9 +24,9 @@ export const getUserTasksByDateAndShift = async (userId, date, shift) => {
 
 
 // REVISADO
-export const completeTask = async (taskId) => {
+export const completeTask = async (taskId, kilos) => {
 	try {
-		const response = await axios.put(`/checklist/${taskId}/completed`);
+		const response = await axios.put(`/checklist/${taskId}/completed`, { kilos });
 		return response.data;
 	} catch (error) {
 		console.error('Failed to complete task:', error);

@@ -146,10 +146,12 @@ export default function Page({ params }) {
 										<CalendarDaysIcon className="h-4 w-4" />
 										{new Date().toLocaleDateString()}
 									</div>
-									<div className="text-gray-500 flex items-center gap-2">
-										<ClockIcon className="h-4 w-4" />
-										{userTasks[0]?.shift}
-									</div>
+									{userTasks[0]?.TaskSet?.shift && (
+										<div className="text-gray-500 flex items-center gap-2">
+											<ClockIcon className="h-4 w-4" />
+											{userTasks[0].TaskSet.shift}
+										</div>
+									)}
 								</div>
 							</div>
 							<AssignTaskTable

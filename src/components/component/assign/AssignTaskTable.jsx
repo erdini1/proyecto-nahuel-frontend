@@ -1,6 +1,7 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { CheckIcon, XIcon, TrashIcon } from "@/components/icons/index";
 import { Button } from "@/components/ui/button";
+import { WeightIcon } from "@/components/icons/index"
 
 const AssignTaskTable = ({ tasks, handleDeleteUserTask, isArchived }) => (
     <Table>
@@ -19,7 +20,17 @@ const AssignTaskTable = ({ tasks, handleDeleteUserTask, isArchived }) => (
             ) : (
                 tasks.map((task) => (
                     <TableRow key={task.id}>
-                        <TableCell className={`${!task.isActive ? "text-gray-400" : ""}`}>{task.Task.description}</TableCell>
+                        <TableCell className={`${!task.isActive ? "text-gray-400" : ""}`}>
+                            {task.Task.description}
+                            {task.Task.type === "elaboration" && (
+                                task.kilos && (
+                                    <div className="flex items-center gap-1 text-sm text-muted-foreground text-gray-500 mt-1">
+                                        <WeightIcon className="h-4 w-4" />
+                                        {task.kilos} kg
+                                    </div>
+                                )
+                            )}
+                        </TableCell>
                         <TableCell>
                             {task.isCompleted ? (
                                 <div className="flex items-center gap-2">

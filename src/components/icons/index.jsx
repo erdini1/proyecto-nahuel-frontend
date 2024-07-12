@@ -25,3 +25,4 @@ export { default as PercentIcon } from './PercentIcon';
 export { default as TintinIcon } from './TintinIcon';
 export { default as LockOpenIcon } from './LockOpenIcon';
 export { default as LockClosedIcon } from './LockClosedIcon';
+export { default as WeightIcon } from './WeightIcon';

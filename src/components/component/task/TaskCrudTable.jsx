@@ -12,6 +12,7 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { FilePenIcon, TrashIcon } from "@/components/icons/index";
+import { translateTypeTask } from "@/helpers/task.helper";
 
 export default function TaskCrudTable({ tasks, handleUpdateTask, handleDeleteTask }) {
 	return (
@@ -19,21 +20,23 @@ export default function TaskCrudTable({ tasks, handleUpdateTask, handleDeleteTas
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead className="w-[700px]">Descripción</TableHead>
-						<TableHead className="w-[250px]">Sector</TableHead>
-						<TableHead className="w-[200px]">Acciones</TableHead>
+						<TableHead className="w-9/12">Descripción</TableHead>
+						<TableHead className="w-1/12">Sector</TableHead>
+						<TableHead className="w-1/12">Tipo</TableHead>
+						<TableHead className="w-1/12">Acciones</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
 					{tasks.length === 0 ? (
 						<TableRow>
-							<TableCell colSpan="3" className="text-center">No hay tareas registradas</TableCell>
+							<TableCell colSpan="4" className="text-center">No hay tareas registradas</TableCell>
 						</TableRow>
 					) : (
 						tasks.map((task) => (
 							<TableRow key={task.id}>
 								<TableCell>{task.description}</TableCell>
 								<TableCell>{task.Sector.name}</TableCell>
+								<TableCell>{translateTypeTask(task.type)}</TableCell>
 								<TableCell>
 									<div className="flex items-center gap-2">
 										<Button

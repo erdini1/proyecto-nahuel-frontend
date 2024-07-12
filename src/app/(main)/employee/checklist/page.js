@@ -55,11 +55,11 @@ export default function ChecklistPage() {
 		fetchUserTasks();
 	}, []);
 
-	const handleCompleteUserTask = async (taskId) => {
+	const handleCompleteUserTask = async (taskId, kilos) => {
 		try {
-			await completeTask(taskId);
+			await completeTask(taskId, kilos);
 			setUserTasks(userTasks.map(userTask =>
-				userTask.Task.id === taskId ? { ...userTask, isCompleted: !userTask.isCompleted } : userTask
+				userTask.Task.id === taskId ? { ...userTask, isCompleted: !userTask.isCompleted, kilos } : userTask
 			));
 		} catch (error) {
 			toast({
@@ -165,7 +165,7 @@ export default function ChecklistPage() {
 				</div>
 			</header>
 			<main className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
-				<div className="border shadow-sm rounded-lg w-[1000px] mx-auto">
+				<div className="border shadow-sm rounded-lg w-3/4 mx-auto">
 					{isLoading ? (
 						<div className="flex justify-center items-center h-64">
 							<Spinner />
