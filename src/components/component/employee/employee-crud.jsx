@@ -11,15 +11,13 @@ import { useToast } from "@/components/ui/use-toast"
 
 export default function EmployeeCrud() {
     const [employees, setEmployees] = useState([]);
-    const [sectors, setSectors] = useState([]);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [newEmployee, setNewEmployee] = useState({
         id: null,
         firstName: "",
         lastName: "",
         number: "",
-        role: "",
-        sector: "",
+        Sectors: [],
         password: "",
     });
     const [isEditing, setIsEditing] = useState(false);
@@ -54,31 +52,35 @@ export default function EmployeeCrud() {
     }, [employees, searchQuery]);
 
     const handleCreateEmployee = () => {
-        setNewEmployee({ firstName: "", lastName: "", number: "", role: "", sector: "", password: "" });
+        setNewEmployee({ firstName: "", lastName: "", number: "", Sectors: [], password: "" });
         setIsEditing(false);
         setShowCreateModal(true);
     };
 
-    const handleSaveEmployee = async () => {
+    const handleSaveEmployee = async (employee) => {
         try {
             if (isEditing) {
-                await updateUser(newEmployee.id, newEmployee);
+                await updateUser(employee.id, employee);
                 toast({
                     title: "Empleado actualizado",
                     description: "El empleado ha sido actualizado correctamente",
-                })
+                });
             } else {
-                await createUser(newEmployee);
+                await createUser(employee);
                 toast({
                     title: "Empleado creado",
                     description: "El empleado ha sido creado correctamente",
-                })
+                });
             }
             const updatedEmployees = await getUsers();
-            setEmployees(updatedEmployees.filter((employee) => employee.role !== "admin"))
+            setEmployees(updatedEmployees.filter((employee) => employee.role !== "admin"));
             setShowCreateModal(false);
         } catch (error) {
-            console.log('Failed to save employee:', error);
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Ocurrió un error al guardar el empleado",
+            });
         }
     };
 
@@ -91,7 +93,11 @@ export default function EmployeeCrud() {
                 description: "El empleado ha sido eliminado correctamente",
             })
         } catch (error) {
-            console.log('Failed to delete employee:', error);
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Ocurrió un error al eliminar el empleado",
+            });
         }
     };
 

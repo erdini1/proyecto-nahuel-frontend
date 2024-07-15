@@ -1,22 +1,20 @@
-import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import React, { useState, useEffect } from "react";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogDescription,
+	DialogFooter
+} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { EyeOpenIcon, EyeClosedIcon, Pencil1Icon } from "@radix-ui/react-icons";
-import { getAllSectors } from "@/service/sectorService";
+import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
+import { Pencil1Icon } from "@radix-ui/react-icons";
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 import MultiSelect from "@/components/component/MultiSelect";
+import { getAllSectors } from "@/service/sectorService";
 
 export default function EmployeeCrudModal({
 	isEditing,
@@ -42,16 +40,21 @@ export default function EmployeeCrudModal({
 		const fetchSectors = async () => {
 			try {
 				const sectors = await getAllSectors();
-				setSectors(sectors);
-				if (isEditing && newEmployee.sectors) {
-					setSelectedSectors(newEmployee.sectors.map(sector => sector.id));
-				}
+				setSectors(sectors || []);
 			} catch (error) {
 				console.log('Failed to fetch sectors:', error);
+				setSectors([]);
 			}
 		};
 		fetchSectors();
-	}, [isEditing, newEmployee]);
+	}, []);
+
+	useEffect(() => {
+		if (newEmployee.Sectors) {
+			const sectorIds = newEmployee.Sectors.map(sector => sector.id);
+			setSelectedSectors(sectorIds);
+		}
+	}, [newEmployee]);
 
 	const togglePasswordVisibility = () => {
 		setShowPassword(!showPassword);
@@ -74,19 +77,20 @@ export default function EmployeeCrudModal({
 	const handleSave = async () => {
 		await validateEmployeeNumber();
 		if (!isNumberDuplicate) {
-			handleSaveEmployee();
+			const updatedEmployee = { ...newEmployee, Sectors: sectors.filter(sector => selectedSectors.includes(sector.id)) };
+			handleSaveEmployee(updatedEmployee);
 		}
 	};
 
-	const handleSectorSelect = (selected) => {
-		setSelectedSectors(selected);
-		const selectedSectorObjects = selected.map(sectorId => sectors.find(sector => sector.id === sectorId));
-		setNewEmployee({ ...newEmployee, sectors: selectedSectorObjects });
-	}
+	const handleSectorChange = (updatedSelectedSectors) => {
+		setSelectedSectors(updatedSelectedSectors);
+		const updatedSectors = sectors.filter(sector => updatedSelectedSectors.includes(sector.id));
+		setNewEmployee({ ...newEmployee, Sectors: updatedSectors });
+	};
 
 	return (
 		<Dialog open={true} onOpenChange={setShowCreateModal}>
-			<DialogContent className="sm:max-w-[550px] p-6 gap-6">
+			<DialogContent className="sm:max-w-[600px] p-6 gap-6">
 				<DialogHeader>
 					<DialogTitle>{isEditing ? "Modificar Empleado" : "Crear Empleado"}</DialogTitle>
 					<DialogDescription>
@@ -126,7 +130,7 @@ export default function EmployeeCrudModal({
 					</div>
 					<div>
 						<div className="flex gap-1">
-							<div className="grid gap-3 w-2/3">
+							<div className="grid gap-3 w-1/2">
 								<Label htmlFor="number">Número de empleado</Label>
 								<Input
 									id="number"
@@ -140,29 +144,25 @@ export default function EmployeeCrudModal({
 									className={`h-12 ${!isEditing ? "shadow" : ""} ${isNumberDuplicate ? "border-red-500" : ""}`}
 									disabled={isEditing}
 								/>
+								{isNumberDuplicate && (
+									<p className="text-red-500 text-sm">El número de empleado ya existe.</p>
+								)}
 							</div>
-							<div className="grid gap-3 w-1/3">
+							<div className="grid gap-3 w-1/2">
 								<Label htmlFor="sector">Sector</Label>
 								<MultiSelect
 									options={sectors}
 									selected={selectedSectors}
-									sectorsSelected={newEmployee.Sectors.map(sector => sector.id) || []}
-									onChange={handleSectorSelect}
+									onChange={handleSectorChange}
 									displayValue="name"
-									className="w-full h-12 shadow"
 								/>
 							</div>
 						</div>
-						{isNumberDuplicate && (
-							<p className="text-red-500 text-sm">
-								El número de empleado ya está en uso.
-							</p>
-						)}
 					</div>
 					<div className="flex gap-1 items-center">
 						<div className="grid gap-3 w-full">
 							<Label htmlFor="password">Contraseña</Label>
-							<div className="flex gap-3">
+							<div className="flex gap-1">
 								<div className={`relative ${isEditing ? "w-4/5" : "w-full"}`}>
 									<Input
 										id="password"
@@ -214,10 +214,30 @@ export default function EmployeeCrudModal({
 								)}
 							</div>
 						</div>
+						{!isEditing && (
+							<div className="grid gap-3 w-1/2">
+								<Label htmlFor="repeatPassword">Repetir Contraseña</Label>
+								<Input
+									id="repeatPassword"
+									type={showPassword ? "text" : "password"}
+									placeholder="Repita la contraseña"
+									value={newEmployee.password}
+									onChange={(e) =>
+										setNewEmployee({
+											...newEmployee,
+											password: e.target.value,
+										})
+									}
+									className="h-12 shadow"
+								/>
+							</div>
+						)}
 					</div>
 				</div>
 				<DialogFooter>
 					<Button
+						type="submit"
+						className="shadow"
 						onClick={handleSave}
 						disabled={
 							!newEmployee.firstName ||
@@ -228,7 +248,7 @@ export default function EmployeeCrudModal({
 							isNumberDuplicate
 						}
 					>
-						{isEditing ? "Guardar cambios" : "Crear Empleado"}
+						{isEditing ? "Guardar Cambios" : "Crear Empleado"}
 					</Button>
 				</DialogFooter>
 			</DialogContent>
