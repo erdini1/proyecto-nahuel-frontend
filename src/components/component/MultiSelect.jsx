@@ -36,17 +36,17 @@ export default function MultiSelect({ options, selected, onChange, displayValue 
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<Button variant="outline" className="h-12 shadow text-gray-500 justify-between">
+				<Button variant="outline" className="h-12 shadow text-gray-500 justify-between capitalize">
 					{renderSelectedItems()}
 					<ChevronDownIcon className="w-4 h-4" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-72">
-				<div className="flex flex-wrap gap-2 justify-center">
+				<div className="flex flex-wrap gap-2">
 					{options.map((option) => (
 						<div
 							key={option.id}
-							className={`cursor-pointer px-3 py-1 border rounded ${selected.includes(option.id) ? "bg-black text-white" : "bg-white text-black"
+							className={`cursor-pointer px-3 py-1 border rounded text-sm capitalize ${selected.includes(option.id) ? "bg-black text-white" : "bg-white text-black"
 								}`}
 							onClick={() => handleSelect(option.id)}
 						>

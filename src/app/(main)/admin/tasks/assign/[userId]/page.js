@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { getUser } from "@/service/userService";
 import Spinner from "@/components/component/Spinner";
 import { getAllSectors } from "@/service/sectorService";
+import ObservationChecklist from "@/components/component/ObservationChecklist";
 
 export default function Page({ params }) {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -83,9 +84,9 @@ export default function Page({ params }) {
 		}
 	};
 
-	const handleAssignTasks = async (selectedTasks) => {
+	const handleAssignTasks = async (selectedTasks, periodicity) => {
 		try {
-			await assignTask(selectedTasks, employee.id);
+			await assignTask(selectedTasks, employee.id, periodicity);
 			toast({
 				title: "Tareas Asignadas",
 				description: "Tareas asignadas correctamente",
@@ -138,7 +139,7 @@ export default function Page({ params }) {
 						<div className="border shadow-sm rounded-lg w-3/4">
 							<div className="flex items-center justify-between bg-gray-100/40 px-6 py-4">
 								<div className="flex items-center gap-4">
-									<div className="font-semibold flex items-center gap-2">
+									<div className="font-semibold flex items-center gap-2 capitalize">
 										<UserIcon className="h-4 w-4" />
 										{`${employee.firstName} ${employee.lastName}`}
 									</div>
@@ -159,10 +160,13 @@ export default function Page({ params }) {
 								handleDeleteUserTask={handleDeleteUserTask}
 							/>
 						</div>
-						<div className="w-1/4">
+						<div className="w-1/4 flex flex-col gap-4">
 							<ProgressChecklist
 								tasksCompleted={userTasks.filter(task => task.isCompleted).length}
 								totalTasks={userTasks.filter(task => task.isActive).length}
+							/>
+							<ObservationChecklist
+								observations={userTasks[0]?.TaskSet.observations}
 							/>
 						</div>
 					</main>

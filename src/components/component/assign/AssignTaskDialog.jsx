@@ -44,8 +44,8 @@ export default function AssignTaskDialog({ isOpen, onClose, tasks, sectors, onAs
         }
     };
 
-    const handleAssignTasks = () => {
-        onAssignTasks(selectedTasks);
+    const handleAssignTasks = (periodicity) => {
+        onAssignTasks(selectedTasks, periodicity);
         onClose();
     };
 
@@ -130,8 +130,20 @@ export default function AssignTaskDialog({ isOpen, onClose, tasks, sectors, onAs
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button variant="outline" onClick={onClose}>Cancelar</Button>
-                    <Button onClick={handleAssignTasks} disabled={selectedTasks.length === 0}>Asignar Tareas</Button>
+                    <Button
+                        variant="outline"
+                        className="border shadow"
+                        onClick={() => handleAssignTasks('daily')}
+                        disabled={selectedTasks.length === 0}
+                    >
+                        Asignar por hoy
+                    </Button>
+                    <Button
+                        onClick={() => handleAssignTasks('recurring')}
+                        disabled={selectedTasks.length === 0}
+                    >
+                        Asignar regularmente
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

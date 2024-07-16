@@ -122,7 +122,7 @@ export default function ChecklistPage() {
 				<div className="flex items-center justify-between bg-gray-100/40 px-6 py-4">
 					<div className="flex items-center gap-4">
 						{userName && (
-							<div className="font-semibold flex items-center gap-2">
+							<div className="font-semibold flex items-center gap-2 capitalize">
 								<UserIcon className="h-4 w-4" />
 								{userName}
 							</div>

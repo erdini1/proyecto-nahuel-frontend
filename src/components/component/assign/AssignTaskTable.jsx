@@ -22,11 +22,11 @@ const AssignTaskTable = ({ tasks, handleDeleteUserTask, isArchived }) => (
                     <TableRow key={task.id}>
                         <TableCell className={`${!task.isActive ? "text-gray-400" : ""}`}>
                             {task.Task.description}
+                            <span className="text-gray-400 text-sm">{(task.periodicity === "daily" ? " (Solo por hoy)" : "")}</span>
                             {task.Task.type === "elaboration" && (
                                 task.kilos && (
                                     <div className="flex items-center gap-1 text-sm text-muted-foreground text-gray-500 mt-1">
-                                        <WeightIcon className="h-4 w-4" />
-                                        {task.kilos} kg
+                                        Cantidad elaborada: {task.kilos} kg
                                     </div>
                                 )
                             )}

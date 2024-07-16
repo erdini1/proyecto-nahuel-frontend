@@ -98,6 +98,7 @@ const EmployeeDateSelector = ({ onSelection }) => {
 											key={employee.id}
 											value={employee.id}
 											onSelect={() => handleSelectEmployee(employee.id)}
+											className="capitalize"
 										>
 											<CheckIcon
 												className={cn(

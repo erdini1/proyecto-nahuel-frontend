@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import AssignTaskTable from "@/components/component/assign/AssignTaskTable";
-import { deleteUserTask, getUserTasksByDateAndShift } from "@/service/taskService";
+import { deleteUserTask, getUserTasksByTaskSetId } from "@/service/taskService";
 import { Button } from "@/components/ui/button";
 import ProgressChecklist from "@/components/component/progressChecklist";
 import { ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
@@ -12,11 +12,11 @@ import Spinner from "@/components/component/Spinner";
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz'
 import { useSearchParams } from 'next/navigation'
+import ObservationChecklist from "@/components/component/ObservationChecklist";
 
 export default function Page({ params }) {
 	const [employee, setEmployee] = useState(params.userId);
-	const [date, setDate] = useState(new Date());
-	const [shift, setShift] = useState(new Date());
+	const [taskSetId, setTaskSetId] = useState();
 	const [userTasks, setUserTasks] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isArchived, setIsArchived] = useState(true);
@@ -26,20 +26,19 @@ export default function Page({ params }) {
 
 	useEffect(() => {
 		const fetchUserTasks = async () => {
-			const dateSearch = searchParams.get('date')
-			const shiftSearch = searchParams.get('shift')
+			const taskSetIdSearch = searchParams.get('taskSetId')
+
 			try {
 				const employee = await getUser(params.userId);
 				setEmployee(employee);
 
-				setDate(dateSearch)
-				setShift(shiftSearch)
+				setTaskSetId(taskSetIdSearch)
 
-				const userTasks = await getUserTasksByDateAndShift(employee.id, dateSearch, shiftSearch);
+				const userTasks = await getUserTasksByTaskSetId(taskSetIdSearch);
 				setUserTasks(userTasks);
 
 			} catch (error) {
-				console.log('Failed to fetch all tasks:', error);
+				// console.log('Failed to fetch all tasks:', error);
 				toast({
 					variant: "destructive",
 					title: "Error",
@@ -55,10 +54,10 @@ export default function Page({ params }) {
 	const handleDeleteUserTask = async (userTaskId) => {
 		try {
 			await deleteUserTask(userTaskId);
-			const userTasks = await getUserTasksByDateAndShift(employee.id, date, shift);
+			const userTasks = await getUserTasksByTaskSetId(taskSetId);
 			setUserTasks(userTasks);
 		} catch (error) {
-			console.log('Failed to delete task:', error);
+			// console.log('Failed to delete task:', error);
 			toast({
 				variant: "destructive",
 				title: "Error",
@@ -95,24 +94,22 @@ export default function Page({ params }) {
 						<div className="border shadow-sm rounded-lg w-3/4">
 							<div className="flex items-center justify-between bg-gray-100/40 px-6 py-4">
 								<div className="flex items-center gap-4">
-									<div className="font-semibold flex items-center gap-2">
+									<div className="font-semibold flex items-center gap-2 capitalize">
 										<UserIcon className="h-4 w-4" />
-										{`${employee.firstName} ${employee.lastName}`}
+										{`${employee?.firstName} ${employee?.lastName}`}
 									</div>
-									<div className="text-gray-500 flex items-center gap-2">
-										<CalendarDaysIcon className="h-4 w-4" />
-										{format(toZonedTime(date, 'America/Argentina/Ushuaia'), 'dd/MM/yyyy')}
-									</div>
-									{shift && (
+									{userTasks[0]?.createdAt && (
 										<div className="text-gray-500 flex items-center gap-2">
-											<ClockIcon className="h-4 w-4" />
-											{shift}
+											<CalendarDaysIcon className="h-4 w-4" />
+											{format(toZonedTime(userTasks[0].createdAt, 'America/Argentina/Ushuaia'), 'dd/MM/yyyy')}
 										</div>
 									)}
-									{/* <div className="text-gray-500 flex items-center gap-2">
-										<ClockIcon className="h-4 w-4" />
-										{shift}
-									</div> */}
+									{userTasks[0]?.TaskSet.shift && (
+										<div className="text-gray-500 flex items-center gap-2">
+											<ClockIcon className="h-4 w-4" />
+											{userTasks[0].TaskSet.shift}
+										</div>
+									)}
 								</div>
 							</div>
 							<AssignTaskTable
@@ -121,10 +118,13 @@ export default function Page({ params }) {
 								isArchived={isArchived}
 							/>
 						</div>
-						<div className="w-1/4">
+						<div className="w-1/4 flex flex-col gap-4">
 							<ProgressChecklist
 								tasksCompleted={userTasks.filter(task => task.isCompleted).length}
 								totalTasks={userTasks.length}
+							/>
+							<ObservationChecklist
+								observations={userTasks[0]?.TaskSet.observations}
 							/>
 						</div>
 					</main>

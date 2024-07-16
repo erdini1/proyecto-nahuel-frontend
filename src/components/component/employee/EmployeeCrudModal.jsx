@@ -15,6 +15,7 @@ import { Pencil1Icon } from "@radix-ui/react-icons";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 import MultiSelect from "@/components/component/MultiSelect";
 import { getAllSectors } from "@/service/sectorService";
+import { useToast } from "@/components/ui/use-toast"
 
 export default function EmployeeCrudModal({
 	isEditing,
@@ -30,6 +31,8 @@ export default function EmployeeCrudModal({
 	const [sectors, setSectors] = useState([]);
 	const [selectedSectors, setSelectedSectors] = useState([]);
 
+	const { toast } = useToast()
+
 	useEffect(() => {
 		if (isEditing) {
 			setEditPassword(false);
@@ -40,9 +43,13 @@ export default function EmployeeCrudModal({
 		const fetchSectors = async () => {
 			try {
 				const sectors = await getAllSectors();
-				setSectors(sectors || []);
+				setSectors(sectors.filter(sector => sector.name !== "general") || []);
 			} catch (error) {
-				console.log('Failed to fetch sectors:', error);
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: "Ocurrió un error al mostrar los sectores",
+				})
 				setSectors([]);
 			}
 		};
@@ -70,7 +77,11 @@ export default function EmployeeCrudModal({
 			const isDuplicate = employees.some(emp => emp.number === +newEmployee.number && emp.id !== newEmployee.id);
 			setIsNumberDuplicate(isDuplicate);
 		} catch (error) {
-			console.log('Failed to validate employee number:', error);
+			toast({
+				variant: "destructive",
+				title: "Error",
+				description: "Ocurrió un error al validar el número de empleado",
+			})
 		}
 	};
 
@@ -214,24 +225,6 @@ export default function EmployeeCrudModal({
 								)}
 							</div>
 						</div>
-						{!isEditing && (
-							<div className="grid gap-3 w-1/2">
-								<Label htmlFor="repeatPassword">Repetir Contraseña</Label>
-								<Input
-									id="repeatPassword"
-									type={showPassword ? "text" : "password"}
-									placeholder="Repita la contraseña"
-									value={newEmployee.password}
-									onChange={(e) =>
-										setNewEmployee({
-											...newEmployee,
-											password: e.target.value,
-										})
-									}
-									className="h-12 shadow"
-								/>
-							</div>
-						)}
 					</div>
 				</div>
 				<DialogFooter>

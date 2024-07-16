@@ -56,7 +56,7 @@ export default function TaskCrudDialog({ isEditing, newTask, setNewTask, sectors
 							</SelectTrigger>
 							<SelectContent>
 								{sectors.map(sector => (
-									<SelectItem key={sector.id} value={sector.id}>
+									<SelectItem key={sector.id} value={sector.id} className="capitalize">
 										{sector.name}
 									</SelectItem>
 								))}

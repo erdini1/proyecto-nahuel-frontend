@@ -144,7 +144,7 @@ export default function TaskCrud() {
                             <SelectContent>
                                 <SelectItem value="all">- Sectores -</SelectItem>
                                 {sectors.map(sector => (
-                                    <SelectItem key={sector.id} value={sector.id}>
+                                    <SelectItem key={sector.id} value={sector.id} className="capitalize">
                                         {sector.name}
                                     </SelectItem>
                                 ))}

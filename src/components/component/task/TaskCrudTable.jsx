@@ -20,24 +20,29 @@ export default function TaskCrudTable({ tasks, handleUpdateTask, handleDeleteTas
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead className="w-9/12">Descripción</TableHead>
+						<TableHead className="w-1/2">Descripción</TableHead>
 						<TableHead className="w-1/12">Sector</TableHead>
-						<TableHead className="w-1/12">Tipo</TableHead>
 						<TableHead className="w-1/12">Acciones</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
 					{tasks.length === 0 ? (
 						<TableRow>
-							<TableCell colSpan="4" className="text-center">No hay tareas registradas</TableCell>
+							<TableCell colSpan="3" classsName="text-center">No hay tareas registradas</TableCell>
 						</TableRow>
 					) : (
 						tasks.map((task) => (
 							<TableRow key={task.id}>
-								<TableCell>{task.description}</TableCell>
-								<TableCell>{task.Sector.name}</TableCell>
-								<TableCell>{translateTypeTask(task.type)}</TableCell>
-								<TableCell>
+								<TableCell className="w-1/2">
+									{task.description}
+									{task.type === "elaboration" && (
+										<div className="flex items-center gap-1 text-sm text-muted-foreground text-gray-400 mt-1">
+											({translateTypeTask(task.type)})
+										</div>
+									)}
+								</TableCell>
+								<TableCell className="w-1/12 capitalize">{task.Sector.name}</TableCell>
+								<TableCell className="w-1/12">
 									<div className="flex items-center gap-2">
 										<Button
 											variant="outline"

@@ -10,7 +10,7 @@ const SummaryCard = ({ name, shift, isClosed, completedTasks, totalTasks, linkUr
 		<div className="bg-white rounded-lg shadow-md border p-5 flex flex-col ">
 			<div className="flex items-center justify-between mb-4">
 				<div>
-					<div className="font-semibold text-lg">{name}</div>
+					<div className="font-semibold text-lg capitalize">{name}</div>
 					{shift && (
 						<div className="text-gray-500 flex items-center gap-1 text-sm">
 							<ClockIcon className="h-3.5 w-3.5" />

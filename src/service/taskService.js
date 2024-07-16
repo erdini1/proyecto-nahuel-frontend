@@ -11,10 +11,10 @@ export const getUserTaskByTaskSet = async (userId) => {
 	}
 };
 
-// Obtener las usertasks con un userId, date and shift
-export const getUserTasksByDateAndShift = async (userId, date, shift) => {
+// Obtener las usertasks a traves de un taskSetId
+export const getUserTasksByTaskSetId = async (taskSetId) => {
 	try {
-		const response = await axios.get(`/checklist/date/shift?userId=${userId}&date=${date}&shift=${shift}`);
+		const response = await axios.get(`/checklist/task-set/${taskSetId}`);
 		return response.data;
 	} catch (error) {
 		console.error('Failed to get tasks:', error);
@@ -87,11 +87,12 @@ export const getAllTasks = async () => {
 }
 
 // REVISADO
-export const assignTask = async (taskIds, userId) => {
+export const assignTask = async (taskIds, userId, periodicity) => {
 	try {
 		const response = await axios.post('/checklist', {
 			taskIds,
 			userId,
+			periodicity
 		});
 		return response.data;
 	} catch (error) {
