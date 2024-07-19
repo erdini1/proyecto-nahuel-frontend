@@ -43,14 +43,11 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 		}
 	};
 
-	const handleRemove = async (index) => {
-		const terminal = terminals[index];
+	const handleRemove = async (terminalId) => {
 		setLoading(true);
 		try {
-			await deleteTerminal(terminal.id);
-			const updatedTerminals = [...terminals];
-			updatedTerminals.splice(index, 1);
-			onTerminalsChange(updatedTerminals);
+			await deleteTerminal(terminalId);
+			onTerminalsChange(terminals.filter(terminal => terminal.id !== terminalId));
 			toast({
 				title: "Terminal eliminada",
 				description: "La terminal fue eliminada correctamente",
@@ -71,7 +68,6 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 		(option) => !terminals.some((t) => t.description === option.description)
 	);
 
-	// hACER UN FILTRO PARA QUE EN LAS TERMIANLES, NO SE MUESTRE EL METODO EFECTIVO
 	const terminalsFiltered = terminals.filter((terminal) => terminal.terminalNumber !== 'cash');
 
 	return (
@@ -90,7 +86,6 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 					<Select
 						onValueChange={(val) => setSelectedOption(val)} value={selectedOption}
 						disabled={loading || terminalsFiltered.length >= 3}
-
 					>
 						<SelectTrigger className="px-4 py-2 border rounded-md">
 							{selectedOption ? terminalOptions.find(o => o.terminalNumber === selectedOption).description : 'Seleccionar...'}
@@ -127,7 +122,7 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 										<TableCell className="font-medium w-1/4">{terminal.terminalNumber}</TableCell>
 										<TableCell className="w-1/2">{terminal.description}</TableCell>
 										<TableCell className="w-1/4">
-											<Button variant="outline" size="icon" onClick={() => handleRemove(index)}>
+											<Button variant="outline" size="icon" onClick={() => handleRemove(terminal.id)}>
 												<TrashIcon className="h-4 w-4" />
 												<span className="sr-only">Eliminar</span>
 											</Button>

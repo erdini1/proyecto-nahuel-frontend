@@ -49,7 +49,7 @@ export default function Movements({ cashRegisterId }) {
 	const [selectedProvider, setSelectedProvider] = useState(null);
 	const [editingMovement, setEditingMovement] = useState(null);
 	const [newMovement, setNewMovement] = useState({
-		type: 'payment',
+		// type: 'withdrawal',
 		amount: '',
 		providerId: '',
 		cashRegisterId: ""
@@ -89,7 +89,7 @@ export default function Movements({ cashRegisterId }) {
 	const handleModalClose = () => {
 		setIsModalOpen(false);
 		setNewMovement({
-			type: 'payment',
+			// type: 'withdrawal',
 			amount: '',
 			providerId: '',
 			cashRegisterId: ""
@@ -138,7 +138,7 @@ export default function Movements({ cashRegisterId }) {
 	const handleEdit = (movement) => {
 		setEditingMovement(movement);
 		setNewMovement({
-			type: movement.type,
+			// type: movement.type,
 			amount: movement.amount,
 			providerId: movement.Provider.id,
 			cashRegisterId: movement.CashRegister.id
@@ -167,7 +167,7 @@ export default function Movements({ cashRegisterId }) {
 	};
 
 	return (
-		<div className="w-1/2 max-h-40">
+		<div className="">
 			<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
 				<div className="flex-1">
 					<h1 className="font-semibold text-lg">Movimientos de caja</h1>
@@ -194,7 +194,7 @@ export default function Movements({ cashRegisterId }) {
 							<TableRow>
 								<TableHead className="pl-8 w-1/6">ID</TableHead>
 								<TableHead className="w-1/6">Tipo</TableHead>
-								<TableHead className="w-1/6">Proveedor</TableHead>
+								<TableHead className="w-1/6">Detalle de pago</TableHead>
 								<TableHead className="w-1/6">Hora</TableHead>
 								<TableHead className="w-1/6">Monto</TableHead>
 								<TableHead className="w-1/6">Acciones</TableHead>
@@ -209,7 +209,7 @@ export default function Movements({ cashRegisterId }) {
 								(cashMovements.map(movement => (
 									<TableRow key={movement.id}>
 										<TableCell className="font-medium pl-8 w-1/6">{movement.id}</TableCell>
-										<TableCell className="w-1/6">{translateType(movement.type)}</TableCell>
+										<TableCell className="w-1/6">Retiro</TableCell>
 										<TableCell className="w-1/6">{movement.Provider.name}</TableCell>
 										<TableCell className="w-1/6">{movement.time}</TableCell>
 										<TableCell className="w-1/6">${movement.amount}</TableCell>
@@ -249,12 +249,12 @@ export default function Movements({ cashRegisterId }) {
 				<Dialog onOpenChange={handleModalClose} open={isModalOpen}>
 					<DialogContent>
 						<DialogHeader>
-							<DialogTitle>{editingMovement ? 'Editar Movimiento' : 'Crear Nuevo Novimiento'}</DialogTitle>
+							<DialogTitle>{editingMovement ? 'Editar Movimiento' : 'Crear Nuevo Movimiento'}</DialogTitle>
 							<DialogDescription>Complete el formulario para {editingMovement ? 'editar el' : 'crear un nuevo'} movimiento.</DialogDescription>
 						</DialogHeader>
 						<form onSubmit={handleSubmit}>
 							<div className="grid gap-4">
-								<div className="grid gap-2">
+								{/* <div className="grid gap-2">
 									<label className="text-sm font-medium">Tipo</label>
 									<Tabs defaultValue={newMovement.type} onValueChange={(value) => handleInputChange({ target: { name: 'type', value } })}>
 										<TabsList className="border w-full h-14 p-1 shadow">
@@ -262,7 +262,7 @@ export default function Movements({ cashRegisterId }) {
 											<TabsTrigger value="withdrawal" className="w-1/2 h-full">Retiro</TabsTrigger>
 										</TabsList>
 									</Tabs>
-								</div>
+								</div> */}
 								<div className="flex flex-col gap-2">
 									<label className="text-sm font-medium" htmlFor="provider">Proveedor</label>
 									<Popover open={open} onOpenChange={setOpen}>
@@ -326,7 +326,7 @@ export default function Movements({ cashRegisterId }) {
 								<Button
 									type="submit"
 									className="mt-4"
-									disabled={!newMovement.type || !newMovement.providerId || !newMovement.amount}
+									disabled={!newMovement.providerId || !newMovement.amount}
 								>Guardar</Button>
 								<Button variant="outline" onClick={handleModalClose} className="mt-4">Cancelar</Button>
 							</DialogFooter>

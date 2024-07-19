@@ -1,17 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createCashRegister } from "@/service/cashRegisterService";
+import { createCashRegister, updateCashRegister } from "@/service/cashRegisterService";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/components/ui/use-toast"
 
-export default function CashRegister({ onCreated }) {
-	const [cashRegisterNumber, setCashRegisterNumber] = useState('');
+export default function CashRegister({ onCreated, cashRegister }) {
+	const [cashRegisterNumber, setCashRegisterNumber] = useState(0);
 	const [initialAmount, setInitialAmount] = useState("");
 	const [changeAmount, setChangeAmount] = useState(0);
 	const [disabledButtons, setDisabledButtons] = useState(false);
 
 	const { toast } = useToast();
+
+	useEffect(() => {
+		if (cashRegister) {
+			const initialAmount = parseFloat(cashRegister.initialAmount) || 0;
+			const changeAmount = parseFloat(cashRegister.changeAmount) || 0;
+
+			setCashRegisterNumber(cashRegister.cashRegisterNumber);
+			console.log('cashRegisterNumber:', cashRegisterNumber);
+			setInitialAmount(initialAmount);
+			setChangeAmount(changeAmount);
+		}
+	}, [cashRegister]);
 
 	const handleCashRegisterNumberChange = (number) => {
 		setCashRegisterNumber(number);
@@ -26,6 +38,16 @@ export default function CashRegister({ onCreated }) {
 			changeAmount,
 		};
 		try {
+			if (cashRegister) {
+				console.log('Actualizando caja:', formData);
+				await updateCashRegister(cashRegister.id, formData);
+				toast({
+					title: "Actualizado",
+					description: "Los datos del registro de caja se actualizaron correctamente",
+				});
+				return;
+			}
+			console.log('Creando caja:', formData);
 			await createCashRegister(formData);
 			toast({
 				title: "Caja creada",
@@ -42,6 +64,7 @@ export default function CashRegister({ onCreated }) {
 		}
 	};
 
+	// TODO: Permitir crear nuevas cajas
 	return (
 		<div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 border">
 			<h2 className="text-xl font-bold mb-4">Datos de la Caja</h2>
@@ -49,10 +72,10 @@ export default function CashRegister({ onCreated }) {
 				<div className="grid gap-2">
 					<label className="text-sm font-medium" htmlFor='cashNumber'>Número de caja</label>
 					<ToggleGroup type="single" className="justify-center">
-						{[1, 2, 3, 4].map((num) => (
+						{[1, 2, 3, 4, 5].map((num) => (
 							<ToggleGroupItem
 								key={num}
-								value={num}
+								value={cashRegisterNumber === num}
 								id="cashNumber"
 								variant="outline"
 								className={`w-1/4 ${disabledButtons && cashRegisterNumber !== num ? 'opacity-50 ' : 'shadow'}`}

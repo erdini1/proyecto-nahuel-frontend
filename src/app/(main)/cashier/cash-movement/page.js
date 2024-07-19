@@ -9,13 +9,14 @@ import ModalTerminals from "@/components/component/ModalTerminal";
 import { getTerminals } from "@/service/terminalService";
 import Link from "next/link";
 import Spinner from "@/components/component/Spinner";
+import { Button } from "@/components/ui/button";
 
 // TODO: Agregar un svg del signo de pesos en los inputs de dinero
 export default function Page() {
 	const [hasCashRegister, setHasCashRegister] = useState(false);
 	const [selectedTab, setSelectedTab] = useState("cashRegister");
 	const [terminals, setTerminals] = useState([]);
-	const [cashRegisterId, setCashRegisterId] = useState(null);
+	const [cashRegister, setCashRegister] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -27,7 +28,7 @@ export default function Page() {
 					setSelectedTab("movements");
 
 					const cashRegister = await getLastCashRegister();
-					setCashRegisterId(cashRegister.id);
+					setCashRegister(cashRegister);
 
 					const terminals = await getTerminals(cashRegister.id);
 					setTerminals(terminals);
@@ -53,22 +54,22 @@ export default function Page() {
 		setHasCashRegister(true);
 		setSelectedTab("movements");
 		const cashRegister = await getLastCashRegister();
-		setCashRegisterId(cashRegister.id);
+		setCashRegister(cashRegister);
 		const terminals = await getTerminals(cashRegister.id);
 		setTerminals(terminals);
 		setIsLoading(false);
 	};
 
 	// TODO: Agregar un desalizable para mostrar solo una cantidad movimientos y anulaciones
+	// TODO: Revisar que si voy a crear cashregister me va a dejar hacerlo sin terminar de crear el anterior
 	return (
 		<div className="w-full p-4">
 			<div className="flex flex-col gap-6">
-				<div className="flex justify-between px-2">
-					<h1 className="text-2xl font-bold tracking-tight">Gestión de Caja</h1>
-
-				</div>
 				<Tabs value={selectedTab} onValueChange={handleTabChange}>
-					<div className="flex gap-3 justify-between items-center">
+					<div className="flex gap-3 items-center">
+						<div className="flex justify-between px-2">
+							<h1 className="text-2xl font-bold tracking-tight">Gestión de Caja</h1>
+						</div>
 						<div className="flex gap-10 items-center">
 
 							<TabsList className="border-b">
@@ -80,17 +81,12 @@ export default function Page() {
 									<ModalTerminals
 										terminals={terminals}
 										onTerminalsChange={setTerminals}
-										cashRegisterId={cashRegisterId}
+										cashRegisterId={cashRegister}
 									/>
 								</div>
 							)}
 						</div>
-						<Link href="/cashier/cash-movement/report">
-							<button
-								className={`px-4 py-2.5 text-md font-semibold text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 ${!hasCashRegister ? 'hidden' : ''}`}
-							>Cargar datos
-							</button>
-						</Link>
+
 					</div>
 					{isLoading ? (
 						<div className="flex justify-center items-center h-64">
@@ -101,19 +97,28 @@ export default function Page() {
 							<TabsContent value="cashRegister" className="p-4">
 								<CashRegister
 									onCreated={onCashRegisterCreated}
+									cashRegister={cashRegister}
 								/>
 							</TabsContent>
 							<TabsContent value="movements">
-								<div className="p-4 flex gap-2">
+								<div className="p-4 flex flex-col gap-10">
 									<Movements
-										cashRegisterId={cashRegisterId}
+										cashRegisterId={cashRegister.id}
 									/>
 									<Cancellations
 										terminals={terminals}
-										cashRegisterId={cashRegisterId}
+										cashRegisterId={cashRegister.id}
 									/>
 								</div>
 							</TabsContent>
+							{selectedTab === "movements" && (
+								<Link href="/cashier/cash-movement/report" className="">
+									<Button
+										className={`flex items-center rounded-md transition-colors duration-300 w-1/4 mx-auto ${!hasCashRegister ? 'hidden' : ''}`}
+									>Cargar datos
+									</Button>
+								</Link>
+							)}
 						</>
 					)}
 				</Tabs>
