@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast"
 export default function CashRegister({ onCreated, cashRegister }) {
 	const [cashRegisterNumber, setCashRegisterNumber] = useState(0);
 	const [initialAmount, setInitialAmount] = useState("");
-	const [changeAmount, setChangeAmount] = useState(0);
+	const [changeAmount, setChangeAmount] = useState("");
 	const [disabledButtons, setDisabledButtons] = useState(false);
 
 	const { toast } = useToast();
@@ -91,29 +91,35 @@ export default function CashRegister({ onCreated, cashRegister }) {
 				<div className="flex gap-1">
 					<div className="grid gap-2 w-1/2">
 						<label className="text-sm font-medium" htmlFor='initialAmount'>Monto inicial</label>
-						<Input
-							id="initialAmount"
-							type="number"
-							min="0"
-							step="0.01"
-							value={initialAmount}
-							placeholder="$0.00"
-							onChange={(e) => setInitialAmount(e.target.value)}
-							className="p-2 border rounded"
-						/>
+						<div className="relative text-black">
+							<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
+							<Input
+								id="initialAmount"
+								type="number"
+								min="0"
+								step="0.01"
+								value={initialAmount}
+								placeholder="0.00"
+								onChange={(e) => setInitialAmount(e.target.value)}
+								className="p-2 border rounded pl-5 shadow"
+							/>
+						</div>
 					</div>
 					<div className="grid gap-2 w-1/2">
 						<label className="text-sm font-medium" htmlFor='changeAmount'>Ingreso de cambio</label>
-						<Input
-							id="changeAmount"
-							type="number"
-							min="0"
-							step="0.01"
-							value={changeAmount}
-							onChange={(e) => setChangeAmount(e.target.value)}
-							className="p-2 border rounded"
-							placeholder="$0.00"
-						/>
+						<div className="relative text-black">
+							<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
+							<Input
+								id="changeAmount"
+								type="number"
+								min="0"
+								step="0.01"
+								value={changeAmount}
+								onChange={(e) => setChangeAmount(e.target.value)}
+								className="p-2 border rounded pl-5 shadow"
+								placeholder="0.00"
+							/>
+						</div>
 					</div>
 				</div>
 				<Button

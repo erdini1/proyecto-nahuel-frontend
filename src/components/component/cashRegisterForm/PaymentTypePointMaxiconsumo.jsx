@@ -190,7 +190,7 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 				variant="outline"
 				className="w-1/2 self-center shadow flex gap-2"
 				onClick={handleSave}
-				disabled={data.salesWithPointMaxiconsumo === '' || data.cashToRenderWithPointMaxiconsumo === '' || !data.lotNumber}
+				disabled={!data.salesWithPointMaxiconsumo || !data.cashToRenderWithPointMaxiconsumo || !data.lotNumber}
 			>
 				<Save className="h-4 w-4" />
 				Guardar

@@ -254,17 +254,8 @@ export default function Movements({ cashRegisterId }) {
 						</DialogHeader>
 						<form onSubmit={handleSubmit}>
 							<div className="grid gap-4">
-								{/* <div className="grid gap-2">
-									<label className="text-sm font-medium">Tipo</label>
-									<Tabs defaultValue={newMovement.type} onValueChange={(value) => handleInputChange({ target: { name: 'type', value } })}>
-										<TabsList className="border w-full h-14 p-1 shadow">
-											<TabsTrigger value="payment" className="w-1/2 h-full">Pago</TabsTrigger>
-											<TabsTrigger value="withdrawal" className="w-1/2 h-full">Retiro</TabsTrigger>
-										</TabsList>
-									</Tabs>
-								</div> */}
 								<div className="flex flex-col gap-2">
-									<label className="text-sm font-medium" htmlFor="provider">Proveedor</label>
+									<label className="text-sm font-medium" htmlFor="provider">Detalle</label>
 									<Popover open={open} onOpenChange={setOpen}>
 										<PopoverTrigger asChild>
 											<Button
@@ -276,15 +267,15 @@ export default function Movements({ cashRegisterId }) {
 											>
 												{selectedProvider
 													? `${selectedProvider.name}`
-													: "Seleccione un proveedor..."}
+													: "Indique el detalle..."}
 												<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 											</Button>
 										</PopoverTrigger>
 										<PopoverContent className="w-[450px] p-0">
 											<Command>
-												<CommandInput placeholder="Buscar proveedor..." />
+												<CommandInput placeholder="Buscar..." />
 												<CommandList>
-													<CommandEmpty>Proveedor no encontrado</CommandEmpty>
+													<CommandEmpty>No encontrado</CommandEmpty>
 													<CommandGroup>
 														{providers.map((provider) => (
 															<CommandItem
@@ -309,17 +300,21 @@ export default function Movements({ cashRegisterId }) {
 								</div>
 								<div className="grid gap-2">
 									<label className="text-sm font-medium" htmlFor="amount">Monto</label>
-									<Input
-										type="number"
-										name="amount"
-										id="amount"
-										min="0"
-										step="0.01"
-										value={newMovement.amount}
-										onChange={handleInputChange}
-										required
-										placeholder="$0.00"
-									/>
+									<div className="relative text-black">
+										<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
+										<Input
+											type="number"
+											name="amount"
+											id="amount"
+											min="0"
+											step="0.01"
+											value={newMovement.amount}
+											onChange={handleInputChange}
+											placeholder="0.00"
+											className="border rounded pl-5"
+											required
+										/>
+									</div>
 								</div>
 							</div>
 							<DialogFooter>

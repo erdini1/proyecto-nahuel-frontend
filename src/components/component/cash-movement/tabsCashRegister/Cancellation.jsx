@@ -37,6 +37,12 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/ui/accordion"
+import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
@@ -58,7 +64,7 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 		cashRegisterId: '',
 	});
 	const [isLoading, setIsLoading] = useState(true);
-	const [isOpen, setIsOpen] = useState(false);
+	const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
 	const { toast } = useToast();
 
@@ -164,190 +170,195 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 		}
 	};
 
-	const prueba = () => {
-		setIsOpen(!isOpen);
-		console.log(isOpen);
-	}
+	const handleAccordionToggle = () => {
+		setIsAccordionOpen(prev => !prev);
+	};
 
 	return (
-		<Collapsible>
-			<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
-				<CollapsibleTrigger className="hover:bg-gray-100 py-3 px-2 rounded" onClick={prueba}>
-					<div className="flex items-center gap-2">
-						<h1 className="font-semibold text-lg">Anulaciones</h1>
-						<ChevronDownIcon className={`h-4 w-4 ${isOpen ? 'transform rotate-180' : 'transform rotate-0'}`} />
-					</div>
-				</CollapsibleTrigger>
-				{isOpen && (
-					<div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-						<Button
-							onClick={() => setIsModalOpen(true)}
-							className="flex items-center gap-1.5 align-middle shadow"
-							variant="outline"
-						>
-							<PlusIcon className="h-4 w-4 mr-2" />
-							Cargar Anulación
-						</Button>
-					</div>
-				)}
-			</header>
-			<CollapsibleContent>
-				<div className="border shadow-sm rounded-lg">
-					{isLoading ? (
-						<div className="flex justify-center items-center h-64">
-							<Spinner />
-						</div>
-					) : (
-						<Table>
-							<TableHeader>
-								<TableRow>
-									<TableHead className="pl-8 w-1/6">ID</TableHead>
-									<TableHead className="w-1/6">Tipo</TableHead>
-									<TableHead className="w-1/6">Metodo</TableHead>
-									<TableHead className="w-1/6">Hora</TableHead>
-									<TableHead className="w-1/6">Monto</TableHead>
-									<TableHead className="w-1/6">Acciones</TableHead>
-								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{cancellations.length === 0 ? (
-									<TableRow>
-										<TableCell colSpan="6" className="text-center">No hay anulaciones</TableCell>
-									</TableRow>
-								) : (
-									cancellations.map(cancellation => (
-										<TableRow key={cancellation.id}>
-											<TableCell className="font-medium pl-8 w-1/6">{cancellation.id}</TableCell>
-											<TableCell className="w-1/6">{translateType(cancellation.type)}</TableCell>
-											<TableCell className="w-1/6">{cancellation.method}</TableCell>
-											<TableCell className="w-1/6">{cancellation.time}</TableCell>
-											<TableCell className="w-1/6">${cancellation.amount}</TableCell>
-											<TableCell className="w-1/6">
-												<Button variant="outline" size="icon" onClick={() => handleEdit(cancellation)}>
-													<FilePenIcon className="h-4 w-4" />
-													<span className="sr-only">Modificar</span>
-												</Button>
-
-												<AlertDialog>
-													<AlertDialogTrigger asChild>
-														<Button variant="outline" size="icon" >
-															<TrashIcon className="h-4 w-4" />
-															<span className="sr-only">Eliminar</span>
-														</Button>
-													</AlertDialogTrigger>
-													<AlertDialogContent>
-														<AlertDialogHeader>
-															<AlertDialogTitle>¿Está seguro que desea eliminarla?</AlertDialogTitle>
-															<AlertDialogDescription>Esta acción no se puede deshacer.</AlertDialogDescription>
-														</AlertDialogHeader>
-														<AlertDialogFooter>
-															<AlertDialogCancel>Cancelar</AlertDialogCancel>
-															<AlertDialogAction
-																onClick={() => handleDelete(cancellation.id)}
-															>Continuar</AlertDialogAction>
-														</AlertDialogFooter>
-													</AlertDialogContent>
-												</AlertDialog>
-											</TableCell>
-										</TableRow>
-									))
-								)}
-							</TableBody>
-						</Table>
-					)}
-				</div>
-			</CollapsibleContent>
-			{isModalOpen && (
-				<Dialog onOpenChange={handleModalClose} open={isModalOpen}>
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>{editingCancellation ? 'Editar Anulación' : 'Crear Nueva Anulación'}</DialogTitle>
-							<DialogDescription>Complete el formulario para {editingCancellation ? 'editar la' : 'crear una nueva'} anulación.</DialogDescription>
-						</DialogHeader>
-						<form onSubmit={handleSubmit}>
-							<div className="grid gap-4">
-								<div className="grid gap-2">
-									<label className="text-sm font-medium">Tipo</label>
-									<Tabs defaultValue={newCancellation.type} onValueChange={(value) => handleInputChange({ target: { name: 'type', value } })}>
-										<TabsList className="border w-full h-14 p-1 shadow">
-											<TabsTrigger value="cancellation" className="w-1/2 h-full">Anulación</TabsTrigger>
-											<TabsTrigger value="return" className="w-1/2 h-full">Devolución</TabsTrigger>
-										</TabsList>
-									</Tabs>
-								</div>
-								<div className="grid gap-2">
-									<label className="text-sm font-medium" htmlFor="method">Metodo</label>
-									<Popover open={open} onOpenChange={setOpen}>
-										<PopoverTrigger asChild>
-											<Button
-												variant="outline"
-												role="combobox"
-												aria-expanded={open}
-												id="method"
-												className="justify-between"
-											>
-												{selectedTerminal
-													? `${selectedTerminal.description}`
-													: "Seleccione un metodo..."}
-												<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-											</Button>
-										</PopoverTrigger>
-										<PopoverContent className="w-[450px] p-0">
-											<Command>
-												<CommandInput placeholder="Buscar metodo..." />
-												<CommandList>
-													<CommandEmpty>Metodo no encontrado</CommandEmpty>
-													<CommandGroup>
-														{terminals.map((terminal) => (
-															<CommandItem
-																key={terminal.id}
-																value={terminal.id}
-																onSelect={() => handleSelectChange(terminal.id)}
-															>
-																<Check
-																	className={cn(
-																		"mr-2 h-4 w-4",
-																		selectedTerminal?.id === terminal.id ? "opacity-100" : "opacity-0"
-																	)}
-																/>
-																{`${terminal.description}`}
-															</CommandItem>
-														))}
-													</CommandGroup>
-												</CommandList>
-											</Command>
-										</PopoverContent>
-									</Popover>
-								</div>
-								<div className="grid gap-2">
-									<label className="text-sm font-medium" htmlFor="amount">Monto</label>
-									<Input
-										type="number"
-										id="amount"
-										name="amount"
-										min="0"
-										step="0.01"
-										value={newCancellation.amount}
-										onChange={handleInputChange}
-										required
-										placeholder="$0.00"
-									/>
-								</div>
+		<Accordion type="single" collapsible>
+			<AccordionItem value="item-1">
+				<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
+					<div className="flex-grow">
+						<AccordionTrigger className="w-full" onClick={handleAccordionToggle}>
+							<div className="flex items-center gap-2 w-full">
+								<h1 className="font-semibold text-lg">Anulaciones</h1>
 							</div>
-							<DialogFooter>
-								<Button
-									type="submit"
-									className="mt-4"
-									disabled={!newCancellation.type || (editingCancellation ? false : !newCancellation.method) || !newCancellation.amount}
-								>Guardar</Button>
-								<Button variant="outline" onClick={handleModalClose} className="mt-4">Cancelar</Button>
-							</DialogFooter>
-						</form>
-					</DialogContent>
-				</Dialog>
-			)}
-		</Collapsible>
+						</AccordionTrigger>
+					</div>
+					{isAccordionOpen && (
+						<div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+							<Button
+								onClick={() => setIsModalOpen(true)}
+								className="flex items-center gap-1.5 align-middle shadow"
+								variant="outline"
+							>
+								<PlusIcon className="h-4 w-4 mr-2" />
+								Cargar Anulación
+							</Button>
+						</div>
+					)}
+				</header>
+				<AccordionContent>
+					<div className="border shadow-sm rounded-lg">
+						{isLoading ? (
+							<div className="flex justify-center items-center h-64">
+								<Spinner />
+							</div>
+						) : (
+							<Table>
+								<TableHeader>
+									<TableRow>
+										<TableHead className="pl-8 w-1/6">ID</TableHead>
+										<TableHead className="w-1/6">Tipo</TableHead>
+										<TableHead className="w-1/6">Metodo</TableHead>
+										<TableHead className="w-1/6">Hora</TableHead>
+										<TableHead className="w-1/6">Monto</TableHead>
+										<TableHead className="w-1/6">Acciones</TableHead>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									{cancellations.length === 0 ? (
+										<TableRow>
+											<TableCell colSpan="6" className="text-center">No hay anulaciones</TableCell>
+										</TableRow>
+									) : (
+										cancellations.map(cancellation => (
+											<TableRow key={cancellation.id}>
+												<TableCell className="font-medium pl-8 w-1/6">{cancellation.id}</TableCell>
+												<TableCell className="w-1/6">{translateType(cancellation.type)}</TableCell>
+												<TableCell className="w-1/6">{cancellation.method}</TableCell>
+												<TableCell className="w-1/6">{cancellation.time}</TableCell>
+												<TableCell className="w-1/6">${cancellation.amount}</TableCell>
+												<TableCell className="w-1/6">
+													<Button variant="outline" size="icon" onClick={() => handleEdit(cancellation)}>
+														<FilePenIcon className="h-4 w-4" />
+														<span className="sr-only">Modificar</span>
+													</Button>
 
+													<AlertDialog>
+														<AlertDialogTrigger asChild>
+															<Button variant="outline" size="icon" >
+																<TrashIcon className="h-4 w-4" />
+																<span className="sr-only">Eliminar</span>
+															</Button>
+														</AlertDialogTrigger>
+														<AlertDialogContent>
+															<AlertDialogHeader>
+																<AlertDialogTitle>¿Está seguro que desea eliminarla?</AlertDialogTitle>
+																<AlertDialogDescription>Esta acción no se puede deshacer.</AlertDialogDescription>
+															</AlertDialogHeader>
+															<AlertDialogFooter>
+																<AlertDialogCancel>Cancelar</AlertDialogCancel>
+																<AlertDialogAction
+																	onClick={() => handleDelete(cancellation.id)}
+																>Continuar</AlertDialogAction>
+															</AlertDialogFooter>
+														</AlertDialogContent>
+													</AlertDialog>
+												</TableCell>
+											</TableRow>
+										))
+									)}
+								</TableBody>
+							</Table>
+						)}
+					</div>
+				</AccordionContent>
+				{isModalOpen && (
+					<Dialog onOpenChange={handleModalClose} open={isModalOpen}>
+						<DialogContent>
+							<DialogHeader>
+								<DialogTitle>{editingCancellation ? 'Editar Anulación' : 'Crear Nueva Anulación'}</DialogTitle>
+								<DialogDescription>Complete el formulario para {editingCancellation ? 'editar la' : 'crear una nueva'} anulación.</DialogDescription>
+							</DialogHeader>
+							<form onSubmit={handleSubmit}>
+								<div className="grid gap-4">
+									<div className="grid gap-2">
+										<label className="text-sm font-medium">Tipo</label>
+										<Tabs defaultValue={newCancellation.type} onValueChange={(value) => handleInputChange({ target: { name: 'type', value } })}>
+											<TabsList className="border w-full h-14 p-1 shadow">
+												<TabsTrigger value="cancellation" className="w-1/2 h-full">Anulación</TabsTrigger>
+												<TabsTrigger value="return" className="w-1/2 h-full">Devolución</TabsTrigger>
+											</TabsList>
+										</Tabs>
+									</div>
+									<div className="grid gap-2">
+										<label className="text-sm font-medium" htmlFor="method">Metodo</label>
+										<Popover open={open} onOpenChange={setOpen}>
+											<PopoverTrigger asChild>
+												<Button
+													variant="outline"
+													role="combobox"
+													aria-expanded={open}
+													id="method"
+													className="justify-between"
+												>
+													{selectedTerminal
+														? `${selectedTerminal.description}`
+														: "Seleccione un metodo..."}
+													<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+												</Button>
+											</PopoverTrigger>
+											<PopoverContent className="w-[450px] p-0">
+												<Command>
+													<CommandInput placeholder="Buscar metodo..." />
+													<CommandList>
+														<CommandEmpty>Metodo no encontrado</CommandEmpty>
+														<CommandGroup>
+															{terminals.map((terminal) => (
+																<CommandItem
+																	key={terminal.id}
+																	value={terminal.id}
+																	onSelect={() => handleSelectChange(terminal.id)}
+																>
+																	<Check
+																		className={cn(
+																			"mr-2 h-4 w-4",
+																			selectedTerminal?.id === terminal.id ? "opacity-100" : "opacity-0"
+																		)}
+																	/>
+																	{`${terminal.description}`}
+																</CommandItem>
+															))}
+														</CommandGroup>
+													</CommandList>
+												</Command>
+											</PopoverContent>
+										</Popover>
+									</div>
+									<div className="grid gap-2">
+										<label className="text-sm font-medium" htmlFor="amount">Monto</label>
+										<div className="relative text-black">
+											<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
+											<Input
+												type="number"
+												id="amount"
+												name="amount"
+												min="0"
+												step="0.01"
+												value={newCancellation.amount}
+												onChange={handleInputChange}
+												placeholder="0.00"
+												className="border w-full pl-5"
+												required
+											/>
+										</div>
+									</div>
+								</div>
+								<DialogFooter>
+									<Button
+										type="submit"
+										className="mt-4"
+										disabled={!newCancellation.type || (editingCancellation ? false : !newCancellation.method) || !newCancellation.amount}
+									>Guardar</Button>
+									<Button variant="outline" onClick={handleModalClose} className="mt-4">Cancelar</Button>
+								</DialogFooter>
+							</form>
+						</DialogContent>
+					</Dialog>
+				)}
+			</AccordionItem>
+		</Accordion >
 	);
 }
 

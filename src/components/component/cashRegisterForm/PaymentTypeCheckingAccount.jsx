@@ -150,7 +150,7 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 					variant="outline"
 					className="w-1/2 self-center shadow flex gap-2"
 					onClick={handleSave}
-					disabled={data.salesWithCredit === '' || data.cashToRenderWithCredit === ''}
+					disabled={!data.salesWithCredit || !data.cashToRenderWithCredit}
 				>
 					<Save className="h-4 w-4" />
 					Guardar

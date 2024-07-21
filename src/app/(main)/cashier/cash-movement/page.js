@@ -71,7 +71,6 @@ export default function Page() {
 							<h1 className="text-2xl font-bold tracking-tight">Gestión de Caja</h1>
 						</div>
 						<div className="flex gap-10 items-center">
-
 							<TabsList className="border-b">
 								<TabsTrigger value="cashRegister">Datos iniciales</TabsTrigger>
 								<TabsTrigger value="movements" disabled={!hasCashRegister}>Movimientos de Caja</TabsTrigger>
@@ -81,12 +80,11 @@ export default function Page() {
 									<ModalTerminals
 										terminals={terminals}
 										onTerminalsChange={setTerminals}
-										cashRegisterId={cashRegister}
+										cashRegisterId={cashRegister?.id}
 									/>
 								</div>
 							)}
 						</div>
-
 					</div>
 					{isLoading ? (
 						<div className="flex justify-center items-center h-64">
@@ -103,11 +101,11 @@ export default function Page() {
 							<TabsContent value="movements">
 								<div className="p-4 flex flex-col gap-10">
 									<Movements
-										cashRegisterId={cashRegister.id}
+										cashRegisterId={cashRegister?.id}
 									/>
 									<Cancellations
 										terminals={terminals}
-										cashRegisterId={cashRegister.id}
+										cashRegisterId={cashRegister?.id}
 									/>
 								</div>
 							</TabsContent>

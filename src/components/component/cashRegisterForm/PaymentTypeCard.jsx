@@ -168,7 +168,7 @@ export default function PaymentTypeCard({ cashMovements, cancellations, cashRegi
 				variant="outline"
 				className="w-1/2 self-center shadow flex gap-2"
 				onClick={handleSave}
-				disabled={data.salesWithCards === '' || data.cashToRenderWithCards === ''}
+				disabled={!data.salesWithCards || !data.cashToRenderWithCards}
 			>
 				<Save className="h-4 w-4" />
 				Guardar
