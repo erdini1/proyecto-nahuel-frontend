@@ -157,7 +157,6 @@ export default function PaymentTypeCash({ cashMovements, cancellations, cashRegi
 													id="cashToRenderWithCash"
 													min="0"
 													step="0.01"
-													autoFocus
 													value={data.cashToRenderWithCash || ''}
 													onChange={(e) => handleInputChange('cashToRenderWithCash', e.target.value)}
 													placeholder="0.00"

@@ -78,7 +78,6 @@ export default function PaymentTypeMercadoPago({ cashMovements, cancellations, c
 												id="salesWithMercadoPago"
 												min="0"
 												step="0.01"
-												autoFocus
 												value={data.salesWithMercadoPago || ''}
 												onChange={(e) => handleInputChange('salesWithMercadoPago', e.target.value)}
 												placeholder="0.00"

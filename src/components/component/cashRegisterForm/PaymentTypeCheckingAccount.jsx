@@ -75,7 +75,6 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 													id="salesWithCredit"
 													min="0"
 													step="0.01"
-													autoFocus
 													value={data.salesWithCredit || ''}
 													onChange={(e) => handleInputChange('salesWithCredit', e.target.value)}
 													placeholder="0.00"

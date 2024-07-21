@@ -399,7 +399,7 @@ export default function Page() {
 		card: true,
 		mercadoPago: true,
 		pointMaxiconsumo: true,
-		// checkingAccount: true,
+		checkingAccount: true,
 	});
 
 	const { toast } = useToast();
@@ -422,9 +422,10 @@ export default function Page() {
 					card: terminals.some(terminal => terminal.description.includes('CLOVER')),
 					mercadoPago: terminals.some(terminal => terminal.description.includes('MERCADO PAGO')),
 					pointMaxiconsumo: terminals.some(terminal => terminal.description.includes('MAXI')),
-					// checkingAccount: terminals.some(terminal => terminal.method === 'CUENTA_CORRIENTE'),
+					checkingAccount: cashRegisterData.CashBox.hasCheckingAccount,
 				});
-				console.log(selectedTerminals)
+				console.log("selectedTerminals:", selectedTerminals);
+				console.log("cashRegisterData:", cashRegisterData);
 
 			} catch (error) {
 				console.error("Error al obtener los datos", error);
@@ -511,7 +512,7 @@ export default function Page() {
 										updateCashRegister={handleUpdateCashRegister}
 									/>
 								</div>
-								<div className='flex-grow max-w-xs flex-shrink-0 mb-4'>
+								<div className={`flex-grow max-w-xs flex-shrink-0 mb-4 ${selectedTerminals.checkingAccount ? "" : "opacity-50 pointer-events-none"}`}>
 									<PaymentTypeCheckingAccount
 										cashMovements={cashMovements}
 										cancellations={cancellations}

@@ -78,7 +78,6 @@ export default function PaymentTypeCard({ cashMovements, cancellations, cashRegi
 												id="salesWithCards"
 												min="0"
 												step="0.01"
-												autoFocus
 												value={data.salesWithCards || ''}
 												onChange={(e) => handleInputChange('salesWithCards', e.target.value)}
 												placeholder="0.00"
@@ -97,7 +96,7 @@ export default function PaymentTypeCard({ cashMovements, cancellations, cashRegi
 												id="withdrawal"
 												step="0.01"
 												value={data.withdrawal || ''}
-												placeholder="$0.00"
+												placeholder="0.00"
 												className={`border w-full shadow bg-gray-100 cursor-not-allowed pl-5`}
 												onFocus={(e) => e.target.blur()}
 												readOnly

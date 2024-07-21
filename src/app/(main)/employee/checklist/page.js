@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Textarea } from "@/components/ui/textarea"
 import Spinner from '@/components/component/Spinner';
 import { getMyUser } from '@/service/userService';
 import { getTaskSet, setShift, updateTaskSet } from '@/service/taskSetService';
@@ -18,6 +19,7 @@ export default function ChecklistPage() {
 	const [userTasks, setUserTasks] = useState([]);
 	const [taskSet, setTaskSet] = useState({});
 	const [userName, setUserName] = useState('');
+	const [observations, setObservations] = useState('');
 	const [searchTerm, setSearchTerm] = useState('');
 	const [filterByStatus, setFilterByStatus] = useState('all');
 	const [isLoading, setIsLoading] = useState(true);
@@ -96,7 +98,10 @@ export default function ChecklistPage() {
 
 	const handleCloseChecklist = async () => {
 		try {
-			await updateTaskSet({ isClosed: true });
+			await updateTaskSet({
+				observations,
+				isClosed: true
+			});
 			setTaskSet({ ...taskSet, isClosed: true });
 			setIsShiftSelected(false);
 			toast({
@@ -185,14 +190,25 @@ export default function ChecklistPage() {
 					)}
 				</div>
 				{filteredTasks.length !== 0 && (
-					<Link href="/cashier">
-						<Button
-							onClick={handleCloseChecklist}
-							className={`flex items-center rounded-md transition-colors duration-300 w-1/4 mx-auto`}
-						>
-							Cerrar Checklist
-						</Button>
-					</Link>
+					<div className='flex flex-col gap-4 items-center'>
+						<div className="w-full max-w-lg">
+							<Label htmlFor="observations">Observaciones:</Label>
+							<Textarea
+								placeholder="Escribe tus observaciones..."
+								id="observations"
+								value={observations}
+								onChange={(e) => setObservations(e.target.value)}
+							/>
+						</div>
+						<Link href="/cashier" className='w-full max-w-md'>
+							<Button
+								className='w-full'
+								onClick={handleCloseChecklist}
+							>
+								Cerrar Checklist
+							</Button>
+						</Link>
+					</div>
 				)}
 			</main>
 		</div>

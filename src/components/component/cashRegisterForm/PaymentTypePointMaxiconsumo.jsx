@@ -81,7 +81,6 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 												id="salesWithPointMaxiconsumo"
 												min="0"
 												step="0.01"
-												autoFocus
 												value={data.salesWithPointMaxiconsumo || ''}
 												onChange={(e) => handleInputChange('salesWithPointMaxiconsumo', e.target.value)}
 												placeholder="0.00"
@@ -135,7 +134,6 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 													id="cashToRenderWithPointMaxiconsumo"
 													min="0"
 													step="0.01"
-													autoFocus
 													value={data.cashToRenderWithPointMaxiconsumo || ''}
 													onChange={(e) => handleInputChange('cashToRenderWithPointMaxiconsumo', e.target.value)}
 													required

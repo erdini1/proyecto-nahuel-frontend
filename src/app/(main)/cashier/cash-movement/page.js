@@ -4,9 +4,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Movements from "@/components/component/cash-movement/tabsCashRegister/Movements";
 import Cancellations from "@/components/component/cash-movement/tabsCashRegister/Cancellation";
 import CashRegister from "@/components/component/cash-movement/tabsCashRegister/CashRegister";
-import { checkIfCashRegisterExists, getLastCashRegister } from "@/service/cashRegisterService";
 import ModalTerminals from "@/components/component/ModalTerminal";
+import { checkIfCashRegisterExists, getLastCashRegister } from "@/service/cashRegisterService";
 import { getTerminals } from "@/service/terminalService";
+import { getCashBoxes } from "@/service/cashBoxService";
 import Link from "next/link";
 import Spinner from "@/components/component/Spinner";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ import { Button } from "@/components/ui/button";
 export default function Page() {
 	const [hasCashRegister, setHasCashRegister] = useState(false);
 	const [selectedTab, setSelectedTab] = useState("cashRegister");
+	const [cashBoxes, setCashBoxes] = useState([]);
 	const [terminals, setTerminals] = useState([]);
 	const [cashRegister, setCashRegister] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +25,10 @@ export default function Page() {
 		const fetchData = async () => {
 			try {
 				const cashRegisterExists = await checkIfCashRegisterExists();
+
+				const cashBoxes = await getCashBoxes()
+				setCashBoxes(cashBoxes);
+
 				if (cashRegisterExists) {
 					setHasCashRegister(true);
 					setSelectedTab("movements");
@@ -61,7 +67,6 @@ export default function Page() {
 	};
 
 	// TODO: Agregar un desalizable para mostrar solo una cantidad movimientos y anulaciones
-	// TODO: Revisar que si voy a crear cashregister me va a dejar hacerlo sin terminar de crear el anterior
 	return (
 		<div className="w-full p-4">
 			<div className="flex flex-col gap-6">
@@ -96,6 +101,7 @@ export default function Page() {
 								<CashRegister
 									onCreated={onCashRegisterCreated}
 									cashRegister={cashRegister}
+									cashBoxes={cashBoxes}
 								/>
 							</TabsContent>
 							<TabsContent value="movements">
@@ -107,16 +113,14 @@ export default function Page() {
 										terminals={terminals}
 										cashRegisterId={cashRegister?.id}
 									/>
+									<Link href="/cashier/cash-movement/report" className="">
+										<Button
+											className={`flex items-center rounded-md transition-colors duration-300 w-1/3 mx-auto`}
+										>Cargar datos
+										</Button>
+									</Link>
 								</div>
 							</TabsContent>
-							{selectedTab === "movements" && (
-								<Link href="/cashier/cash-movement/report" className="">
-									<Button
-										className={`flex items-center rounded-md transition-colors duration-300 w-1/4 mx-auto ${!hasCashRegister ? 'hidden' : ''}`}
-									>Cargar datos
-									</Button>
-								</Link>
-							)}
 						</>
 					)}
 				</Tabs>
