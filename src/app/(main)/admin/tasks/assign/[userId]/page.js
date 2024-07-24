@@ -37,7 +37,7 @@ export default function Page({ params }) {
 				setTasks(tasks)
 
 				const sectors = await getAllSectors()
-				setSectors(sectors)
+				setSectors(sectors.filter(sector => sector.isActive) || []);
 
 			} catch (error) {
 				toast({

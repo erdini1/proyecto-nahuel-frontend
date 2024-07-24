@@ -36,7 +36,7 @@ export default function EmployeeCrud() {
                 setEmployees(employees.filter((employee) => employee.role !== "admin"));
 
                 const sectors = await getAllSectors();
-                setSectors(sectors.filter(sector => sector.name !== "general") || []);
+                setSectors(sectors.filter(sector => sector.name !== "general" && sector.isActive) || []);
             } catch (error) {
                 toast({
                     variant: "destructive",

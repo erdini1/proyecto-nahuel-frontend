@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link"
 import { usePathname } from "next/navigation";
-import { ClipboardListIcon, UserPlusIcon, InboxIcon, DollarSignIcon, PlusIcon, BarChartIcon, ReceiptIcon, CalendarDaysIcon } from "@/components/icons";
+import { ClipboardListIcon, UserPlusIcon, InboxIcon, DollarSignIcon, PlusIcon, BarChartIcon, ReceiptIcon, CalendarDaysIcon, GearIcon } from "@/components/icons";
 
 export default function Sidebar() {
 
@@ -18,17 +18,17 @@ export default function Sidebar() {
 				</div>
 				<div className="flex-1">
 					<nav className="grid items-start px-4 text-sm font-medium">
-						{/* <div className="grid gap-1 mt-4">
+						<div className="grid gap-1 mt-4">
 							<div className="text-gray-500 px-3 py-2">General</div>
 							<Link
-								href="/admin/employee/register"
-								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/employee/" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+								href="/admin/general"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/general" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								prefetch={false}
 							>
-								<UserPlusIcon className="h-4 w-4" />
-								Sectores, Terminales, Proveedores
+								<GearIcon className="h-4 w-4" />
+								Configuración Inicial
 							</Link>
-						</div> */}
+						</div>
 						{/* ---- Empleados ----- */}
 						<div className="grid gap-1 mt-4">
 							<div className="text-gray-500 px-3 py-2">Empleados</div>
@@ -82,12 +82,12 @@ export default function Sidebar() {
 								<ReceiptIcon className="h-4 w-4" />
 								Anulaciones
 							</Link> */}
-							<Link
+							{/* <Link
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								href="#">
 								<BarChartIcon className="h-4 w-4" />
 								Proveedores
-							</Link>
+							</Link> */}
 						</div>
 					</nav>
 				</div>

@@ -43,7 +43,7 @@ export default function EmployeeCrudModal({
 		const fetchSectors = async () => {
 			try {
 				const sectors = await getAllSectors();
-				setSectors(sectors.filter(sector => sector.name !== "general") || []);
+				setSectors(sectors.filter(sector => sector.name !== "general" && sector.isActive) || []);
 			} catch (error) {
 				toast({
 					variant: "destructive",

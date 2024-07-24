@@ -36,7 +36,7 @@ export default function TaskCrud() {
                 setTasks(tasks);
 
                 const sectors = await getAllSectors()
-                setSectors(sectors)
+                setSectors(sectors.filter(sector => sector.isActive) || []);
             } catch (error) {
                 console.log('Failed to fetch tasks:', error);
                 toast({

@@ -65,7 +65,7 @@ export default function Movements({ cashRegisterId }) {
 				setCashMovements(movements);
 
 				const providers = await getProviders();
-				setProviders(providers);
+				setProviders(providers.filter(provider => provider.isActive) || []);
 
 			} catch (error) {
 				console.error('Error fetching data:', error);

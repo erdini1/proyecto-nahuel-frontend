@@ -1,21 +1,21 @@
 "use client"
-import { getAllCashRegisters } from "@/service/cashRegisterService";
 import { useState, useEffect, useMemo } from "react";
-import CashRegisterAdminTable from "@/components/component/cashRegisterAdmin/CashRegisterAdminTable";
-import Spinner from "@/components/component/Spinner";
+import { cn } from "@/lib/utils";
+import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import CashRegisterAdminTable from "@/components/component/cashRegisterAdmin/CashRegisterAdminTable";
+import Spinner from "@/components/component/Spinner";
+import { SearchIcon, CalendarDaysIcon } from "@/components/icons/index";
+import { getAllCashRegisters } from "@/service/cashRegisterService";
 import { getAllCashMovements } from "@/service/cashMovementsService";
 import { getAllCancellations } from "@/service/cancellationService";
 import { getAllterminals } from "@/service/terminalService";
-import { SearchIcon, CalendarDaysIcon } from "@/components/icons/index";
 import { getCashBoxes } from "@/service/cashBoxService";
-import { format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz'
 
 export default function CashRegisterAdmin() {
 	const [cashRegisters, setCashRegisters] = useState([]);
