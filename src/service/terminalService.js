@@ -29,3 +29,13 @@ export const deleteTerminal = async (terminalId) => {
 		throw new Error('Failed to delete terminal');
 	}
 }
+
+export const getAllterminals = async () => {
+	try {
+		const response = await axios.get(`/terminal`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get terminals:', error);
+		throw new Error('Failed to get terminals');
+	}
+}

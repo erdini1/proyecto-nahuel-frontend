@@ -10,6 +10,17 @@ export const getCashMovements = async () => {
 	}
 };
 
+// TODO: Poner paginación 
+export const getAllCashMovements = async () => {
+	try {
+		const response = await axios.get(`/cash-movement`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get all cash movements:', error);
+		throw new Error('Failed to get all cash movements');
+	}
+}
+
 export const createCashMovement = async (data) => {
 	try {
 		const response = await axios.post(`/cash-movement`, data);

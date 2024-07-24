@@ -10,6 +10,17 @@ export const createCashRegister = async (cashRegisterData) => {
 	}
 };
 
+// TODO: Poner paginación
+export const getAllCashRegisters = async () => {
+	try {
+		const response = await axios.get(`/cash-register`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get cash registers', error);
+		throw new Error('Failed to get cash registers');
+	}
+}
+
 export const checkIfCashRegisterExists = async () => {
 	try {
 		const response = await axios.get(`/cash-register/check`);

@@ -27,3 +27,4 @@ export { default as LockOpenIcon } from './LockOpenIcon';
 export { default as LockClosedIcon } from './LockClosedIcon';
 export { default as WeightIcon } from './WeightIcon';
 export { default as SaveIcon } from './SaveIcon';
+export { default as ListPlusIcon } from './ListPlusIcon';

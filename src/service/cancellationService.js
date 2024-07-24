@@ -11,6 +11,16 @@ export const getCancellations = async () => {
 	}
 };
 
+export const getAllCancellations = async () => {
+	try {
+		const response = await axios.get('/cancellation');
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get cash movements:', error);
+		throw new Error('Failed to get cash movements');
+	}
+}
+
 export const createCancellation = async (data) => {
 	try {
 		const response = await axios.post('/cancellation', data);

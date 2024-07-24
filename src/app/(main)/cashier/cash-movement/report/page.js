@@ -424,9 +424,6 @@ export default function Page() {
 					pointMaxiconsumo: terminals.some(terminal => terminal.description.includes('MAXI')),
 					checkingAccount: cashRegisterData.CashBox.hasCheckingAccount,
 				});
-				console.log("selectedTerminals:", selectedTerminals);
-				console.log("cashRegisterData:", cashRegisterData);
-
 			} catch (error) {
 				console.error("Error al obtener los datos", error);
 				toast({

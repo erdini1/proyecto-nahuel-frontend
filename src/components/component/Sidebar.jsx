@@ -18,6 +18,17 @@ export default function Sidebar() {
 				</div>
 				<div className="flex-1">
 					<nav className="grid items-start px-4 text-sm font-medium">
+						{/* <div className="grid gap-1 mt-4">
+							<div className="text-gray-500 px-3 py-2">General</div>
+							<Link
+								href="/admin/employee/register"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/employee/" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+								prefetch={false}
+							>
+								<UserPlusIcon className="h-4 w-4" />
+								Sectores, Terminales, Proveedores
+							</Link>
+						</div> */}
 						{/* ---- Empleados ----- */}
 						<div className="grid gap-1 mt-4">
 							<div className="text-gray-500 px-3 py-2">Empleados</div>
@@ -60,8 +71,8 @@ export default function Sidebar() {
 						<div className="grid gap-1 mt-4">
 							<div className="text-gray-500 px-3 py-2">Caja</div>
 							<Link
-								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
-								href="#">
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/cash-register" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+								href="/admin/cash-register">
 								<DollarSignIcon className="h-4 w-4" />
 								Registro de Caja
 							</Link>
