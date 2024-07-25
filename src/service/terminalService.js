@@ -30,6 +30,16 @@ export const deleteTerminal = async (terminalId) => {
 	}
 }
 
+export const updateTerminal = async (terminalId, terminalsData) => {
+	try {
+		const response = await axios.put(`/terminal/${terminalId}`, terminalsData);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to update terminal:', error);
+		throw new Error('Failed to update terminal');
+	}
+}
+
 export const getAllterminals = async () => {
 	try {
 		const response = await axios.get(`/terminal`);
@@ -57,5 +67,15 @@ export const deleteAssociation = async (terminalId, cashRegisterId) => {
 	} catch (error) {
 		console.error('Failed to delete association:', error);
 		throw new Error('Failed to delete association');
+	}
+}
+
+export const getAllTerminalAssociations = async () => {
+	try {
+		const response = await axios.get(`/cash-register-terminals`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get terminal associations:', error);
+		throw new Error('Failed to get terminal associations');
 	}
 }

@@ -29,3 +29,4 @@ export { default as WeightIcon } from './WeightIcon';
 export { default as SaveIcon } from './SaveIcon';
 export { default as ListPlusIcon } from './ListPlusIcon';
 export { default as GearIcon } from './GearIcon';
+export { default as DownloadIcon } from './DownloadIcon';

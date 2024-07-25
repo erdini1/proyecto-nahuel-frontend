@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CashRegisterAdminTable from "@/components/component/cashRegisterAdmin/CashRegisterAdminTable";
 import Spinner from "@/components/component/Spinner";
-import { SearchIcon, CalendarDaysIcon } from "@/components/icons/index";
+import { SearchIcon, CalendarDaysIcon, DownloadIcon } from "@/components/icons/index";
 import { getAllCashRegisters } from "@/service/cashRegisterService";
 import { getAllCashMovements } from "@/service/cashMovementsService";
 import { getAllCancellations } from "@/service/cancellationService";
@@ -42,7 +42,7 @@ export default function CashRegisterAdmin() {
 				setCashRegisters(cashRegistersData);
 				setCashMovements(cashMovementsData);
 				setCancellations(cancellationsData);
-				setTerminals(terminalsData);
+				setTerminals(terminalsData.filter(terminal => terminal.terminalNumber !== 'cash' && terminal.isActive) || []);
 				setCashBoxes(cashBoxesData);
 
 			} catch (error) {
@@ -144,6 +144,13 @@ export default function CashRegisterAdmin() {
 							</SelectContent>
 						</Select>
 
+						<Button
+							className="w-28 flex items-center justify-center"
+						>
+							<DownloadIcon className="mr-2 h-4 w-4" />
+							Exportar
+						</Button>
+
 					</div>
 				</header>
 				<main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
@@ -163,52 +170,3 @@ export default function CashRegisterAdmin() {
 		</div>
 	);
 }
-// "use client"
-// import { getAllCashRegisters } from "@/service/cashRegisterService";
-// import { useState, useEffect } from "react";
-// import CashRegisterAdminTable from "@/components/component/CashRegisterAdminTable";
-// import Spinner from "@/components/component/Spinner";
-
-// export default function CashRegisterAdmin() {
-// 	const [cashRegisters, setCashRegisters] = useState([]);
-// 	const [isLoading, setIsLoading] = useState(true);
-
-// 	useEffect(() => {
-// 		const fetchData = async () => {
-// 			try {
-// 				setIsLoading(true)
-// 				const cashRegisters = await getAllCashRegisters();
-// 				setCashRegisters(cashRegisters);
-
-// 			} catch (error) {
-// 				console.log('Failed to fetch all tasks:', error);
-// 			} finally {
-// 				setIsLoading(false);
-// 			}
-// 		};
-// 		fetchData();
-// 	}, []);
-
-// 	return (
-// 		<div className="min-h-screen">
-// 			<div className="flex flex-col">
-// 				<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
-// 					<div className="">
-// 						<h1 className="font-semibold text-lg">Registro de Caja</h1>
-// 					</div>
-// 				</header>
-// 				<main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-// 					{isLoading ? (
-// 						<div className="flex justify-center items-center h-64">
-// 							<Spinner />
-// 						</div>
-// 					) : (
-// 						<CashRegisterAdminTable
-// 							cashRegisters={cashRegisters}
-// 						/>
-// 					)}
-// 				</main>
-// 			</div>
-// 		</div>
-// 	);
-// }

@@ -5,12 +5,16 @@ import GeneralTable from "@/components/component/general/GeneralTable";
 import { getAllCashMovements } from "@/service/cashMovementsService";
 import { createSector, deleteSector, getAllSectors, getAllUserSectors, updateSector } from "@/service/sectorService";
 import { createProvider, deleteProvider, getProviders, updateProvider } from "@/service/providerService";
+import TerminalTable from "@/components/component/general/TerminalTable";
+import { createTerminal, deleteTerminal, getAllTerminalAssociations, getAllterminals, updateTerminal } from "@/service/terminalService";
 
 export default function Page() {
 	const [sectors, setSectors] = useState([]);
 	const [providers, setProviders] = useState([]);
 	const [cashMovements, setCashMovements] = useState([]);
 	const [userSectors, setUserSectors] = useState([]);
+	const [terminals, setTerminals] = useState([]);
+	const [terminalsAssociations, setTerminalsAssociations] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -19,16 +23,17 @@ export default function Page() {
 				setIsLoading(true)
 
 				const sectors = await getAllSectors();
-				setSectors(sectors.filter(sector => sector.name !== "general" && sector.isActive) || []);
-
 				const userSector = await getAllUserSectors();
-				setUserSectors(userSector);
-
 				const providers = await getProviders()
-				setProviders(providers.filter(provider => !provider.name.toLowerCase().startsWith("retiro") && provider.isActive) || []);
-
+				const terminals = await getAllterminals();
 				const cashMovementsData = await getAllCashMovements();
+				const terminalsAssociations = await getAllTerminalAssociations();
+				setSectors(sectors.filter(sector => sector.name !== "general" && sector.isActive) || []);
+				setUserSectors(userSector);
+				setProviders(providers.filter(provider => !provider.name.toLowerCase().startsWith("retiro") && provider.isActive) || []);
+				setTerminals(terminals.filter(terminal => terminal.terminalNumber !== "cash" && terminal.isActive) || []);
 				setCashMovements(cashMovementsData);
+				setTerminalsAssociations(terminalsAssociations);
 
 			} catch (error) {
 				console.log('Failed to fetch all tasks:', error);
@@ -51,6 +56,12 @@ export default function Page() {
 		return provider;
 	};
 
+	const handleAddTerminal = async (newTerminal) => {
+		const terminal = await createTerminal(newTerminal);
+		setTerminals([...terminals, terminal].sort((a, b) => a.description.localeCompare(b.description)));
+		return terminal;
+	};
+
 	const handleEditSector = async (sectorId, newSector) => {
 		const sector = await updateSector(sectorId, newSector);
 		const sectorsUpdated = sectors.filter(sector => sector.id !== sectorId);
@@ -65,6 +76,13 @@ export default function Page() {
 		return provider
 	}
 
+	const handleEditTerminal = async (terminalId, newTerminal) => {
+		const terminal = await updateTerminal(terminalId, newTerminal);
+		const terminalsUpdated = terminals.filter(terminal => terminal.id !== terminalId);
+		setTerminals([...terminalsUpdated, terminal].sort((a, b) => a.description.localeCompare(b.description)));
+		return terminal;
+	}
+
 	const handleRemoveSector = async (sectorId) => {
 		await deleteSector(sectorId);
 		setSectors(sectors.filter(sector => sector.id !== sectorId));
@@ -75,6 +93,11 @@ export default function Page() {
 		setProviders(providers.filter(provider => provider.id !== providerId));
 	};
 
+	const handleRemoveTerminal = async (terminalId) => {
+		await deleteTerminal(terminalId);
+		setTerminals(terminals.filter(terminal => terminal.id !== terminalId));
+	};
+
 	const getUsedProviders = () => {
 		const usedProviders = cashMovements.map(movement => movement.Provider.id);
 		return [...new Set(usedProviders)];
@@ -83,6 +106,11 @@ export default function Page() {
 	const getUsedSectors = () => {
 		const usedSectors = userSectors.map(userSector => userSector.sectorId);
 		return [...new Set(usedSectors)];
+	}
+
+	const getUsedTerminals = () => {
+		const usedTerminals = terminalsAssociations.map(association => association.terminalId);
+		return [...new Set(usedTerminals)];
 	}
 
 	return (
@@ -99,30 +127,58 @@ export default function Page() {
 							<Spinner />
 						</div>
 					) : (
-						<div className="flex gap-2">
-							<div className="w-1/3 p-4 ">
-								<p className="mb-2"><span className="font-semibold">Sectores</span></p>
-								<GeneralTable
-									data={sectors}
-									onAdd={handleAddSector}
-									onEdit={handleEditSector}
-									onRemove={handleRemoveSector}
-									placeholder="Nuevo Sector..."
-									tableName="sector"
-									usedData={getUsedSectors()}
-								/>
+						<div className="flex flex-col gap-4">
+							<div className="flex gap-4 mb-4">
+								<div className="w-1/2">
+									{/* <p className="mb-2"><span className="font-semibold">Sectores</span></p> */}
+									<GeneralTable
+										data={sectors}
+										onAdd={handleAddSector}
+										onEdit={handleEditSector}
+										onRemove={handleRemoveSector}
+										placeholder="Nuevo Sector..."
+										tableName="sector"
+										usedData={getUsedSectors()}
+									/>
+								</div>
+								<div className="w-1/2">
+									{/* <p className="mb-2"><span className="font-semibold">Proveedores</span></p> */}
+									<GeneralTable
+										data={providers}
+										onAdd={handleAddProvider}
+										onEdit={handleEditProvider}
+										onRemove={handleRemoveprovider}
+										placeholder="Nuevo Proveedor..."
+										tableName="proveedor"
+										usedData={getUsedProviders()}
+									/>
+								</div>
 							</div>
-							<div className="w-1/3 p-4">
-								<p className="mb-2"><span className="font-semibold">Proveedores</span></p>
-								<GeneralTable
-									data={providers}
-									onAdd={handleAddProvider}
-									onEdit={handleEditProvider}
-									onRemove={handleRemoveprovider}
-									placeholder="Nuevo Proveedor..."
-									tableName="proveedor"
-									usedData={getUsedProviders()}
-								/>
+							<div className="flex gap-4">
+								<div className="w-1/2">
+									<p className="mb-2"><span className="font-semibold">Cajas</span></p>
+									<TerminalTable
+										data={terminals}
+										onAdd={handleAddTerminal}
+										onEdit={handleEditTerminal}
+										onRemove={handleRemoveTerminal}
+										placeholder="Nueva terminal..."
+										tableName="terminal"
+										usedData={getUsedTerminals()}
+									/>
+								</div>
+								<div className="w-1/2">
+									{/* <p className="mb-2"><span className="font-semibold">Terminales</span></p> */}
+									<TerminalTable
+										data={terminals}
+										onAdd={handleAddTerminal}
+										onEdit={handleEditTerminal}
+										onRemove={handleRemoveTerminal}
+										placeholder="Nueva terminal..."
+										tableName="terminal"
+										usedData={getUsedTerminals()}
+									/>
+								</div>
 							</div>
 						</div>
 					)}
