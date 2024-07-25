@@ -43,7 +43,7 @@ export default function CashRegisterAdmin() {
 				setCashMovements(cashMovementsData);
 				setCancellations(cancellationsData);
 				setTerminals(terminalsData.filter(terminal => terminal.terminalNumber !== 'cash' && terminal.isActive) || []);
-				setCashBoxes(cashBoxesData);
+				setCashBoxes(cashBoxesData.filter(cashBox => cashBox.isActive) || []);
 
 			} catch (error) {
 				console.log('Failed to fetch all tasks:', error);

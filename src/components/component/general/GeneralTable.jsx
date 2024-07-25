@@ -135,7 +135,7 @@ const GeneralTable = ({ data, onAdd, onEdit, onRemove, placeholder, tableName, u
 					</DialogContent>
 				</Dialog>
 			</div>
-			<div className="border shadow-sm rounded-lg mt-4 h-auto">
+			<div className="border shadow-sm rounded-lg mt-4 h-[400px]">
 				<ScrollArea className="h-[400px]">
 					<Table>
 						<TableHeader>
@@ -219,19 +219,25 @@ const GeneralTable = ({ data, onAdd, onEdit, onRemove, placeholder, tableName, u
 						</TableBody>
 					</Table>
 				</ScrollArea>
-				<div className="flex justify-between items-center p-4">
+				<div className="flex justify-between p-2">
 					<Button
+						variant="outline"
+						size="icon"
 						onClick={goToPreviousPage}
 						disabled={currentPage === 1}
 					>
-						<ArrowLeftIcon className="h-5 w-5" />
+						<ArrowLeftIcon className="h-4 w-4" />
+						<span className="sr-only">Anterior</span>
 					</Button>
-					<span>Página {currentPage} de {totalPages}</span>
+					<span>{currentPage} de {totalPages}</span>
 					<Button
+						variant="outline"
+						size="icon"
 						onClick={goToNextPage}
 						disabled={currentPage === totalPages}
 					>
-						<ArrowRightIcon className="h-5 w-5" />
+						<ArrowRightIcon className="h-4 w-4" />
+						<span className="sr-only">Siguiente</span>
 					</Button>
 				</div>
 			</div>

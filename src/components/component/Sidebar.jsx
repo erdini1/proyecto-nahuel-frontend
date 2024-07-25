@@ -26,7 +26,15 @@ export default function Sidebar() {
 								prefetch={false}
 							>
 								<GearIcon className="h-4 w-4" />
-								Configuración Inicial
+								Sectores, Cajas
+							</Link>
+							<Link
+								href="/admin/general-cash"
+								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/general-cash" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+								prefetch={false}
+							>
+								<GearIcon className="h-4 w-4" />
+								Proveedores, Terminales
 							</Link>
 						</div>
 						{/* ---- Empleados ----- */}
