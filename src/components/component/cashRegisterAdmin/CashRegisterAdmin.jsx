@@ -27,6 +27,7 @@ export default function CashRegisterAdmin() {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [cashBoxFilter, setCashBoxFilter] = useState("all");
 	const [dateFilter, setDateFilter] = useState(null);
+	const [terminalFilter, setTerminalFilter] = useState("all");
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -58,11 +59,10 @@ export default function CashRegisterAdmin() {
 			const matchesCashier = `${cashRegister.User.firstName} ${cashRegister.User.lastName}`.toLowerCase().includes(searchQuery.toLowerCase());
 			const matchesCashBox = cashBoxFilter === 'all' ? true : cashRegister.CashBox.id === cashBoxFilter;
 			const matchesDate = dateFilter === null ? true : (dateFilter ? cashRegister.date === format(dateFilter, 'yyyy-MM-dd') : true)
-			return matchesCashier && matchesCashBox && matchesDate;
+			const matchesTerminal = terminalFilter === 'all' ? true : cashRegister.Terminals.map(terminal => terminal.id).includes(terminalFilter);
+			return matchesCashier && matchesCashBox && matchesDate && matchesTerminal;
 		});
-	}, [cashRegisters, searchQuery, cashBoxFilter, dateFilter]);
-
-	// TODO: Agregar para poder filtrar por terminales
+	}, [cashRegisters, searchQuery, cashBoxFilter, dateFilter, terminalFilter]);
 
 	return (
 		<div className="">
@@ -72,6 +72,7 @@ export default function CashRegisterAdmin() {
 						<h1 className="font-semibold text-lg">Registro de Caja</h1>
 					</div>
 					<div className="flex gap-2">
+
 						<form className="ml-auto flex-1 sm:flex-initial">
 							<div className="relative">
 								<SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
@@ -129,6 +130,20 @@ export default function CashRegisterAdmin() {
 							</SelectContent>
 						</Select>
 
+						<Select id="terminalFilter" value={terminalFilter} onValueChange={(value) => setTerminalFilter(value)}>
+							<SelectTrigger className="w-40">
+								<SelectValue placeholder="Filtrar por metodo" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all">- Metodos -</SelectItem>
+								{terminals.map(terminal => (
+									<SelectItem key={terminal.id} value={terminal.id} className="capitalize">
+										{terminal.description}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+
 					</div>
 				</header>
 				<main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
@@ -141,7 +156,6 @@ export default function CashRegisterAdmin() {
 							cashRegisters={filteredCashRegistersByCashierOrCashBox}
 							cashMovements={cashMovements}
 							cancellations={cancellations}
-							terminals={terminals}
 						/>
 					)}
 				</main>

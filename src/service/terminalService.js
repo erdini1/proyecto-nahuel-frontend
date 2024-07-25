@@ -39,3 +39,23 @@ export const getAllterminals = async () => {
 		throw new Error('Failed to get terminals');
 	}
 }
+
+export const createAssociation = async (terminalId, cashRegisterId) => {
+	try {
+		const response = await axios.post(`/cash-register-terminals`, { terminalId, cashRegisterId });
+		return response.data;
+	} catch (error) {
+		console.error('Failed to create association:', error);
+		throw new Error('Failed to create association');
+	}
+}
+
+export const deleteAssociation = async (terminalId, cashRegisterId) => {
+	try {
+		const response = await axios.post(`/cash-register-terminals/delete`, { terminalId, cashRegisterId });
+		return response.data;
+	} catch (error) {
+		console.error('Failed to delete association:', error);
+		throw new Error('Failed to delete association');
+	}
+}

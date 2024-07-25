@@ -1,7 +1,7 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import CashRegisterRow from '@/components/component/cashRegisterAdmin/CashRegisterRow';
 
-export default function CashRegisterAdminTable({ cashRegisters, cashMovements, cancellations, terminals }) {
+export default function CashRegisterAdminTable({ cashRegisters, cashMovements, cancellations }) {
 
 	const cashMovementsFiltered = (cashRegisterId) => {
 		return cashMovements.filter((cashMovement) => cashMovement.CashRegister.id === cashRegisterId);
@@ -38,7 +38,6 @@ export default function CashRegisterAdminTable({ cashRegisters, cashMovements, c
 								cashRegister={cashRegister}
 								cashMovementsFiltered={cashMovementsFiltered}
 								cancellationsFiltered={cancellationsFiltered}
-								terminals={terminals}
 							/>
 						))
 					)}

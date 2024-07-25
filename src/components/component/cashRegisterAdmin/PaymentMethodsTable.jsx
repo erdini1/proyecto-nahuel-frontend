@@ -3,7 +3,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { Badge } from "@/components/ui/badge"
 
 
-const PaymentMethodsTable = ({ cashRegister, cashMovements, cancellations, terminals }) => {
+const PaymentMethodsTable = ({ cashRegister, cashMovements, cancellations }) => {
 	const [data, setData] = useState({
 		Cash: {
 			sales: 0,
@@ -66,7 +66,7 @@ const PaymentMethodsTable = ({ cashRegister, cashMovements, cancellations, termi
 
 			const diff = {
 				Cash: calculateDiff(+cashRegister.cashToRenderWithCash, toRenderSystem.Cash),
-				Cards: calculateDiff(+cashRegister.cashToRenderWithCard, toRenderSystem.Cards),
+				Cards: calculateDiff(+cashRegister.cashToRenderWithCards, toRenderSystem.Cards),
 				MercadoPago: calculateDiff(+cashRegister.cashToRenderWithMercadoPago, toRenderSystem.MercadoPago),
 				PointMaxiconsumo: calculateDiff(+cashRegister.cashToRenderWithPointMaxiconsumo, toRenderSystem.PointMaxiconsumo),
 				Credit: calculateDiff(+cashRegister.cashToRenderWithCredit, toRenderSystem.Credit)
@@ -156,8 +156,10 @@ const PaymentMethodsTable = ({ cashRegister, cashMovements, cancellations, termi
 					</div>
 					<div className="flex items-center gap-1">
 						<span className="font-semibold text-gray-700">Terminales:</span>
-						{terminals.map(terminal => (
-							<Badge key={terminal.id} className="capitalize bg-gray-400">{terminal.description}</Badge>
+						{cashRegister.Terminals.map(terminal => (
+							terminal.terminalNumber !== "cash" && (
+								<Badge key={terminal.id} className="capitalize bg-gray-400">{terminal.description}</Badge>
+							)
 						))}
 					</div>
 				</div>
@@ -176,7 +178,8 @@ const PaymentMethodsTable = ({ cashRegister, cashMovements, cancellations, termi
 				</TableHeader>
 				<TableBody className="bg-white divide-y divide-gray-200 text-xs whitespace-nowrap">
 					{paymentMethods.map(({ key, label, terminal }) => {
-						const isInUse = key === "Credit" ? cashRegister.CashBox.hasCheckingAccount : isTerminalInUse(terminal, terminals);
+						const isInUse = key === "Credit" ? cashRegister.CashBox.hasCheckingAccount : isTerminalInUse(terminal, cashRegister.Terminals);
+
 						return (
 							<TableRow key={key} className={isInUse ? "" : "opacity-50"}>
 								<TableCell className={`px-6 py-4 text-gray-600 uppercase`}>{label} <span>{key === "PointMaxiconsumo" ? "(225)" : ""}</span></TableCell>

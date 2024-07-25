@@ -9,7 +9,7 @@ import CancellationsTable from '@/components/component/cashRegisterAdmin/Cancell
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz'
 
-const CashRegisterRow = ({ cashRegister, cashMovementsFiltered, cancellationsFiltered, terminals }) => {
+const CashRegisterRow = ({ cashRegister, cashMovementsFiltered, cancellationsFiltered }) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [totalPaymentMethods, setTotalPaymentMethods] = useState(0);
 	const [totalWithdrawalCash, setTotalWithdrawalCash] = useState(0);
@@ -64,11 +64,16 @@ const CashRegisterRow = ({ cashRegister, cashMovementsFiltered, cancellationsFil
 									cashRegister={cashRegister}
 									cashMovements={cashMovementsFiltered(cashRegister.id)}
 									cancellations={cancellationsFiltered(cashRegister.id)}
-									terminals={terminals.filter(terminal => terminal.CashRegister.id === cashRegister.id && terminal.description !== 'EFECTIVO')}
 								/>
 								<div className='flex gap-2'>
 									<CashMovementsTable cashMovements={cashMovementsFiltered(cashRegister.id)} />
 									<CancellationsTable cancellations={cancellationsFiltered(cashRegister.id)} />
+								</div>
+								<div className="flex gap-6 border rounded-lg bg-white shadow p-4 text-xs">
+									<div className="flex items-center gap-1">
+										<span className="font-semibold text-gray-700 uppercase">Observaciones:</span>
+										<p>{cashRegister?.observations}</p>
+									</div>
 								</div>
 							</CollapsibleContent>
 						</Collapsible>
