@@ -38,7 +38,6 @@ export default function Page({ params }) {
 				setUserTasks(userTasks);
 
 			} catch (error) {
-				// console.log('Failed to fetch all tasks:', error);
 				toast({
 					variant: "destructive",
 					title: "Error",
@@ -57,7 +56,6 @@ export default function Page({ params }) {
 			const userTasks = await getUserTasksByTaskSetId(taskSetId);
 			setUserTasks(userTasks);
 		} catch (error) {
-			// console.log('Failed to delete task:', error);
 			toast({
 				variant: "destructive",
 				title: "Error",

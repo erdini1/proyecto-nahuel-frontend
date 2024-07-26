@@ -58,7 +58,7 @@ export default function PaymentTypeMercadoPago({ cashMovements, cancellations, c
 			<Table className="w-full">
 				<TableHeader>
 					<TableRow>
-						<TableHead className="uppercase flex flex-col">Mercado Pago
+						<TableHead className="uppercase flex flex-col p-2">Mercado Pago
 							<span className="text-xs font-normal text-gray-500 uppercase"> (QR - Link - Debito y Credito)</span>
 						</TableHead>
 					</TableRow>
@@ -158,13 +158,23 @@ export default function PaymentTypeMercadoPago({ cashMovements, cancellations, c
 											/>
 										</div>
 									</div>
+									<Button
+										variant="outline"
+										className="w-1/2 self-center shadow flex gap-2"
+										onClick={handleSave}
+										disabled={!data.salesWithMercadoPago || !data.cashToRenderWithMercadoPago}
+									>
+										<Save className="h-4 w-4" />
+										Guardar
+									</Button>
+
 								</div>
 							</div>
 						</TableCell>
 					</TableRow>
 				</TableBody>
 			</Table>
-			<Button
+			{/* <Button
 				variant="outline"
 				className="w-1/2 self-center shadow flex gap-2"
 				onClick={handleSave}
@@ -172,7 +182,7 @@ export default function PaymentTypeMercadoPago({ cashMovements, cancellations, c
 			>
 				<Save className="h-4 w-4" />
 				Guardar
-			</Button>
+			</Button> */}
 		</div>
 	);
 }

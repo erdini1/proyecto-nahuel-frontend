@@ -58,7 +58,7 @@ export default function PaymentTypeCard({ cashMovements, cancellations, cashRegi
 			<Table className="w-full">
 				<TableHeader>
 					<TableRow>
-						<TableHead className="uppercase flex flex-col">Tarjetas
+						<TableHead className="uppercase flex flex-col p-2">Tarjetas
 							<span className="text-xs font-normal text-gray-500 uppercase"> (Clover / QR - TDF - La red)</span>
 						</TableHead>
 					</TableRow>
@@ -157,13 +157,22 @@ export default function PaymentTypeCard({ cashMovements, cancellations, cashRegi
 											/>
 										</div>
 									</div>
+									<Button
+										variant="outline"
+										className="w-1/2 self-center shadow flex gap-2"
+										onClick={handleSave}
+										disabled={!data.salesWithCards || !data.cashToRenderWithCards}
+									>
+										<Save className="h-4 w-4" />
+										Guardar
+									</Button>
 								</div>
 							</div>
 						</TableCell>
 					</TableRow>
 				</TableBody>
 			</Table>
-			<Button
+			{/* <Button
 				variant="outline"
 				className="w-1/2 self-center shadow flex gap-2"
 				onClick={handleSave}
@@ -171,7 +180,7 @@ export default function PaymentTypeCard({ cashMovements, cancellations, cashRegi
 			>
 				<Save className="h-4 w-4" />
 				Guardar
-			</Button>
+			</Button> */}
 		</div>
 	);
 }

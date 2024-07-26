@@ -10,7 +10,6 @@ export const createCashRegister = async (cashRegisterData) => {
 	}
 };
 
-// TODO: Poner paginación
 export const getAllCashRegisters = async () => {
 	try {
 		const response = await axios.get(`/cash-register`);

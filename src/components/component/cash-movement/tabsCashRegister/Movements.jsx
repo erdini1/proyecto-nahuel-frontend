@@ -49,7 +49,6 @@ export default function Movements({ cashRegisterId }) {
 	const [selectedProvider, setSelectedProvider] = useState(null);
 	const [editingMovement, setEditingMovement] = useState(null);
 	const [newMovement, setNewMovement] = useState({
-		// type: 'withdrawal',
 		amount: '',
 		providerId: '',
 		cashRegisterId: ""
@@ -89,7 +88,6 @@ export default function Movements({ cashRegisterId }) {
 	const handleModalClose = () => {
 		setIsModalOpen(false);
 		setNewMovement({
-			// type: 'withdrawal',
 			amount: '',
 			providerId: '',
 			cashRegisterId: ""
@@ -138,7 +136,6 @@ export default function Movements({ cashRegisterId }) {
 	const handleEdit = (movement) => {
 		setEditingMovement(movement);
 		setNewMovement({
-			// type: movement.type,
 			amount: movement.amount,
 			providerId: movement.Provider.id,
 			cashRegisterId: movement.CashRegister.id
@@ -168,9 +165,9 @@ export default function Movements({ cashRegisterId }) {
 
 	return (
 		<div className="">
-			<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
+			<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 mb-4">
 				<div className="flex-1">
-					<h1 className="font-semibold text-lg">Movimientos de caja</h1>
+					<h1 className="font-semibold text-lg text-gray-900">Movimientos de caja</h1>
 				</div>
 				<div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
 					<Button
@@ -189,8 +186,8 @@ export default function Movements({ cashRegisterId }) {
 						<Spinner />
 					</div>
 				) : (
-					<Table>
-						<TableHeader>
+					<Table className="border border-gray-200 shadow-sm bg-gray-50">
+						<TableHeader className="border-b-2 border-gray-300">
 							<TableRow>
 								<TableHead className="pl-8 w-1/6">ID</TableHead>
 								<TableHead className="w-1/6">Tipo</TableHead>
@@ -207,7 +204,7 @@ export default function Movements({ cashRegisterId }) {
 								</TableRow>
 							) :
 								(cashMovements.map(movement => (
-									<TableRow key={movement.id}>
+									<TableRow key={movement.id} className="odd:bg-gray-100">
 										<TableCell className="font-medium pl-8 w-1/6">{movement.id}</TableCell>
 										<TableCell className="w-1/6">Retiro</TableCell>
 										<TableCell className="w-1/6">{movement.Provider.name}</TableCell>

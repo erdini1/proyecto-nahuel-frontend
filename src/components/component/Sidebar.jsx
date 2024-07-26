@@ -84,18 +84,6 @@ export default function Sidebar() {
 								<DollarSignIcon className="h-4 w-4" />
 								Registro de Caja
 							</Link>
-							{/* <Link
-								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
-								href="#">
-								<ReceiptIcon className="h-4 w-4" />
-								Anulaciones
-							</Link> */}
-							{/* <Link
-								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/-" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
-								href="#">
-								<BarChartIcon className="h-4 w-4" />
-								Proveedores
-							</Link> */}
 						</div>
 					</nav>
 				</div>

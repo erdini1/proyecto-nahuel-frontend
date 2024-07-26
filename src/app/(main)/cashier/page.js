@@ -25,7 +25,8 @@ export default function Page() {
 	}, [])
 
 	return (
-		<div className="flex  items-center justify-center bg-white px-4 py-6 sm:px-6 lg:px-8">
+		<main className="flex  justify-center px-4 py-6 sm:px-6 lg:px-8 bg-gray-100 h-screen">
+			{/* <main className="flex  justify-center px-4 py-6 sm:px-6 lg:px-8 bg-[#8ecae6] h-screen"> */}
 			{isLoading ? (
 				<div className="flex justify-center items-center h-64">
 					<Spinner />
@@ -39,7 +40,7 @@ export default function Page() {
 					<div className="grid grid-cols-2 gap-4">
 						<Link
 							href="/employee/checklist"
-							className="flex flex-col items-center justify-center rounded-lg bg-white p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
+							className="flex flex-col items-center justify-center rounded-lg bg-white border-gray-300 p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
 							prefetch={false}
 						>
 							<ClipboardListIcon className="mb-4 h-12 w-12 text-[#F59E0B]" />
@@ -48,7 +49,7 @@ export default function Page() {
 						</Link>
 						<Link
 							href="/cashier/cash-movement"
-							className="flex flex-col items-center justify-center rounded-lg bg-white p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
+							className="flex flex-col items-center justify-center rounded-lg bg-white border-gray-300 p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
 							prefetch={false}
 						>
 							<DollarSignIcon className="mb-4 h-12 w-12 text-[#F59E0B]" />
@@ -60,6 +61,6 @@ export default function Page() {
 					</div>
 				</div>
 			)}
-		</div>
+		</main>
 	)
 }

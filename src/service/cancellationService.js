@@ -1,6 +1,5 @@
 import axios from "../config/axios";
 
-// TODO: Revisar función para obtener cancelaciones por cashRegister
 export const getCancellations = async () => {
 	try {
 		const response = await axios.get(`/cancellation/user`);

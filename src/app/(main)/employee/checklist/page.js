@@ -136,7 +136,7 @@ export default function ChecklistPage() {
 							<CalendarDaysIcon className="h-4 w-4" />
 							{new Date().toLocaleDateString()}
 						</div>
-						{taskSet.shift && (
+						{taskSet?.shift && (
 							<div className="text-gray-500 flex items-center gap-2">
 								<ClockIcon className="h-4 w-4" />
 								{taskSet.shift}
@@ -176,7 +176,7 @@ export default function ChecklistPage() {
 							<Spinner />
 						</div>
 					) : (
-						<>
+						<div className='flex flex-col gap-5 pb-4'>
 							<AssignShift
 								isOpen={isModalOpen}
 								onClose={() => setIsModalOpen(false)}
@@ -186,30 +186,31 @@ export default function ChecklistPage() {
 								tasks={filteredTasks}
 								handleCompleteUserTask={handleCompleteUserTask}
 							/>
-						</>
+							{filteredTasks.length !== 0 && (
+								<div className='flex flex-col gap-4 items-center'>
+									<div className="w-full max-w-lg">
+										<Label htmlFor="observations">Observaciones:</Label>
+										<Textarea
+											placeholder="Escribe tus observaciones..."
+											id="observations"
+											value={observations}
+											onChange={(e) => setObservations(e.target.value)}
+											className="border shadow"
+										/>
+									</div>
+									<Link href="/cashier" className='w-full max-w-md'>
+										<Button
+											className='w-full shadow'
+											onClick={handleCloseChecklist}
+										>
+											Cerrar Checklist
+										</Button>
+									</Link>
+								</div>
+							)}
+						</div>
 					)}
 				</div>
-				{filteredTasks.length !== 0 && (
-					<div className='flex flex-col gap-4 items-center'>
-						<div className="w-full max-w-lg">
-							<Label htmlFor="observations">Observaciones:</Label>
-							<Textarea
-								placeholder="Escribe tus observaciones..."
-								id="observations"
-								value={observations}
-								onChange={(e) => setObservations(e.target.value)}
-							/>
-						</div>
-						<Link href="/cashier" className='w-full max-w-md'>
-							<Button
-								className='w-full'
-								onClick={handleCloseChecklist}
-							>
-								Cerrar Checklist
-							</Button>
-						</Link>
-					</div>
-				)}
 			</main>
 		</div>
 	);

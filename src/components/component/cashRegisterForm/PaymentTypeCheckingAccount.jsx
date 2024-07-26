@@ -50,12 +50,12 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 	};
 
 	return (
-		<div className="flex flex-col w-full min-h-full justify-between">
+		<div className="flex flex-col w-full min-h-full justify-between ">
 			<div className="flex flex-col">
 				<Table className="w-full">
 					<TableHeader>
 						<TableRow>
-							<TableHead className="uppercase">
+							<TableHead className="uppercase p-2">
 								Cuenta Corriente
 							</TableHead>
 						</TableRow>
@@ -137,23 +137,23 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 												/>
 											</div>
 										</div>
+										<div className="flex justify-center mt-4 align-bottom">
+											<Button
+												variant="outline"
+												className="w-1/2 self-center shadow flex gap-2"
+												onClick={handleSave}
+												disabled={!data.salesWithCredit || !data.cashToRenderWithCredit}
+											>
+												<Save className="h-4 w-4" />
+												Guardar
+											</Button>
+										</div>
 									</div>
 								</div>
 							</TableCell>
 						</TableRow>
 					</TableBody>
 				</Table>
-			</div>
-			<div className="flex justify-center mt-4">
-				<Button
-					variant="outline"
-					className="w-1/2 self-center shadow flex gap-2"
-					onClick={handleSave}
-					disabled={!data.salesWithCredit || !data.cashToRenderWithCredit}
-				>
-					<Save className="h-4 w-4" />
-					Guardar
-				</Button>
 			</div>
 		</div>
 	);

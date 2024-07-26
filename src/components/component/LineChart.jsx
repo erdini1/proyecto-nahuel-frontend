@@ -24,7 +24,7 @@ const LineChart = ({ data }) => {
 				axisBottom={{
 					tickSize: 0,
 					tickPadding: 16,
-					format: (date) => date, // Formato de fecha
+					format: (date) => date,
 				}}
 				axisLeft={{
 					tickSize: 0,

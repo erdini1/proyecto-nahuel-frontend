@@ -60,7 +60,7 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 			<Table className="w-full">
 				<TableHeader>
 					<TableRow>
-						<TableHead className="uppercase flex flex-col">
+						<TableHead className="uppercase flex flex-col p-2">
 							Point Maxiconsumo
 							<span className="text-xs font-normal text-gray-500 uppercase"> (Tarjeta debito y credito)</span>
 						</TableHead>
@@ -176,15 +176,23 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 												className="border w-full shadow "
 											/>
 										</div>
-
 									</div>
+									<Button
+										variant="outline"
+										className="w-1/2 self-center shadow flex gap-2"
+										onClick={handleSave}
+										disabled={!data.salesWithPointMaxiconsumo || !data.cashToRenderWithPointMaxiconsumo || !data.lotNumber}
+									>
+										<Save className="h-4 w-4" />
+										Guardar
+									</Button>
 								</div>
 							</div>
 						</TableCell>
 					</TableRow>
 				</TableBody>
 			</Table>
-			<Button
+			{/* <Button
 				variant="outline"
 				className="w-1/2 self-center shadow flex gap-2"
 				onClick={handleSave}
@@ -192,7 +200,7 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 			>
 				<Save className="h-4 w-4" />
 				Guardar
-			</Button>
+			</Button> */}
 		</div>
 	);
 }

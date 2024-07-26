@@ -29,14 +29,14 @@ const TaskTableComplete = ({ tasks, handleCompleteUserTask }) => {
 					<TableHead className="w-1/6">Estado</TableHead>
 				</TableRow>
 			</TableHeader>
-			<TableBody>
+			<TableBody className="divide-y-2">
 				{tasks.length === 0 ? (
 					<TableRow>
 						<TableCell colSpan="2" className="text-center">No hay tareas para mostrar</TableCell>
 					</TableRow>
 				) : (
 					tasks.map((userTask) => (
-						<TableRow key={userTask.id}>
+						<TableRow key={userTask.id} className="odd:bg-gray-100">
 							<TableCell colSpan={1} className="flex justify-between items-center">
 								{userTask.Task.description}
 								{userTask.Task.type === "elaboration" && (

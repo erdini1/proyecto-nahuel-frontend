@@ -11,8 +11,8 @@ import { getCashBoxes } from "@/service/cashBoxService";
 import Link from "next/link";
 import Spinner from "@/components/component/Spinner";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
-// TODO: Agregar un svg del signo de pesos en los inputs de dinero
 export default function Page() {
 	const [hasCashRegister, setHasCashRegister] = useState(false);
 	const [selectedTab, setSelectedTab] = useState("cashRegister");
@@ -68,7 +68,9 @@ export default function Page() {
 
 	// TODO: Agregar un desalizable para mostrar solo una cantidad movimientos y anulaciones
 	return (
-		<div className="w-full p-4">
+		<div className="w-full p-4 bg-gray-100 h-screen">
+			{/* <div className="w-full p-4 bg-[#8ecae6] h-screen"> */}
+			{/* <div className="w-full p-4 bg-[#f4a261] h-screen"> */}
 			<div className="flex flex-col gap-6">
 				<Tabs value={selectedTab} onValueChange={handleTabChange}>
 					<div className="flex gap-3 items-center">
@@ -101,11 +103,11 @@ export default function Page() {
 								<CashRegister
 									onCreated={onCashRegisterCreated}
 									cashRegister={cashRegister}
-									cashBoxes={cashBoxes}
+									cashBoxes={cashBoxes.filter((cashBox) => cashBox.isActive)}
 								/>
 							</TabsContent>
-							<TabsContent value="movements">
-								<div className="p-4 flex flex-col gap-10">
+							<TabsContent value="movements" className="p-4">
+								<Card className="p-4 flex flex-col gap-10">
 									<Movements
 										cashRegisterId={cashRegister?.id}
 									/>
@@ -119,7 +121,7 @@ export default function Page() {
 										>Cargar datos
 										</Button>
 									</Link>
-								</div>
+								</Card>
 							</TabsContent>
 						</>
 					)}

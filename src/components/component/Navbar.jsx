@@ -8,7 +8,6 @@ export default function Navbar() {
 			<div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8 flex items-center justify-between">
 				<div>
 					<Link href="/cashier" className="flex items-center gap-2 text-gray-700 hover:text-gray-900 " prefetch={false}>
-						{/* TODO: Ver bien el tema del icono */}
 						<TintinIcon className="h-8 w-8 text-white" />
 						<span className="text-xl font-bold text-white">INICIO</span>
 					</Link>
