@@ -141,25 +141,7 @@ export default function EmployeeCrudModal({
 					</div>
 					<div>
 						<div className="flex gap-1">
-							<div className="grid gap-3 w-1/2">
-								<Label htmlFor="number">Número de empleado</Label>
-								<Input
-									id="number"
-									type="number"
-									placeholder="Ingrese número de empleado"
-									value={newEmployee.number}
-									onChange={(e) =>
-										setNewEmployee({ ...newEmployee, number: e.target.value })
-									}
-									onBlur={validateEmployeeNumber}
-									className={`h-12 ${!isEditing ? "shadow" : ""} ${isNumberDuplicate ? "border-red-500" : ""}`}
-									disabled={isEditing}
-								/>
-								{isNumberDuplicate && (
-									<p className="text-red-500 text-sm">El número de empleado ya existe.</p>
-								)}
-							</div>
-							<div className="grid gap-3 w-1/2">
+							<div className="grid gap-3 w-full">
 								<Label htmlFor="sector">Sector</Label>
 								<MultiSelect
 									options={sectors}
@@ -172,21 +154,19 @@ export default function EmployeeCrudModal({
 					</div>
 					<div className="flex gap-1 items-center">
 						<div className="grid gap-3 w-full">
-							<Label htmlFor="password">Contraseña</Label>
+							<Label htmlFor="number">Contraseña</Label>
 							<div className="flex gap-1">
 								<div className={`relative ${isEditing ? "w-4/5" : "w-full"}`}>
 									<Input
-										id="password"
+										id="number"
 										type={showPassword ? "text" : "password"}
-										placeholder={editPassword ? "Ingrese nueva contraseña" : "Ingrese la contraseña"}
-										value={editPassword ? newEmployee.password : '•••••••••••••••••••'}
+										placeholder={editPassword ? "Ingrese nuevo numero de empleado" : "Ingrese el numero de empleado"}
+										value={editPassword ? newEmployee.number : '•••••••••••••••••••'}
 										onChange={(e) =>
-											setNewEmployee({
-												...newEmployee,
-												password: e.target.value,
-											})
+											setNewEmployee({ ...newEmployee, number: e.target.value })
 										}
-										className="h-12 shadow"
+										onBlur={validateEmployeeNumber}
+										className={`h-12 ${!isEditing ? "shadow" : ""} ${isNumberDuplicate ? "border-red-500" : ""}`}
 										disabled={!editPassword}
 									/>
 									{editPassword && (
@@ -197,6 +177,9 @@ export default function EmployeeCrudModal({
 										>
 											{showPassword ? <EyeClosedIcon className="h-5 w-5 text-gray-400" /> : <EyeOpenIcon className="h-5 w-5 text-gray-400" />}
 										</button>
+									)}
+									{isNumberDuplicate && (
+										<p className="text-red-500 text-sm">El número de empleado ya existe.</p>
 									)}
 								</div>
 								{isEditing && (
@@ -236,7 +219,7 @@ export default function EmployeeCrudModal({
 							!newEmployee.firstName ||
 							!newEmployee.lastName ||
 							!newEmployee.number ||
-							!newEmployee.password ||
+							// !newEmployee.password ||
 							!selectedSectors.length ||
 							isNumberDuplicate
 						}

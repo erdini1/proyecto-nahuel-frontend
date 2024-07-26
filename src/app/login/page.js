@@ -28,7 +28,7 @@ export default function SignIn() {
 
 			switch (decodedToken.role) {
 				case 'admin':
-					router.push("/admin/dashboard");
+					router.push("/admin/general");
 					break;
 				case 'cashier':
 					router.push("/cashier");
@@ -61,35 +61,18 @@ export default function SignIn() {
 				<form className="space-y-6 px-4 sm:px-0" onSubmit={handleSubmit}>
 					<div>
 						<Label htmlFor="number" className="block text-sm font-medium text-muted-foreground">
-							Numero de Empleado
+							Contraseña
 						</Label>
 						<div className="mt-1">
 							<Input
 								id="number"
 								name="number"
-								type="text"
+								type="password"
 								value={number}
 								onChange={(e) => setNumber(e.target.value)}
 								required
 								className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 placeholder-muted-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-primary sm:text-sm"
-								placeholder="Numero de Empleado"
-							/>
-						</div>
-					</div>
-					<div>
-						<Label htmlFor="password" className="block text-sm font-medium text-muted-foreground">
-							Contraseña
-						</Label>
-						<div className="mt-1">
-							<Input
-								id="password"
-								name="password"
-								type="password"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								required
-								className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 placeholder-muted-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-primary sm:text-sm"
-								placeholder="••••••••"
+								placeholder="Contraseña"
 							/>
 						</div>
 					</div>

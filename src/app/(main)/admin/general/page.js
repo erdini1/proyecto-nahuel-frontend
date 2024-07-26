@@ -74,11 +74,6 @@ export default function Page() {
 		setCashBoxes(cashBoxes.filter(cashBox => cashBox.id !== cashBoxId));
 	}
 
-	const getUsedProviders = () => {
-		const usedProviders = cashMovements.map(movement => movement.Provider.id);
-		return [...new Set(usedProviders)];
-	}
-
 	const getUsedSectors = () => {
 		const usedSectors = userSectors.map(userSector => userSector.sectorId);
 		return [...new Set(usedSectors)];
@@ -120,7 +115,6 @@ export default function Page() {
 										onAdd={handleAddCashBox}
 										onEdit={handleEditCashBox}
 										onRemove={handleRemoveCashBox}
-										usedData={getUsedProviders()}
 									/>
 								</div>
 							</div>

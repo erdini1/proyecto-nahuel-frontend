@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link"
 import { usePathname } from "next/navigation";
-import { ClipboardListIcon, UserPlusIcon, InboxIcon, DollarSignIcon, PlusIcon, BarChartIcon, ReceiptIcon, CalendarDaysIcon, GearIcon } from "@/components/icons";
+import { ClipboardListIcon, UserPlusIcon, InboxIcon, DollarSignIcon, PlusIcon, BarChartIcon, ReceiptIcon, CalendarDaysIcon, GearIcon, MixerVertical, MixerHorizontal } from "@/components/icons";
 
 export default function Sidebar() {
 
@@ -25,7 +25,7 @@ export default function Sidebar() {
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/general" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								prefetch={false}
 							>
-								<GearIcon className="h-4 w-4" />
+								<MixerHorizontal className="h-4 w-4" />
 								Sectores, Cajas
 							</Link>
 							<Link
@@ -33,7 +33,7 @@ export default function Sidebar() {
 								className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/general-cash" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 								prefetch={false}
 							>
-								<GearIcon className="h-4 w-4" />
+								<MixerVertical className="h-4 w-4" />
 								Proveedores, Terminales
 							</Link>
 						</div>

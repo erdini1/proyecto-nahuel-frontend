@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { TrashIcon, CheckIcon, XIcon, FilePenIcon, ArrowLeftIcon, PlusIcon } from '@/components/icons';
+import { Label } from "@/components/ui/label"
+import { TrashIcon, CheckIcon, XIcon, FilePenIcon, ArrowLeftIcon, PlusIcon, SearchIcon } from '@/components/icons';
 import { useToast } from "@/components/ui/use-toast";
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -14,7 +15,8 @@ const GeneralTable = ({ data, onAdd, onEdit, onRemove, placeholder, tableName, u
 	const [editId, setEditId] = useState(null);
 	const [editName, setEditName] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
-	const [isDialogOpen, setIsDialogOpen] = useState(false); // Estado para controlar el modal
+	const [isDialogOpen, setIsDialogOpen] = useState(false); 
+	const [searchTerm, setSearchTerm] = useState('');
 
 	const itemsPerPage = 10;
 
@@ -89,9 +91,14 @@ const GeneralTable = ({ data, onAdd, onEdit, onRemove, placeholder, tableName, u
 		setEditName('');
 	};
 
-	const totalPages = Math.ceil(data.length / itemsPerPage);
+	const filteredData = data.filter(d => {
+		const matchesName = d.name.toLowerCase().includes(searchTerm.toLowerCase());
+		return matchesName;
+	});
+	
+	const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-	const currentData = data.slice(
+	const currentData = filteredData.slice(
 		(currentPage - 1) * itemsPerPage,
 		currentPage * itemsPerPage
 	);
@@ -110,6 +117,18 @@ const GeneralTable = ({ data, onAdd, onEdit, onRemove, placeholder, tableName, u
 				<div className="flex-1">
 					<p className="mb-2"><span className="font-semibold">{tableName === "sector" ? "Sectores" : "Proveedores"}</span></p>
 				</div>
+
+				<div className="relative">
+					<SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+					<Input
+						className="pl-8 sm:w-[200px] md:w-[200px] lg:w-[200px] bg-white"
+						id="search"
+						placeholder={`Buscar ${tableName}...`}
+						value={searchTerm}
+						onChange={e => setSearchTerm(e.target.value)}
+					/>
+				</div>
+
 				<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 					<DialogTrigger asChild>
 						<Button variant="outline" onClick={() => setIsDialogOpen(true)} className="flex items-center gap-2">

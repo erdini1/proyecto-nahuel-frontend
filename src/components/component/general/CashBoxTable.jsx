@@ -10,6 +10,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { SearchIcon } from 'lucide-react';
 
 const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 	const [description, setDescription] = useState('');
@@ -20,6 +21,7 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 	const [editHasCheckingAccount, setEditHasCheckingAccount] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [searchTerm, setSearchTerm] = useState('');
 	const itemsPerPage = 10;
 
 	const { toast } = useToast();
@@ -96,9 +98,15 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 		setEditHasCheckingAccount(false);
 	};
 
-	const totalPages = Math.ceil(data.length / itemsPerPage);
+	
+	const filteredData = data.filter(d => {
+		const matchesDescription = d.description.toLowerCase().includes(searchTerm.toLowerCase());
+		return matchesDescription;
+	});
+	
+	const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-	const currentData = data.slice(
+	const currentData = filteredData.slice(
 		(currentPage - 1) * itemsPerPage,
 		currentPage * itemsPerPage
 	);
@@ -117,6 +125,18 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 				<div className="flex-1">
 					<p className="mb-2"><span className="font-semibold">Cajas</span></p>
 				</div>
+
+				<div className="relative">
+					<SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+					<Input
+						className="pl-8 sm:w-[200px] md:w-[200px] lg:w-[200px] bg-white"
+						id="search"
+						placeholder="Buscar caja..."
+						value={searchTerm}
+						onChange={e => setSearchTerm(e.target.value)}
+					/>
+				</div>
+
 				<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 					<DialogTrigger asChild>
 						<Button variant="outline" onClick={() => setIsDialogOpen(true)} className="flex items-center gap-2">
