@@ -72,31 +72,26 @@ export default function EmployeeCrudModal({
 		setNewEmployee({ ...newEmployee, password: '' });
 	};
 
-	const validateEmployeeNumber = async () => {
-		try {
-			const isDuplicate = employees.some(emp => emp.number === +newEmployee.number && emp.id !== newEmployee.id);
-			setIsNumberDuplicate(isDuplicate);
-		} catch (error) {
-			toast({
-				variant: "destructive",
-				title: "Error",
-				description: "Ocurrió un error al validar el número de empleado",
-			})
-		}
-	};
-
-	const handleSave = async () => {
-		await validateEmployeeNumber();
-		if (!isNumberDuplicate) {
-			const updatedEmployee = { ...newEmployee, Sectors: sectors.filter(sector => selectedSectors.includes(sector.id)) };
-			handleSaveEmployee(updatedEmployee);
-		}
-	};
-
 	const handleSectorChange = (updatedSelectedSectors) => {
 		setSelectedSectors(updatedSelectedSectors);
 		const updatedSectors = sectors.filter(sector => updatedSelectedSectors.includes(sector.id));
 		setNewEmployee({ ...newEmployee, Sectors: updatedSectors });
+	};
+
+	const validateEmployeeNumber = (number) => {
+		const isDuplicate = employees.some(emp => emp.number === number && emp.id !== newEmployee.id);
+		setIsNumberDuplicate(isDuplicate);
+	};
+
+	const handlePasswordChange = (e) => {
+		const newNumber = e.target.value;
+		setNewEmployee({ ...newEmployee, number: newNumber });
+		validateEmployeeNumber(newNumber);
+	};
+
+	const handleSave = async () => {
+		const updatedEmployee = { ...newEmployee, Sectors: sectors.filter(sector => selectedSectors.includes(sector.id)) };
+		handleSaveEmployee(updatedEmployee);
 	};
 
 	return (
@@ -160,12 +155,9 @@ export default function EmployeeCrudModal({
 									<Input
 										id="number"
 										type={showPassword ? "text" : "password"}
-										placeholder={editPassword ? "Ingrese nuevo numero de empleado" : "Ingrese el numero de empleado"}
+										placeholder={editPassword ? "Ingrese nueva contraseña" : "Ingrese la contraseña"}
 										value={editPassword ? newEmployee.number : '•••••••••••••••••••'}
-										onChange={(e) =>
-											setNewEmployee({ ...newEmployee, number: e.target.value })
-										}
-										onBlur={validateEmployeeNumber}
+										onChange={handlePasswordChange}
 										className={`h-12 ${!isEditing ? "shadow" : ""} ${isNumberDuplicate ? "border-red-500" : ""}`}
 										disabled={!editPassword}
 									/>
@@ -178,10 +170,8 @@ export default function EmployeeCrudModal({
 											{showPassword ? <EyeClosedIcon className="h-5 w-5 text-gray-400" /> : <EyeOpenIcon className="h-5 w-5 text-gray-400" />}
 										</button>
 									)}
-									{isNumberDuplicate && (
-										<p className="text-red-500 text-sm">El número de empleado ya existe.</p>
-									)}
 								</div>
+
 								{isEditing && (
 									<AlertDialog>
 										<AlertDialogTrigger asChild>
@@ -207,6 +197,9 @@ export default function EmployeeCrudModal({
 									</AlertDialog>
 								)}
 							</div>
+							{isNumberDuplicate && (
+								<p className="text-red-500 text-sm">El número de empleado ya existe.</p>
+							)}
 						</div>
 					</div>
 				</div>
@@ -219,7 +212,6 @@ export default function EmployeeCrudModal({
 							!newEmployee.firstName ||
 							!newEmployee.lastName ||
 							!newEmployee.number ||
-							// !newEmployee.password ||
 							!selectedSectors.length ||
 							isNumberDuplicate
 						}

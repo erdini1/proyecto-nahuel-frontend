@@ -2,15 +2,12 @@
 import { useState, useEffect } from "react";
 import Spinner from "@/components/component/Spinner";
 import GeneralTable from "@/components/component/general/GeneralTable";
-import { getAllCashMovements } from "@/service/cashMovementsService";
 import { createSector, deleteSector, getAllSectors, getAllUserSectors, updateSector } from "@/service/sectorService";
 import CashBoxTable from "@/components/component/general/CashBoxTable";
 import { createCashBox, deleteCashBox, getCashBoxes, updateCashBox } from "@/service/cashBoxService";
 
 export default function Page() {
 	const [sectors, setSectors] = useState([]);
-	const [providers, setProviders] = useState([]);
-	const [cashMovements, setCashMovements] = useState([]);
 	const [userSectors, setUserSectors] = useState([]);
 	const [cashBoxes, setCashBoxes] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -22,11 +19,9 @@ export default function Page() {
 
 				const sectors = await getAllSectors();
 				const userSector = await getAllUserSectors();
-				const cashMovementsData = await getAllCashMovements();
 				const cashBox = await getCashBoxes();
 				setSectors(sectors.filter(sector => sector.name !== "general" && sector.isActive) || []);
 				setUserSectors(userSector);
-				setCashMovements(cashMovementsData);
 				setCashBoxes(cashBox.filter(cashBox => cashBox.isActive) || []);
 
 			} catch (error) {

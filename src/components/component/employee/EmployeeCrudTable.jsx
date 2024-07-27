@@ -13,6 +13,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Badge } from "@/components/ui/badge";
 
 export default function EmployeeCrudTable({ employees, handleUpdateEmployee, handleDeleteEmployee }) {
 
@@ -37,9 +38,10 @@ export default function EmployeeCrudTable({ employees, handleUpdateEmployee, han
 							<TableRow key={employee.id}>
 								<TableCell className="w-1/4 capitalize">{employee.firstName} {employee.lastName}</TableCell>
 								<TableCell className="w-1/4">{employee.number}</TableCell>
-								<TableCell className="w-1/4 capitalize">
+								<TableCell className="w-1/4 capitalize flex items-center mt-2 gap-2">
 									{employee.Sectors?.map((sector) => (
-										<p key={sector.id}>{sector.name}</p>
+										// <p key={sector.id}>{sector.name}</p>
+										<Badge className="bg-gray-600" key={sector.id}>{sector.name}</Badge>
 									))}
 								</TableCell>
 								<TableCell className="w-1/4">

@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Checkbox } from '@/components/ui/checkbox';
 import { TrashIcon, CheckIcon, XIcon, FilePenIcon, ArrowLeftIcon, PlusIcon } from '@/components/icons';
 import { useToast } from "@/components/ui/use-toast";
 import { ArrowRightIcon } from '@radix-ui/react-icons';
@@ -29,7 +27,7 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 	const handleAdd = async () => {
 		setLoading(true);
 		try {
-			await onAdd({ description: description.toUpperCase(), hasCheckingAccount });
+			await onAdd({ description: description, hasCheckingAccount });
 			setDescription('');
 			setHasCheckingAccount(false);
 			toast({
@@ -72,7 +70,7 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 	const handleEdit = async (id) => {
 		setLoading(true);
 		try {
-			await onEdit(id, { description: editDescription.toUpperCase(), hasCheckingAccount: editHasCheckingAccount });
+			await onEdit(id, { description: editDescription, hasCheckingAccount: editHasCheckingAccount });
 			setEditId(null);
 			setEditDescription('');
 			setEditHasCheckingAccount(false);
@@ -98,7 +96,6 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 		setEditHasCheckingAccount(false);
 	};
 
-	
 	const filteredData = data.filter(d => {
 		const matchesDescription = d.description.toLowerCase().includes(searchTerm.toLowerCase());
 		return matchesDescription;
@@ -187,7 +184,7 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 						<TableHeader>
 							<TableRow>
 								<TableHead className="w-1/3">Descripción</TableHead>
-								<TableHead className="w-1/3">Cuenta corriente</TableHead>
+								<TableHead className="w-1/3">Posee Cuenta corriente</TableHead>
 								<TableHead className="w-1/3">Acciones</TableHead>
 							</TableRow>
 						</TableHeader>
@@ -212,15 +209,21 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 										</TableCell>
 										<TableCell className={`w-1/3 ${item.isActive ? "" : "text-gray-500 line-through"}`}>
 											{editId === item.id ? (
-												<Checkbox
-													checked={editHasCheckingAccount}
-													onCheckedChange={setEditHasCheckingAccount} // TODO: modificar esto que no me anda
-												/>
+												<Tabs
+													value={editHasCheckingAccount ? "true" : "false"}
+													onValueChange={(value) => setEditHasCheckingAccount(value === "true")}
+													className="w-full"
+												>
+													<TabsList className="border w-full h-10 p-1 shadow">
+														<TabsTrigger value="false" className="w-1/2 h-full">No</TabsTrigger>
+														<TabsTrigger value="true" className="w-1/2 h-full">Sí</TabsTrigger>
+													</TabsList>
+												</Tabs>
 											) : (
 												item.hasCheckingAccount ? 'Sí' : 'No'
 											)}
 										</TableCell>
-										<TableCell className={`w-1/3`}>
+										<TableCell className="w-1/3">
 											{editId === item.id ? (
 												<div className='flex gap-2'>
 													<Button
@@ -237,7 +240,7 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 														size="icon"
 														onClick={handleCancelEdit}
 														className="h-8 w-8"
-													>
+														>
 														<XIcon className="h-4 w-4" />
 														<span className="sr-only">Cancelar</span>
 													</Button>
@@ -249,8 +252,8 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 														size="icon"
 														onClick={() => {
 															setEditId(item.id);
+															setEditHasCheckingAccount(item.hasCheckingAccount)
 															setEditDescription(item.description);
-															setEditHasCheckingAccount(item.hasCheckingAccount);
 														}}
 														disabled={item.isActive === false}
 														className="h-8 w-8"
@@ -277,27 +280,27 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 						</TableBody>
 					</Table>
 				</ScrollArea>
-			</div>
-			<div className="flex justify-between p-2">
-				<Button
-					variant="outline"
-					size="icon"
-					onClick={goToPreviousPage}
-					disabled={currentPage === 1}
-				>
-					<ArrowLeftIcon className="h-4 w-4" />
-					<span className="sr-only">Anterior</span>
-				</Button>
-				<span>{currentPage} de {totalPages}</span>
-				<Button
-					variant="outline"
-					size="icon"
-					onClick={goToNextPage}
-					disabled={currentPage === totalPages}
-				>
-					<ArrowRightIcon className="h-4 w-4" />
-					<span className="sr-only">Siguiente</span>
-				</Button>
+				<div className="flex justify-between p-2">
+					<Button
+						variant="outline"
+						size="icon"
+						onClick={goToPreviousPage}
+						disabled={currentPage === 1}
+					>
+						<ArrowLeftIcon className="h-4 w-4" />
+						<span className="sr-only">Anterior</span>
+					</Button>
+					<span>{currentPage} de {totalPages}</span>
+					<Button
+						variant="outline"
+						size="icon"
+						onClick={goToNextPage}
+						disabled={currentPage === totalPages}
+					>
+						<ArrowRightIcon className="h-4 w-4" />
+						<span className="sr-only">Siguiente</span>
+					</Button>
+				</div>
 			</div>
 		</div>
 	);
