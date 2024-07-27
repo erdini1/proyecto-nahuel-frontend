@@ -43,13 +43,13 @@ const CashRegisterRow = ({ cashRegister, cashMovementsFiltered, cancellationsFil
 				<TableCell className="py-4 cursor-pointer">
 					<ChevronDownIcon className={`h-4 w-4 ${isExpanded ? 'transform rotate-180' : ''}`} />
 				</TableCell>
-				<TableCell className="2/12 py-4 capitalize">{cashRegister.User.firstName} {cashRegister.User.lastName}</TableCell>
-				<TableCell className="2/12 py-4">{format(toZonedTime(cashRegister.date, 'America/Argentina/Ushuaia'), 'dd/MM/yyyy')}</TableCell>
-				<TableCell className="1/12 py-4">{cashRegister.CashBox.description}</TableCell>
-				<TableCell className="2/12 py-4">$ {totalPaymentMethods}</TableCell>
-				<TableCell className="2/12 py-4">$ {totalWithdrawalCards}</TableCell>
-				<TableCell className="2/12 py-4">$ {totalWithdrawalCash}</TableCell>
-				<TableCell className="1/12 py-4">
+				<TableCell className="w-2/12 py-4 capitalize">{cashRegister.User.firstName} {cashRegister.User.lastName}</TableCell>
+				<TableCell className="w-2/12 py-4">{format(toZonedTime(cashRegister.date, 'America/Argentina/Ushuaia'), 'dd/MM')}</TableCell>
+				<TableCell className="w-1/12 py-4">{cashRegister.CashBox.description}</TableCell>
+				<TableCell className="w-2/12 py-4">$ {totalPaymentMethods}</TableCell>
+				<TableCell className="w-2/12 py-4">$ {totalWithdrawalCards}</TableCell>
+				<TableCell className="w-2/12 py-4">$ {totalWithdrawalCash}</TableCell>
+				<TableCell className="w-1/12 py-4">
 					<Badge className={`rounded-2xl p-1 text-xs ${cashRegister.isClosed ? 'bg-green-500 hover:bg-green-600' : 'bg-yellow-500 hover:bg-yellow-600'}`}>
 						{cashRegister.isClosed ? 'Cerrada' : 'Abierta'}
 					</Badge>
@@ -72,7 +72,7 @@ const CashRegisterRow = ({ cashRegister, cashMovementsFiltered, cancellationsFil
 								<div className="flex gap-6 border rounded-lg bg-white shadow p-4 text-xs">
 									<div className="flex items-center gap-1">
 										<span className="font-semibold text-gray-700 uppercase">Observaciones:</span>
-										<p>{cashRegister?.observations}</p>
+										<p>{cashRegister?.observations ? cashRegister.observations : 'Sin observaciones'}</p>
 									</div>
 								</div>
 							</CollapsibleContent>

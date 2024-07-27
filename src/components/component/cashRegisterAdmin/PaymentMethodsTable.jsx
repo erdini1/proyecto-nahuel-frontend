@@ -77,41 +77,43 @@ const PaymentMethodsTable = ({ cashRegister, cashMovements, cancellations }) => 
 
 			setData({
 				Cash: {
-					sales: cashRegister.salesWithCash,
-					income: incomeCash,
-					withdrawal: withdrawal.Cash,
-					toRenderSystem: toRenderSystem.Cash,
-					inHand: cashRegister.cashToRenderWithCash,
-					diff: diff.Cash
+					sales: +cashRegister.salesWithCash,
+					income: +incomeCash,
+					withdrawal: +withdrawal.Cash,
+					toRenderSystem: +toRenderSystem.Cash,
+					inHand: +cashRegister.cashToRenderWithCash,
+					diff: +diff.Cash
 				},
 				Cards: {
-					sales: cashRegister.salesWithCards,
-					withdrawal: withdrawal.Cards,
-					toRenderSystem: toRenderSystem.Cards,
-					inHand: cashRegister.cashToRenderWithCards,
-					diff: diff.Cards
+					sales: +cashRegister.salesWithCards,
+					withdrawal: +withdrawal.Cards,
+					toRenderSystem: +toRenderSystem.Cards,
+					inHand: +cashRegister.cashToRenderWithCards,
+					diff: +diff.Cards
 				},
 				MercadoPago: {
-					sales: cashRegister.salesWithMercadoPago,
-					withdrawal: withdrawal.MercadoPago,
-					toRenderSystem: toRenderSystem.MercadoPago,
-					inHand: cashRegister.cashToRenderWithMercadoPago,
-					diff: diff.MercadoPago
+					sales: +cashRegister.salesWithMercadoPago,
+					withdrawal: +withdrawal.MercadoPago,
+					toRenderSystem: +toRenderSystem.MercadoPago,
+					inHand: +cashRegister.cashToRenderWithMercadoPago,
+					diff: +diff.MercadoPago
 				},
 				PointMaxiconsumo: {
-					sales: cashRegister.salesWithPointMaxiconsumo,
-					withdrawal: withdrawal.PointMaxiconsumo,
-					toRenderSystem: toRenderSystem.PointMaxiconsumo,
-					inHand: cashRegister.cashToRenderWithPointMaxiconsumo,
-					diff: diff.PointMaxiconsumo
+					sales: +cashRegister.salesWithPointMaxiconsumo,
+					withdrawal: +withdrawal.PointMaxiconsumo,
+					toRenderSystem: +toRenderSystem.PointMaxiconsumo,
+					inHand: +cashRegister.cashToRenderWithPointMaxiconsumo,
+					diff: +diff.PointMaxiconsumo,
+					batchNumber: +cashRegister.batchNumber
 				},
 				Credit: {
-					sales: cashRegister.salesWithCredit,
-					toRenderSystem: toRenderSystem.Credit,
-					inHand: cashRegister.cashToRenderWithCredit,
-					diff: diff.Credit
+					sales: +cashRegister.salesWithCredit,
+					toRenderSystem: +toRenderSystem.Credit,
+					inHand: +cashRegister.cashToRenderWithCredit,
+					diff: +diff.Credit
 				},
-				Total: totalPaymentMethods
+				Total: totalPaymentMethods,
+				TotalDifferences: parseFloat(diff.Cash) + parseFloat(diff.Cards) + parseFloat(diff.MercadoPago) + parseFloat(diff.PointMaxiconsumo) + parseFloat(diff.Credit)
 			});
 		}
 	}, [cashRegister, cashMovements, cancellations]);
@@ -182,7 +184,7 @@ const PaymentMethodsTable = ({ cashRegister, cashMovements, cancellations }) => 
 
 						return (
 							<TableRow key={key} className={isInUse ? "" : "opacity-50"}>
-								<TableCell className={`px-6 py-4 text-gray-600 uppercase`}>{label} <span>{key === "PointMaxiconsumo" ? "(225)" : ""}</span></TableCell>
+								<TableCell className={`px-6 py-4 text-gray-600 uppercase`}>{label} <span>{key === "PointMaxiconsumo" ? `(${data[key]?.batchNumber})` : ""}</span></TableCell>
 								<TableCell className="px-6 py-4">$ {data[key]?.sales || 0}</TableCell>
 								<TableCell className="px-6 py-4">{key !== "Cash" ? " - " : `$ ${data.Cash.income}`}</TableCell>
 								<TableCell className="px-6 py-4">{key === "Credit" ? " - " : `$ ${data[key]?.withdrawal || 0}`}</TableCell>
@@ -197,10 +199,13 @@ const PaymentMethodsTable = ({ cashRegister, cashMovements, cancellations }) => 
 					<TableRow className="bg-gray-100 font-semibold uppercase">
 						<TableCell className="px-6 py-4 border-t-2">Total Medios de Pago</TableCell>
 						<TableCell className="px-6 py-4 border-r-2 border-t-2">$ {data.Total || 0}</TableCell>
-						<TableCell className="px-6 py-4 border-t-2" colSpan={2}>Retiro total Tarjetas</TableCell>
-						<TableCell className="px-6 py-4 border-r-2 border-t-2">$ {data.Cards.withdrawal || 0}</TableCell>
-						<TableCell className="px-6 py-4 border-t-2" colSpan={1}>Retiro total Efectivo</TableCell>
-						<TableCell className="px-6 py-4 border-t-2">$ {data.Cash.withdrawal || 0}</TableCell>
+						{/* Retiro total tarjetas */}
+						{/* <TableCell className="px-6 py-4 border-t-2" colSpan={2}>Retiro total Tarjetas</TableCell>
+						<TableCell className="px-6 py-4 border-r-2 border-t-2">$ {data.Cards.withdrawal || 0}</TableCell> */}
+						<TableCell className="px-6 py-4 border-t-2" colSpan={2}>Retiro total Efectivo</TableCell>
+						<TableCell className="px-6 py-4 border-r-2 border-t-2">$ {data.Cash.withdrawal || 0}</TableCell>
+						<TableCell className="px-6 py-4 border-t-2" colSpan={1}>Total Diferencias</TableCell>
+						<TableCell className={`px-6 py-4 border-t-2 ${data.TotalDifferences >= 0 ? "text-green-500" : "text-red-500"}`}>$ {data.TotalDifferences}</TableCell>
 					</TableRow>
 				</TableBody>
 			</Table>

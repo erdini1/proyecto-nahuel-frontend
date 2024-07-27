@@ -137,10 +137,26 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 												/>
 											</div>
 										</div>
-										<div className="flex justify-center mt-4 align-bottom">
+
+										{/* Input invisible */}
+										<div className="flex flex-col gap-2">
+											<div className="relative pointer-events-none cursor-none select-none">
+												<label className="text-white">"</label>
+												<Input
+													type="text"
+													name="hide"
+													id="hide"
+													placeholder=""
+													className="w-full bg-white border-white placeholder-transparent text-white cursor-not-allowed pl-5"
+													readOnly
+												/>
+											</div>
+										</div>
+
+										<div className="flex justify-center align-bottom">
 											<Button
 												variant="outline"
-												className="w-1/2 self-center shadow flex gap-2"
+												className="w-1/2 self-center shadow flex gap-2 mb-1"
 												onClick={handleSave}
 												disabled={!data.salesWithCredit || !data.cashToRenderWithCredit}
 											>

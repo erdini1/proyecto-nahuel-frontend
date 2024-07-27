@@ -11,7 +11,7 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 		toRenderSystem: 0,
 		cashToRenderWithPointMaxiconsumo: 0,
 		diff: 0,
-		lotNumber: 0
+		batchNumber: 0
 	});
 
 	useEffect(() => {
@@ -47,11 +47,12 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 		});
 	};
 
-	// TODO: Agregar numero de lote
 	const handleSave = () => {
+		console.log(data);
 		updateCashRegister({
 			salesWithPointMaxiconsumo: data.salesWithPointMaxiconsumo,
-			cashToRenderWithPointMaxiconsumo: data.cashToRenderWithPointMaxiconsumo
+			cashToRenderWithPointMaxiconsumo: data.cashToRenderWithPointMaxiconsumo,
+			batchNumber: data.batchNumber
 		});
 	};
 
@@ -162,15 +163,15 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 											</div>
 										</div>
 										<div className="flex flex-col gap-2 w-1/2">
-											<label className="text-xs font-medium uppercase" htmlFor="lotNumber">Nro de Lote</label>
+											<label className="text-xs font-medium uppercase" htmlFor="batchNumber">Nro de Lote</label>
 											<Input
 												type="number"
-												name="lotNumber"
-												id="lotNumber"
+												name="batchNumber"
+												id="batchNumber"
 												min="0"
 												step="0.01"
-												value={data.lotNumber || ''}
-												onChange={(e) => handleInputChange('lotNumber', e.target.value)}
+												value={data.batchNumber || ''}
+												onChange={(e) => handleInputChange('batchNumber', e.target.value)}
 												required
 												placeholder="Lote"
 												className="border w-full shadow "
@@ -181,7 +182,7 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 										variant="outline"
 										className="w-1/2 self-center shadow flex gap-2"
 										onClick={handleSave}
-										disabled={!data.salesWithPointMaxiconsumo || !data.cashToRenderWithPointMaxiconsumo || !data.lotNumber}
+										disabled={!data.salesWithPointMaxiconsumo || !data.cashToRenderWithPointMaxiconsumo || !data.batchNumber}
 									>
 										<Save className="h-4 w-4" />
 										Guardar
@@ -192,15 +193,6 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 					</TableRow>
 				</TableBody>
 			</Table>
-			{/* <Button
-				variant="outline"
-				className="w-1/2 self-center shadow flex gap-2"
-				onClick={handleSave}
-				disabled={!data.salesWithPointMaxiconsumo || !data.cashToRenderWithPointMaxiconsumo || !data.lotNumber}
-			>
-				<Save className="h-4 w-4" />
-				Guardar
-			</Button> */}
 		</div>
 	);
 }

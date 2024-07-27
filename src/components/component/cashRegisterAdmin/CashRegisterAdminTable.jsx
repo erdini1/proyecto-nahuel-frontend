@@ -1,5 +1,6 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import CashRegisterRow from '@/components/component/cashRegisterAdmin/CashRegisterRow';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
 
 export default function CashRegisterAdminTable({ cashRegisters, cashMovements, cancellations }) {
 
@@ -16,7 +17,9 @@ export default function CashRegisterAdminTable({ cashRegisters, cashMovements, c
 			<Table className="min-w-full divide-y divide-gray-200">
 				<TableHeader className="bg-gray-100 text-left">
 					<TableRow>
-						<TableHead className="px-3"></TableHead>
+						<TableHead className="px-3 text-center">
+							<ChevronDownIcon className={`h-4 w-4 text-transparent`} />
+						</TableHead>
 						<TableHead className="w-2/12 py-3">Cajero</TableHead>
 						<TableHead className="w-2/12 py-3">Fecha</TableHead>
 						<TableHead className="w-1/12 py-3">Caja</TableHead>
