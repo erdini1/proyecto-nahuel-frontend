@@ -2,6 +2,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { translateType } from "@/helpers/movement.helper";
 
 const CashMovementsTable = ({ cashMovements }) => {
+
 	return (
 		<div className='w-1/2'>
 			<p><span className="font-semibold">Movimientos</span></p>
@@ -25,7 +26,7 @@ const CashMovementsTable = ({ cashMovements }) => {
 							<TableRow key={cashMovement.id} className="text-xs whitespace-nowrap">
 								<TableCell className="w-1/5 py-4 pl-6">{cashMovement.id}</TableCell>
 								<TableCell className="w-1/5 py-4 pl-6">{translateType(cashMovement.type)}</TableCell>
-								<TableCell className="w-1/5 py-4 pl-6">{cashMovement.Provider.name}</TableCell>
+								<TableCell className="w-1/5 py-4 pl-6">{cashMovement.detail}</TableCell>
 								<TableCell className="w-1/5 py-4 pl-6">{cashMovement.time}</TableCell>
 								<TableCell className="w-1/5 py-4 pl-6">$ {cashMovement.amount}</TableCell>
 							</TableRow>

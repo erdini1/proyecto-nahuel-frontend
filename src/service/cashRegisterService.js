@@ -49,3 +49,13 @@ export const updateCashRegister = async (cashRegisterId, cashRegisterData) => {
 		throw new Error('Failed to update cash register');
 	}
 }
+
+export const exportToCSV = async () => {
+	try {
+		const response = await axios.get(`/cash-register/export-csv/download`, { responseType: 'blob' });
+		return response.data;
+	} catch (error) {
+		console.error('Failed to export cash register to CSV', error);
+		throw new Error('Failed to export cash register to CSV');
+	}
+}

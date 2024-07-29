@@ -1,5 +1,4 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { translateType } from "@/helpers/cancellation.helper";
 
 const CancellationsTable = ({ cancellations }) => {
 
@@ -25,7 +24,7 @@ const CancellationsTable = ({ cancellations }) => {
 						cancellations.map((cancellation) => (
 							<TableRow key={cancellation.id} className="text-xs">
 								<TableCell className="w-1/5 py-4 pl-6">{cancellation.id}</TableCell>
-								<TableCell className="w-1/5 py-4 pl-6">{translateType(cancellation.type)}</TableCell>
+								<TableCell className="w-1/5 py-4 pl-6">{cancellation.type}</TableCell>
 								<TableCell className="w-1/5 py-4 pl-6">{cancellation.method}</TableCell>
 								<TableCell className="w-1/5 py-4 pl-6">{cancellation.time}</TableCell>
 								<TableCell className="w-1/5 py-4 pl-6">$ {cancellation.amount}</TableCell>
