@@ -1,9 +1,8 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { CheckIcon, XIcon, TrashIcon } from "@/components/icons/index";
+import { CheckIcon, XIcon, TrashIcon, ReloadIcon } from "@/components/icons/index";
 import { Button } from "@/components/ui/button";
-import { WeightIcon } from "@/components/icons/index"
 
-const AssignTaskTable = ({ tasks, handleDeleteUserTask, isArchived }) => (
+const AssignTaskTable = ({ tasks, handleDisableUserTask, isArchived }) => (
     <Table>
         <TableHeader>
             <TableRow>
@@ -46,15 +45,27 @@ const AssignTaskTable = ({ tasks, handleDeleteUserTask, isArchived }) => (
                         </TableCell>
                         {!isArchived && (
                             <TableCell>
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => handleDeleteUserTask(task.id)}
-                                    disabled={task.isCompleted || !task.isActive}
-                                >
-                                    <TrashIcon className="h-4 w-4" />
-                                    <span className="sr-only">Eliminar</span>
-                                </Button>
+                                {task.isActive ? (
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => handleDisableUserTask(task.id, false)}
+                                        disabled={task.isCompleted}
+                                    >
+                                        <TrashIcon className="h-4 w-4" />
+                                        <span className="sr-only">Eliminar</span>
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => handleDisableUserTask(task.id, true)}
+                                        disabled={task.isCompleted}
+                                    >
+                                        <ReloadIcon className="h-4 w-4" />
+                                        <span className="sr-only">Habilitar</span>
+                                    </Button>
+                                )}
                             </TableCell>
                         )}
                     </TableRow>

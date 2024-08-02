@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import AssignTaskDialog from "@/components/component/assign/AssignTaskDialog";
 import AssignTaskTable from "@/components/component/assign/AssignTaskTable";
-import { getAllTasks, assignTask, deleteUserTask, getUserTaskByTaskSet } from "@/service/taskService";
+import { getAllTasks, assignTask, getUserTaskByTaskSet, disableUserTask } from "@/service/taskService";
 import { Button } from "@/components/ui/button";
 import ProgressChecklist from "@/components/component/progressChecklist";
 import { PlusIcon, ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
@@ -70,9 +70,9 @@ export default function Page({ params }) {
 		setFilteredTasks(unassignedTasks);
 	};
 
-	const handleDeleteUserTask = async (userTaskId) => {
+	const handleDisableUserTask = async (userTaskId, isActive) => {
 		try {
-			await deleteUserTask(userTaskId);
+			await disableUserTask(userTaskId, isActive);
 			const userTasks = await getUserTaskByTaskSet(employee.id);
 			setUserTasks(userTasks);
 		} catch (error) {
@@ -157,7 +157,7 @@ export default function Page({ params }) {
 							</div>
 							<AssignTaskTable
 								tasks={userTasks}
-								handleDeleteUserTask={handleDeleteUserTask}
+								handleDisableUserTask={handleDisableUserTask}
 							/>
 						</div>
 						<div className="w-1/4 flex flex-col gap-4">

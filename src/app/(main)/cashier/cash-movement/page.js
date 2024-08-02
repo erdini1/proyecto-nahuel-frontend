@@ -69,8 +69,6 @@ export default function Page() {
 	// TODO: Agregar un desalizable para mostrar solo una cantidad movimientos y anulaciones
 	return (
 		<div className="w-full p-4 bg-gray-100 h-screen">
-			{/* <div className="w-full p-4 bg-[#8ecae6] h-screen"> */}
-			{/* <div className="w-full p-4 bg-[#f4a261] h-screen"> */}
 			<div className="flex flex-col gap-6">
 				<Tabs value={selectedTab} onValueChange={handleTabChange}>
 					<div className="flex gap-3 items-center">

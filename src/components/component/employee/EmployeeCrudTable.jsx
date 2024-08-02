@@ -22,10 +22,10 @@ export default function EmployeeCrudTable({ employees, handleUpdateEmployee, han
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead className="w-1/4">Nombre y Apellido</TableHead>
-						<TableHead className="w-1/4">Numero de ingreso</TableHead>
-						<TableHead className="w-1/4">Sector</TableHead>
-						<TableHead className="w-1/4">Acciones</TableHead>
+						<TableHead className="w-1/5">Nombre y Apellido</TableHead>
+						<TableHead className="w-1/5">Numero de ingreso</TableHead>
+						<TableHead className="w-2/5">Sector</TableHead>
+						<TableHead className="w-1/5">Acciones</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -36,15 +36,21 @@ export default function EmployeeCrudTable({ employees, handleUpdateEmployee, han
 					) : (
 						employees.map((employee) => (
 							<TableRow key={employee.id}>
-								<TableCell className="w-1/4 capitalize">{employee.firstName} {employee.lastName}</TableCell>
-								<TableCell className="w-1/4">{employee.number}</TableCell>
-								<TableCell className="w-1/4 capitalize flex items-center mt-2 gap-2">
-									{employee.Sectors?.map((sector) => (
-										// <p key={sector.id}>{sector.name}</p>
-										<Badge className="bg-gray-600" key={sector.id}>{sector.name}</Badge>
-									))}
+								<TableCell className="w-1/5 capitalize">{employee.firstName} {employee.lastName}</TableCell>
+								<TableCell className="w-1/5">{employee.number}</TableCell>
+								<TableCell className="w-2/5 uppercase mt-2 gap-2">
+									<div className="flex flex-wrap gap-2">
+										{employee.Sectors?.map((sector, index) => (
+											<Badge
+												className="bg-gray-600 flex-1 min-w-[25%] max-w-[25%] justify-center"
+												key={sector.id}
+											>
+												{sector.name}
+											</Badge>
+										))}
+									</div>
 								</TableCell>
-								<TableCell className="w-1/4">
+								<TableCell className="w-1/5">
 									<div className="flex items-center gap-2">
 										<Button
 											variant="outline"

@@ -56,9 +56,9 @@ export const getUserTasksByRange = async (userId, startDate, endDate) => {
 	}
 }
 
-export const deleteUserTask = async (taskId) => {
+export const disableUserTask = async (userTaskId, isActive) => {
 	try {
-		const response = await axios.delete(`/checklist/${taskId}`);
+		const response = await axios.put(`/checklist/${userTaskId}`, { isActive });
 		return response.data;
 	} catch (error) {
 		console.error('Failed to delete task:', error);

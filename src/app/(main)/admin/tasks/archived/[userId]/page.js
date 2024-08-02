@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import AssignTaskTable from "@/components/component/assign/AssignTaskTable";
-import { deleteUserTask, getUserTasksByTaskSetId } from "@/service/taskService";
+import { getUserTasksByTaskSetId } from "@/service/taskService";
 import { Button } from "@/components/ui/button";
 import ProgressChecklist from "@/components/component/progressChecklist";
 import { ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
@@ -49,20 +49,6 @@ export default function Page({ params }) {
 		};
 		fetchUserTasks();
 	}, []);
-
-	const handleDeleteUserTask = async (userTaskId) => {
-		try {
-			await deleteUserTask(userTaskId);
-			const userTasks = await getUserTasksByTaskSetId(taskSetId);
-			setUserTasks(userTasks);
-		} catch (error) {
-			toast({
-				variant: "destructive",
-				title: "Error",
-				description: "Ocurrió un error al eliminar la tarea",
-			})
-		}
-	};
 
 	return (
 		<div className="min-h-screen">
@@ -112,7 +98,6 @@ export default function Page({ params }) {
 							</div>
 							<AssignTaskTable
 								tasks={userTasks}
-								handleDeleteUserTask={handleDeleteUserTask}
 								isArchived={isArchived}
 							/>
 						</div>

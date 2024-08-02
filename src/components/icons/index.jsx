@@ -32,3 +32,4 @@ export { default as GearIcon } from './GearIcon';
 export { default as DownloadIcon } from './DownloadIcon';
 export { default as MixerVertical } from './MixerVertical';
 export { default as MixerHorizontal } from './MixerHorizontal';
+export { default as ReloadIcon } from './ReloadIcon';
