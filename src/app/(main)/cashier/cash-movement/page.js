@@ -8,17 +8,22 @@ import ModalTerminals from "@/components/component/ModalTerminal";
 import { checkIfCashRegisterExists, getLastCashRegister } from "@/service/cashRegisterService";
 import { getTerminals } from "@/service/terminalService";
 import { getCashBoxes } from "@/service/cashBoxService";
-import Link from "next/link";
 import Spinner from "@/components/component/Spinner";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import CashRegisterReport from "@/components/component/CashRegisterReport";
+import { getCashMovements } from "@/service/cashMovementsService";
+import { getCancellations } from "@/service/cancellationService";
 
 export default function Page() {
 	const [hasCashRegister, setHasCashRegister] = useState(false);
 	const [selectedTab, setSelectedTab] = useState("cashRegister");
 	const [cashBoxes, setCashBoxes] = useState([]);
-	const [terminals, setTerminals] = useState([]);
 	const [cashRegister, setCashRegister] = useState(null);
+	const [cashMovements, setCashMovements] = useState([]);
+	const [cancellations, setCancellations] = useState([]);
+	const [terminals, setTerminals] = useState([]);
+
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -33,11 +38,16 @@ export default function Page() {
 					setHasCashRegister(true);
 					setSelectedTab("movements");
 
-					const cashRegister = await getLastCashRegister();
-					setCashRegister(cashRegister);
+					const cashRegisterData = await getLastCashRegister();
+					const cashMovementsData = await getCashMovements();
+					const cancellationsData = await getCancellations();
+					const terminals = await getTerminals(cashRegisterData.id);
 
-					const terminals = await getTerminals(cashRegister.id);
+					setCashRegister(cashRegisterData);
+					setCashMovements(cashMovementsData);
+					setCancellations(cancellationsData);
 					setTerminals(terminals);
+
 				}
 			} catch (error) {
 				console.error('Error fetching data:', error);
@@ -66,6 +76,40 @@ export default function Page() {
 		setIsLoading(false);
 	};
 
+	const onCashRegisterUpdated = async () => {
+		setIsLoading(true);
+		setSelectedTab("movements");
+		const cashRegister = await getLastCashRegister();
+		setCashRegister(cashRegister);
+		setIsLoading(false);
+	};
+
+	const handleUpdateCashMovements = (cashMovements) => {
+		setCashMovements(cashMovements);
+	}
+
+	const refreshCashMovements = async () => {
+		try {
+			const cashMovementsData = await getCashMovements();
+			setCashMovements(cashMovementsData);
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	}
+
+	const handleUpdateCancellations = (cancellations) => {
+		setCancellations(cancellations);
+	}
+
+	const refreshCancellations = async () => {
+		try {
+			const cancellationsData = await getCancellations();
+			setCancellations(cancellationsData);
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	}
+
 	// TODO: Agregar un desalizable para mostrar solo una cantidad movimientos y anulaciones
 	return (
 		<div className="w-full p-4 bg-gray-100 h-screen">
@@ -79,6 +123,7 @@ export default function Page() {
 							<TabsList className="border-b">
 								<TabsTrigger value="cashRegister">Datos iniciales</TabsTrigger>
 								<TabsTrigger value="movements" disabled={!hasCashRegister}>Movimientos de Caja</TabsTrigger>
+								<TabsTrigger value="reports" disabled={!hasCashRegister}>Cierre de caja</TabsTrigger>
 							</TabsList>
 							{selectedTab === "movements" && (
 								<div className="items-center flex gap-2">
@@ -100,6 +145,7 @@ export default function Page() {
 							<TabsContent value="cashRegister" className="p-4">
 								<CashRegister
 									onCreated={onCashRegisterCreated}
+									onUpdated={onCashRegisterUpdated}
 									cashRegister={cashRegister}
 									cashBoxes={cashBoxes.filter((cashBox) => cashBox.isActive)}
 								/>
@@ -108,18 +154,32 @@ export default function Page() {
 								<Card className="p-4 flex flex-col gap-10">
 									<Movements
 										cashRegisterId={cashRegister?.id}
+										cashMovements={cashMovements}
+										handleUpdateCashMovements={handleUpdateCashMovements}
+										refreshCashMovements={refreshCashMovements}
 									/>
 									<Cancellations
-										terminals={terminals}
 										cashRegisterId={cashRegister?.id}
+										cancellations={cancellations}
+										handleUpdateCancellations={handleUpdateCancellations}
+										refreshCancellations={refreshCancellations}
+										terminals={terminals}
 									/>
-									<Link href="/cashier/cash-movement/report" className="">
-										<Button
-											className={`flex items-center rounded-md transition-colors duration-300 w-1/3 mx-auto`}
-										>Cargar datos
-										</Button>
-									</Link>
+									<Button
+										onClick={() => setSelectedTab("reports")}
+										className={`flex items-center rounded-md transition-colors duration-300 w-1/3 mx-auto`}
+									>
+										Cargar datos
+									</Button>
 								</Card>
+							</TabsContent>
+							<TabsContent value="reports" className="p-4">
+								<CashRegisterReport
+									cashRegister={cashRegister}
+									cashMovements={cashMovements}
+									cancellations={cancellations}
+									terminals={terminals}
+								/>
 							</TabsContent>
 						</>
 					)}

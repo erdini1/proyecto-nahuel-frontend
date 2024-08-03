@@ -1,10 +1,7 @@
-"use client";
 import { useEffect, useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { getLastCashRegister, updateCashRegister } from "@/service/cashRegisterService";
-import { getCashMovements } from "@/service/cashMovementsService";
-import { getCancellations } from "@/service/cancellationService";
+import { updateCashRegister } from "@/service/cashRegisterService";
 import Spinner from '@/components/component/Spinner';
 import PaymentTypeCash from '@/components/component/cashRegisterForm/PaymentTypeCash';
 import PaymentTypeCheckingAccount from '@/components/component/cashRegisterForm/PaymentTypeCheckingAccount';
@@ -15,13 +12,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
-import { getTerminals } from '@/service/terminalService';
 
-export default function Page() {
-	const [cashRegister, setCashRegister] = useState(null);
-	const [cashMovements, setCashMovements] = useState([]);
-	const [cancellations, setCancellations] = useState([]);
-	const [terminals, setTerminals] = useState([]);
+export default function CashRegisterReport({ cashRegister, cashMovements, cancellations, terminals }) {
 	const [observations, setObservations] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
 	const [selectedTerminals, setSelectedTerminals] = useState({
@@ -34,38 +26,17 @@ export default function Page() {
 	const { toast } = useToast();
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				setIsLoading(true);
-				const cashRegisterData = await getLastCashRegister();
-				const cashMovementsData = await getCashMovements();
-				const cancellationsData = await getCancellations();
-				const terminals = await getTerminals(cashRegisterData.id);
-
-				setCashRegister(cashRegisterData);
-				setCashMovements(cashMovementsData);
-				setCancellations(cancellationsData);
-				setTerminals(terminals);
-
-				setSelectedTerminals({
-					card: terminals.some(terminal => terminal.description.includes('CLOVER')),
-					mercadoPago: terminals.some(terminal => terminal.description.includes('MERCADO PAGO')),
-					pointMaxiconsumo: terminals.some(terminal => terminal.description.includes('MAXI')),
-					checkingAccount: cashRegisterData.CashBox.hasCheckingAccount,
-				});
-			} catch (error) {
-				console.error("Error al obtener los datos", error);
-				toast({
-					variant: "destructive",
-					title: "Error",
-					description: "Ocurrió un error al obtener los datos",
-				});
-			} finally {
-				setIsLoading(false);
-			}
-		};
-		fetchData();
-	}, [toast]);
+		setIsLoading(true);
+		if (cashRegister) {
+			setSelectedTerminals({
+				card: terminals.some(terminal => terminal.description.includes('CLOVER')),
+				mercadoPago: terminals.some(terminal => terminal.description.includes('MERCADO PAGO')),
+				pointMaxiconsumo: terminals.some(terminal => terminal.description.includes('MAXI')),
+				checkingAccount: cashRegister.CashBox.hasCheckingAccount,
+			});
+		}
+		setIsLoading(false);
+	}, [cashRegister]);
 
 	const handleUpdateCashRegister = async (updatedData) => {
 		try {

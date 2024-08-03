@@ -42,17 +42,10 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion"
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "@/components/ui/collapsible"
 import { FilePenIcon, TrashIcon, PlusIcon } from "@/components/icons";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { useToast } from "@/components/ui/use-toast"
 
-export default function Cancellations({ terminals, cashRegisterId }) {
-	const [cancellations, setCancellations] = useState([]);
+export default function Cancellations({ cashRegisterId, cancellations, handleUpdateCancellations, refreshCancellations, terminals }) {
 	const [open, setOpen] = useState(false);
 	const [selectedTerminal, setSelectedTerminal] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,29 +56,9 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 		amount: '',
 		cashRegisterId: '',
 	});
-	const [isLoading, setIsLoading] = useState(true);
 	const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
 	const { toast } = useToast();
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const cancellations = await getCancellations();
-				setCancellations(cancellations);
-			} catch (error) {
-				console.error('Error fetching data:', error);
-				toast({
-					variant: "destructive",
-					title: "Error",
-					description: "Ocurrió un error al mostrar las anulaciones",
-				})
-			} finally {
-				setIsLoading(false);
-			}
-		};
-		fetchData();
-	}, []);
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -128,8 +101,7 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 					description: "La anulación fue cargada correctamente",
 				})
 			}
-			const cancellations = await getCancellations();
-			setCancellations(cancellations);
+			refreshCancellations();
 			handleModalClose();
 		} catch (error) {
 			console.error('Error creating or updating cancellation:', error);
@@ -154,8 +126,7 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 	const handleDelete = async (id) => {
 		try {
 			await deleteCancellation(id);
-			const cancellationsData = await getCancellations();
-			setCancellations(cancellationsData);
+			handleUpdateCancellations(cancellations.filter(cancellation => cancellation.id !== id));
 			toast({
 				title: "Anulación eliminada",
 				description: "La anulación fue eliminada correctamente",
@@ -200,68 +171,62 @@ export default function Cancellations({ terminals, cashRegisterId }) {
 				</header>
 				<AccordionContent>
 					<div className="border shadow-sm rounded-lg mt-4">
-						{isLoading ? (
-							<div className="flex justify-center items-center h-64">
-								<Spinner />
-							</div>
-						) : (
-							<Table className="border border-gray-200 shadow-sm bg-gray-50">
-								<TableHeader>
+						<Table className="border border-gray-200 shadow-sm bg-gray-50">
+							<TableHeader>
+								<TableRow>
+									<TableHead className="pl-8 w-1/6">ID</TableHead>
+									<TableHead className="w-1/6">Tipo</TableHead>
+									<TableHead className="w-1/6">Metodo</TableHead>
+									<TableHead className="w-1/6">Hora</TableHead>
+									<TableHead className="w-1/6">Monto</TableHead>
+									<TableHead className="w-1/6">Acciones</TableHead>
+								</TableRow>
+							</TableHeader>
+							<TableBody>
+								{cancellations.length === 0 ? (
 									<TableRow>
-										<TableHead className="pl-8 w-1/6">ID</TableHead>
-										<TableHead className="w-1/6">Tipo</TableHead>
-										<TableHead className="w-1/6">Metodo</TableHead>
-										<TableHead className="w-1/6">Hora</TableHead>
-										<TableHead className="w-1/6">Monto</TableHead>
-										<TableHead className="w-1/6">Acciones</TableHead>
+										<TableCell colSpan="6" className="text-center">No hay anulaciones</TableCell>
 									</TableRow>
-								</TableHeader>
-								<TableBody>
-									{cancellations.length === 0 ? (
-										<TableRow>
-											<TableCell colSpan="6" className="text-center">No hay anulaciones</TableCell>
-										</TableRow>
-									) : (
-										cancellations.map(cancellation => (
-											<TableRow key={cancellation.id} className="odd:bg-gray-100 even:bg-white">
-												<TableCell className="font-medium pl-8 w-1/6">{cancellation.id}</TableCell>
-												<TableCell className="w-1/6">{translateType(cancellation.type)}</TableCell>
-												<TableCell className="w-1/6">{cancellation.method}</TableCell>
-												<TableCell className="w-1/6">{cancellation.time}</TableCell>
-												<TableCell className="w-1/6">${cancellation.amount}</TableCell>
-												<TableCell className="w-1/6">
-													<Button variant="outline" size="icon" onClick={() => handleEdit(cancellation)}>
-														<FilePenIcon className="h-4 w-4" />
-														<span className="sr-only">Modificar</span>
-													</Button>
+								) : (
+									cancellations.map(cancellation => (
+										<TableRow key={cancellation.id} className="odd:bg-gray-100 even:bg-white">
+											<TableCell className="font-medium pl-8 w-1/6">{cancellation.id}</TableCell>
+											<TableCell className="w-1/6">{translateType(cancellation.type)}</TableCell>
+											<TableCell className="w-1/6">{cancellation.method}</TableCell>
+											<TableCell className="w-1/6">{cancellation.time}</TableCell>
+											<TableCell className="w-1/6">${cancellation.amount}</TableCell>
+											<TableCell className="w-1/6">
+												<Button variant="outline" size="icon" onClick={() => handleEdit(cancellation)}>
+													<FilePenIcon className="h-4 w-4" />
+													<span className="sr-only">Modificar</span>
+												</Button>
 
-													<AlertDialog>
-														<AlertDialogTrigger asChild>
-															<Button variant="outline" size="icon" >
-																<TrashIcon className="h-4 w-4" />
-																<span className="sr-only">Eliminar</span>
-															</Button>
-														</AlertDialogTrigger>
-														<AlertDialogContent>
-															<AlertDialogHeader>
-																<AlertDialogTitle>¿Está seguro que desea eliminarla?</AlertDialogTitle>
-																<AlertDialogDescription>Esta acción no se puede deshacer.</AlertDialogDescription>
-															</AlertDialogHeader>
-															<AlertDialogFooter>
-																<AlertDialogCancel>Cancelar</AlertDialogCancel>
-																<AlertDialogAction
-																	onClick={() => handleDelete(cancellation.id)}
-																>Continuar</AlertDialogAction>
-															</AlertDialogFooter>
-														</AlertDialogContent>
-													</AlertDialog>
-												</TableCell>
-											</TableRow>
-										))
-									)}
-								</TableBody>
-							</Table>
-						)}
+												<AlertDialog>
+													<AlertDialogTrigger asChild>
+														<Button variant="outline" size="icon" >
+															<TrashIcon className="h-4 w-4" />
+															<span className="sr-only">Eliminar</span>
+														</Button>
+													</AlertDialogTrigger>
+													<AlertDialogContent>
+														<AlertDialogHeader>
+															<AlertDialogTitle>¿Está seguro que desea eliminarla?</AlertDialogTitle>
+															<AlertDialogDescription>Esta acción no se puede deshacer.</AlertDialogDescription>
+														</AlertDialogHeader>
+														<AlertDialogFooter>
+															<AlertDialogCancel>Cancelar</AlertDialogCancel>
+															<AlertDialogAction
+																onClick={() => handleDelete(cancellation.id)}
+															>Continuar</AlertDialogAction>
+														</AlertDialogFooter>
+													</AlertDialogContent>
+												</AlertDialog>
+											</TableCell>
+										</TableRow>
+									))
+								)}
+							</TableBody>
+						</Table>
 					</div>
 				</AccordionContent>
 				{isModalOpen && (

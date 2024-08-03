@@ -2,7 +2,6 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from 'react';
-import { SaveIcon } from "@/components/icons";
 import { Save } from "lucide-react";
 
 export default function PaymentTypeCash({ cashMovements, cancellations, cashRegister, updateCashRegister }) {

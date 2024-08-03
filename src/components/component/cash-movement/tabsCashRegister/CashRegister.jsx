@@ -5,7 +5,7 @@ import { createCashRegister, updateCashRegister } from "@/service/cashRegisterSe
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/components/ui/use-toast"
 
-export default function CashRegister({ onCreated, cashRegister, cashBoxes }) {
+export default function CashRegister({ onCreated, onUpdated, cashRegister, cashBoxes }) {
 	const [initialAmount, setInitialAmount] = useState("");
 	const [changeAmount, setChangeAmount] = useState("");
 	const [cashBoxId, setCashBoxId] = useState(cashBoxes.length > 0 ? cashBoxes[0].id : 0);
@@ -44,6 +44,7 @@ export default function CashRegister({ onCreated, cashRegister, cashBoxes }) {
 					title: "Actualizado",
 					description: "Los datos del registro de caja se actualizaron correctamente",
 				});
+				onUpdated();
 				return;
 			}
 			await createCashRegister(formData);

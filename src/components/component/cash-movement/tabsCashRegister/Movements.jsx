@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { getCashMovements, createCashMovement, updateCashMovement, deleteCashMovement } from "@/service/cashMovementsService";
+import { createCashMovement, updateCashMovement, deleteCashMovement } from "@/service/cashMovementsService";
 import { getProviders } from "@/service/providerService";
 import {
 	Dialog,
@@ -24,8 +24,6 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { translateType } from "@/helpers/movement.helper";
 import Spinner from "@/components/component/Spinner";
 import { FilePenIcon, TrashIcon, PlusIcon } from "@/components/icons";
 import {
@@ -41,8 +39,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useToast } from "@/components/ui/use-toast"
 
-export default function Movements({ cashRegisterId }) {
-	const [cashMovements, setCashMovements] = useState([]);
+export default function Movements({ cashRegisterId, cashMovements, handleUpdateCashMovements, refreshCashMovements }) {
 	const [providers, setProviders] = useState([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [open, setOpen] = useState(false);
@@ -60,8 +57,6 @@ export default function Movements({ cashRegisterId }) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const movements = await getCashMovements();
-				setCashMovements(movements);
 
 				const providers = await getProviders();
 				setProviders(providers.filter(provider => provider.isActive) || []);
@@ -120,8 +115,7 @@ export default function Movements({ cashRegisterId }) {
 					description: "El movimiento fue creado correctamente",
 				})
 			}
-			const movements = await getCashMovements();
-			setCashMovements(movements);
+			refreshCashMovements()
 			handleModalClose();
 		} catch (error) {
 			console.error('Error creating or updating movement:', error);
@@ -147,8 +141,7 @@ export default function Movements({ cashRegisterId }) {
 	const handleDelete = async (id) => {
 		try {
 			await deleteCashMovement(id);
-			const movements = await getCashMovements();
-			setCashMovements(movements);
+			handleUpdateCashMovements(cashMovements.filter(movement => movement.id !== id));
 			toast({
 				title: "Movimiento eliminado",
 				description: "El movimiento fue eliminado correctamente",
