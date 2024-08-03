@@ -182,7 +182,7 @@ export default function PaymentTypeCash({ cashMovements, cancellations, cashRegi
 											/>
 										</div>
 									</div>
-									<Button		// TODO: Acomodar el de cuenta corriente
+									<Button		
 										variant="outline"
 										className="w-1/2 self-center shadow flex gap-2"
 										onClick={handleSave}
@@ -198,15 +198,6 @@ export default function PaymentTypeCash({ cashMovements, cancellations, cashRegi
 					</TableRow>
 				</TableBody>
 			</Table>
-			{/* <Button
-				variant="outline"
-				className="w-1/2 self-center shadow flex gap-2"
-				onClick={handleSave}
-				disabled={!data.salesWithCash || !data.cashToRenderWithCash}
-			>
-				<Save className="h-4 w-4" />
-				Guardar
-			</Button> */}
 		</div>
 	);
 }

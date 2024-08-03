@@ -17,6 +17,7 @@ export default function CashRegisterReport({ cashRegister, cashMovements, cancel
 	const [observations, setObservations] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
 	const [selectedTerminals, setSelectedTerminals] = useState({
+		cash: true,
 		card: true,
 		mercadoPago: true,
 		pointMaxiconsumo: true,
@@ -29,6 +30,7 @@ export default function CashRegisterReport({ cashRegister, cashMovements, cancel
 		setIsLoading(true);
 		if (cashRegister) {
 			setSelectedTerminals({
+				cash: true,
 				card: terminals.some(terminal => terminal.description.includes('CLOVER')),
 				mercadoPago: terminals.some(terminal => terminal.description.includes('MERCADO PAGO')),
 				pointMaxiconsumo: terminals.some(terminal => terminal.description.includes('MAXI')),
@@ -61,6 +63,17 @@ export default function CashRegisterReport({ cashRegister, cashMovements, cancel
 		})
 	};
 
+	const lengthPaymentMethods = () => {
+		const paymentMethods = [
+			selectedTerminals.cash,
+			selectedTerminals.card,
+			selectedTerminals.mercadoPago,
+			selectedTerminals.pointMaxiconsumo,
+			selectedTerminals.checkingAccount
+		];
+		return paymentMethods.reduce((acc, value) => value ? acc + 1 : acc, 0);
+	}
+
 	return (
 		<div className='bg-gray-100'>
 			<Card className="bg-white">
@@ -75,8 +88,8 @@ export default function CashRegisterReport({ cashRegister, cashMovements, cancel
 						</div>
 					) : (
 						<div className='flex flex-col gap-6'>
-							<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mt-6 justify-center divide-x-2'>
-								<div className='flex-grow max-w-xs flex-shrink-0 mb-4'>
+							<div className={`mt-6 justify-center divide-x-2 ${lengthPaymentMethods() === 5 ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" : "flex flex-wrap"}`}>
+								<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
 									<PaymentTypeCash
 										cashMovements={cashMovements}
 										cancellations={cancellations}
@@ -84,39 +97,46 @@ export default function CashRegisterReport({ cashRegister, cashMovements, cancel
 										updateCashRegister={handleUpdateCashRegister}
 									/>
 								</div>
-								<div className={`flex-grow max-w-xs flex-shrink-0 mb-4 ${selectedTerminals.card ? "" : "opacity-50 pointer-events-none"}`}>
-									<PaymentTypeCard
-										cashMovements={cashMovements}
-										cancellations={cancellations}
-										cashRegister={cashRegister}
-										updateCashRegister={handleUpdateCashRegister}
-
-									/>
-								</div>
-								<div className={`flex-grow max-w-xs flex-shrink-0 mb-4 ${selectedTerminals.mercadoPago ? "" : "opacity-50 pointer-events-none"}`}>
-									<PaymentTypeMercadoPago
-										cashMovements={cashMovements}
-										cancellations={cancellations}
-										cashRegister={cashRegister}
-										updateCashRegister={handleUpdateCashRegister}
-									/>
-								</div>
-								<div className={`flex-grow max-w-xs flex-shrink-0 mb-4 ${selectedTerminals.pointMaxiconsumo ? "" : "opacity-50 pointer-events-none"}`}>
-									<PaymentTypePointMaxiconsumo
-										cashMovements={cashMovements}
-										cancellations={cancellations}
-										cashRegister={cashRegister}
-										updateCashRegister={handleUpdateCashRegister}
-									/>
-								</div>
-								<div className={`flex-grow max-w-xs flex-shrink-0 mb-4 ${selectedTerminals.checkingAccount ? "" : "opacity-50 pointer-events-none"}`}>
-									<PaymentTypeCheckingAccount
-										cashMovements={cashMovements}
-										cancellations={cancellations}
-										cashRegister={cashRegister}
-										updateCashRegister={handleUpdateCashRegister}
-									/>
-								</div>
+								{selectedTerminals.card && (
+									<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
+										<PaymentTypeCard
+											cashMovements={cashMovements}
+											cancellations={cancellations}
+											cashRegister={cashRegister}
+											updateCashRegister={handleUpdateCashRegister}
+										/>
+									</div>
+								)}
+								{selectedTerminals.mercadoPago && (
+									<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
+										<PaymentTypeMercadoPago
+											cashMovements={cashMovements}
+											cancellations={cancellations}
+											cashRegister={cashRegister}
+											updateCashRegister={handleUpdateCashRegister}
+										/>
+									</div>
+								)}
+								{selectedTerminals.pointMaxiconsumo && (
+									<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
+										<PaymentTypePointMaxiconsumo
+											cashMovements={cashMovements}
+											cancellations={cancellations}
+											cashRegister={cashRegister}
+											updateCashRegister={handleUpdateCashRegister}
+										/>
+									</div>
+								)}
+								{selectedTerminals.checkingAccount && (
+									<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
+										<PaymentTypeCheckingAccount
+											cashMovements={cashMovements}
+											cancellations={cancellations}
+											cashRegister={cashRegister}
+											updateCashRegister={handleUpdateCashRegister}
+										/>
+									</div>
+								)}
 							</div>
 							<div className='flex flex-col gap-4 items-center'>
 								<div className="w-full max-w-lg">
