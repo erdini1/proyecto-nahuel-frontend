@@ -1,8 +1,6 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from 'react';
-import { Save } from "lucide-react";
 
 export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellations, cashRegister, updateCashRegister }) {
 	const [data, setData] = useState({
@@ -27,7 +25,8 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 					withdrawal,
 					toRenderSystem,
 					cashToRenderWithPointMaxiconsumo: +cashRegister.cashToRenderWithPointMaxiconsumo,
-					diff
+					diff,
+					batchNumber: cashRegister.batchNumber
 				};
 			});
 		}
@@ -47,14 +46,12 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 		});
 	};
 
-	const handleSave = () => {
-		console.log(data);
+	const handleBlur = (e) => {
 		updateCashRegister({
-			salesWithPointMaxiconsumo: data.salesWithPointMaxiconsumo,
-			cashToRenderWithPointMaxiconsumo: data.cashToRenderWithPointMaxiconsumo,
-			batchNumber: data.batchNumber
+			...cashRegister,
+			[e.target.name]: e.target.value
 		});
-	};
+	}
 
 	return (
 		<div className='flex flex-col w-full'>
@@ -84,6 +81,7 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 												step="0.01"
 												value={data.salesWithPointMaxiconsumo || ''}
 												onChange={(e) => handleInputChange('salesWithPointMaxiconsumo', e.target.value)}
+												onBlur={handleBlur}
 												placeholder="0.00"
 												className="border w-full shadow pl-5"
 												required
@@ -91,13 +89,13 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 										</div>
 									</div>
 									<div className="flex flex-col gap-2">
-										<label className="text-xs font-medium uppercase" htmlFor="withdrawal">Retiros</label>
+										<label className="text-xs font-medium uppercase" htmlFor="withdrawalPointMaxiconsumo">Retiros</label>
 										<div className="relative text-gray-400">
 											<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
 											<Input
 												type="number"
 												name="withdrawal"
-												id="withdrawal"
+												id="withdrawalPointMaxiconsumo"
 												step="0.01"
 												value={data.withdrawal || ''}
 												placeholder="0.00"
@@ -109,13 +107,13 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 									</div>
 									<div className="flex gap-1">
 										<div className="flex flex-col gap-2">
-											<label className="text-xs font-medium uppercase" htmlFor="toRenderSystem">A rendir</label>
+											<label className="text-xs font-medium uppercase" htmlFor="toRenderSystemPointMaxiconsumo">A rendir</label>
 											<div className="relative text-gray-400">
 												<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
 												<Input
 													type="number"
 													name="toRenderSystem"
-													id="toRenderSystem"
+													id="toRenderSystemPointMaxiconsumo"
 													step="0.01"
 													value={data.toRenderSystem || ''}
 													placeholder="0.00"
@@ -137,6 +135,7 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 													step="0.01"
 													value={data.cashToRenderWithPointMaxiconsumo || ''}
 													onChange={(e) => handleInputChange('cashToRenderWithPointMaxiconsumo', e.target.value)}
+													onBlur={handleBlur}
 													required
 													placeholder="0.00"
 													className="border w-full shadow pl-5"
@@ -146,13 +145,13 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 									</div>
 									<div className="flex gap-1 items-center">
 										<div className="flex flex-col gap-2 w-1/2">
-											<label className="text-xs font-medium uppercase" htmlFor="diff">Diferencia</label>
+											<label className="text-xs font-medium uppercase" htmlFor="diffPointMaxiconsumo">Diferencia</label>
 											<div className="relative text-gray-500">
 												<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
 												<Input
 													type="number"
 													name="diff"
-													id="diff"
+													id="diffPointMaxiconsumo"
 													step="0.01"
 													value={data.diff || ''}
 													placeholder="0.00"
@@ -172,21 +171,13 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 												step="0.01"
 												value={data.batchNumber || ''}
 												onChange={(e) => handleInputChange('batchNumber', e.target.value)}
+												onBlur={handleBlur}
 												required
 												placeholder="Lote"
 												className="border w-full shadow "
 											/>
 										</div>
 									</div>
-									<Button
-										variant="outline"
-										className="w-1/2 self-center shadow flex gap-2"
-										onClick={handleSave}
-										disabled={!data.salesWithPointMaxiconsumo || !data.cashToRenderWithPointMaxiconsumo || !data.batchNumber}
-									>
-										<Save className="h-4 w-4" />
-										Guardar
-									</Button>
 								</div>
 							</div>
 						</TableCell>

@@ -1,8 +1,6 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from 'react';
-import { Save } from "lucide-react";
 
 export default function PaymentTypeCheckingAccount({ cashMovements, cancellations, cashRegister, updateCashRegister }) {
 	const [data, setData] = useState({
@@ -42,12 +40,12 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 		});
 	};
 
-	const handleSave = () => {
+	const handleBlur = (e) => {
 		updateCashRegister({
-			salesWithCredit: data.salesWithCredit,
-			cashToRenderWithCredit: data.cashToRenderWithCredit
+			...cashRegister,
+			[e.target.name]: e.target.value
 		});
-	};
+	}
 
 	return (
 		<div className="flex flex-col w-full min-h-full justify-between ">
@@ -77,6 +75,7 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 													step="0.01"
 													value={data.salesWithCredit || ''}
 													onChange={(e) => handleInputChange('salesWithCredit', e.target.value)}
+													onBlur={handleBlur}
 													placeholder="0.00"
 													className="border w-full shadow pl-5"
 													required
@@ -85,13 +84,13 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 										</div>
 										<div className="flex gap-1">
 											<div className="flex flex-col gap-2">
-												<label className="text-xs font-medium uppercase" htmlFor="toRenderSystem">A rendir</label>
+												<label className="text-xs font-medium uppercase" htmlFor="toRenderSystemCredit">A rendir</label>
 												<div className="relative text-gray-400">
 													<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
 													<Input
 														type="number"
 														name="toRenderSystem"
-														id="toRenderSystem"
+														id="toRenderSystemCredit"
 														step="0.01"
 														value={data.toRenderSystem || ''}
 														placeholder="0.00"
@@ -113,6 +112,7 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 														step="0.01"
 														value={data.cashToRenderWithCredit || ''}
 														onChange={(e) => handleInputChange('cashToRenderWithCredit', e.target.value)}
+														onBlur={handleBlur}
 														placeholder="0.00"
 														className="border w-full shadow pl-5"
 														required
@@ -121,13 +121,13 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 											</div>
 										</div>
 										<div className="flex flex-col gap-2">
-											<label className="text-xs font-medium uppercase" htmlFor="diff">Diferencia</label>
+											<label className="text-xs font-medium uppercase" htmlFor="diffCredit">Diferencia</label>
 											<div className="relative text-gray-500">
 												<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
 												<Input
 													type="number"
 													name="diff"
-													id="diff"
+													id="diffCredit"
 													step="0.01"
 													value={data.diff || ''}
 													placeholder="0.00"
@@ -136,33 +136,6 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 													readOnly
 												/>
 											</div>
-										</div>
-
-										{/* Input invisible */}
-										<div className="flex flex-col gap-2">
-											<div className="relative pointer-events-none cursor-none select-none">
-												<label className="text-white">"</label>
-												<Input
-													type="text"
-													name="hide"
-													id="hide"
-													placeholder=""
-													className="w-full bg-white border-white placeholder-transparent text-white cursor-not-allowed pl-5"
-													readOnly
-												/>
-											</div>
-										</div>
-
-										<div className="flex justify-center align-bottom">
-											<Button
-												variant="outline"
-												className="w-1/2 self-center shadow flex gap-2 mb-1"
-												onClick={handleSave}
-												disabled={!data.salesWithCredit || !data.cashToRenderWithCredit}
-											>
-												<Save className="h-4 w-4" />
-												Guardar
-											</Button>
 										</div>
 									</div>
 								</div>
