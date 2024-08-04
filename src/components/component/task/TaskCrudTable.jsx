@@ -28,7 +28,7 @@ export default function TaskCrudTable({ tasks, handleUpdateTask, handleDeleteTas
 				<TableBody>
 					{tasks.length === 0 ? (
 						<TableRow>
-							<TableCell colSpan="3" classsName="text-center">No hay tareas registradas</TableCell>
+							<TableCell colSpan="3" className="text-center">No hay tareas registradas</TableCell>
 						</TableRow>
 					) : (
 						tasks.map((task) => (
