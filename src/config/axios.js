@@ -1,18 +1,25 @@
 import axios from 'axios';
+import Cookies from "js-cookie";
 
-// TODO: Poner variables de entorno
+
 const axiosInstance = axios.create({
-	baseURL: 'http://localhost:4000',
+	baseURL: process.env.NEXT_PUBLIC_API_URL,
 	headers: {
 		'Content-Type': 'application/json',
-	},
+	}
 });
 
-if (typeof window !== 'undefined') {
-	const authToken = localStorage.getItem('token');
-	if (authToken) {
-		axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+axiosInstance.interceptors.request.use(
+	(config) => {
+		const token = Cookies.get('token');
+		if (token) {
+			config.headers['Authorization'] = `Bearer ${token}`;
+		}
+		return config;
+	},
+	(error) => {
+		return Promise.reject(error);
 	}
-}
+);
 
 export default axiosInstance;
