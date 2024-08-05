@@ -32,11 +32,24 @@ export default function Navbar() {
 		return null;
 	}
 
+	const handleHome = () => {
+		switch (user.role) {
+			case 'admin':
+				return '/admin/general';
+			case 'cashier':
+				return '/cashier';
+			case 'employee':
+				return '/employee/checklist';
+			default:
+				return '/login';
+		}
+	};
+
 	return (
 		<header className="bg-gray-900 shadow">
 			<div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8 flex items-center justify-between">
 				<div>
-					<Link href="/cashier" className="flex items-center gap-2 text-gray-700 hover:text-gray-900" prefetch={false}>
+					<Link href={handleHome()} className="flex items-center gap-2 text-gray-700 hover:text-gray-900" prefetch={false}>
 						<TintinIcon className="h-8 w-8 text-white" />
 						<span className="text-xl font-bold text-white">INICIO</span>
 					</Link>
