@@ -29,7 +29,7 @@ export default function Navbar() {
 	}, []);
 
 	if (isLoading) {
-		return null; // Mostrar un spinner o algún contenido de carga si prefieres
+		return null;
 	}
 
 	return (
@@ -60,53 +60,3 @@ export default function Navbar() {
 		</header>
 	);
 }
-
-
-// "use client"
-// import { useEffect, useState } from "react"
-// import Link from "next/link"
-// import { PowerIcon, TintinIcon } from "@/components/icons"
-// import { decode } from "@/helpers/token.helper"
-// import Cookies from "js-cookie"
-
-// export default function Navbar() {
-// 	const [user, setUser] = useState(null)
-// 	const [isLoading, setIsLoading] = useState(true)
-
-// 	useEffect(() => {
-// 		try {
-// 			const token = Cookies.get('token');
-// 			if (token) {
-// 				const user = decode(token);
-// 				setUser(user);
-// 			}
-// 		} catch (error) {
-// 			console.error('Failed to get token:', error);
-// 		} finally {
-// 			setIsLoading(false);
-// 		}
-// 	}, [])
-
-// 	return (
-// 		<header className="bg-gray-900 shadow">
-// 			<div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8 flex items-center justify-between">
-// 				<div>
-// 					<Link href="/cashier" className="flex items-center gap-2 text-gray-700 hover:text-gray-900 " prefetch={false}>
-// 						<TintinIcon className="h-8 w-8 text-white" />
-// 						<span className="text-xl font-bold text-white">INICIO</span>
-// 					</Link>
-// 				</div>
-// 				<div className="flex items-center gap-14 ">
-// 					<div className="flex items-center gap-2 text-gray-700 hover:text-gray-900">
-// 						<span className="text-lg font-medium text-white">Bienvenido, {user?.firstName} {user?.lastName}</span>
-// 					</div>
-// 					<Link href="/logout" className="flex items-center gap-2 text-gray-700 hover:text-gray-900" prefetch={false}>
-// 						<PowerIcon className="h-5 w-5 text-white" />
-// 						<span className="font-medium text-white">Cerrar Sesión</span>
-// 					</Link>
-// 				</div>
-// 			</div>
-// 		</header>
-// 	)
-// }
-

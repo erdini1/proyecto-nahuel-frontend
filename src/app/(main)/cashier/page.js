@@ -26,7 +26,6 @@ export default function Page() {
 
 	return (
 		<main className="flex  justify-center px-4 py-6 sm:px-6 lg:px-8 bg-gray-100 h-screen">
-			{/* <main className="flex  justify-center px-4 py-6 sm:px-6 lg:px-8 bg-[#8ecae6] h-screen"> */}
 			{isLoading ? (
 				<div className="flex justify-center items-center h-64">
 					<Spinner />
