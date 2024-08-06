@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import TaskCrudTable from "@/components/component/task/TaskCrudTable";
 import TaskCrudDialog from "@/components/component/task/TaskCrudDialog";
@@ -8,7 +7,7 @@ import { getAllTasks, createTask, updateTask, deleteTask } from "@/service/taskS
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import Spinner from "@/components/component/Spinner";
-import { SearchIcon, PlusIcon, ClipboardListIcon } from "@/components/icons/index";
+import { SearchIcon, PlusIcon } from "@/components/icons/index";
 import { useToast } from "@/components/ui/use-toast";
 import { getAllSectors } from "@/service/sectorService";
 
@@ -32,13 +31,18 @@ export default function TaskCrud() {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const tasks = await getAllTasks();
-                setTasks(tasks);
 
-                const sectors = await getAllSectors()
+                const [
+                    tasks,
+                    sectors,
+                ] = await Promise.all([
+                    getAllTasks(),
+                    getAllSectors()
+                ]);
+
+                setTasks(tasks);
                 setSectors(sectors.filter(sector => sector.isActive) || []);
             } catch (error) {
-                console.log('Failed to fetch tasks:', error);
                 toast({
                     variant: "destructive",
                     title: "Error",
@@ -106,7 +110,11 @@ export default function TaskCrud() {
                 description: "La tarea ha sido eliminada correctamente",
             });
         } catch (error) {
-            console.log('Failed to delete task:', error);
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Ocurrió un error al eliminar la tarea",
+            });
         }
     };
 

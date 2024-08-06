@@ -27,16 +27,22 @@ export default function Page({ params }) {
 	useEffect(() => {
 		const fetchUserTasks = async () => {
 			try {
+
 				const employee = await getUser(params.userId);
 				setEmployee(employee);
 
-				const userTasks = await getUserTaskByTaskSet(employee.id);
+				const [
+					userTasks,
+					tasks,
+					sectors,
+				] = await Promise.all([
+					getUserTaskByTaskSet(employee.id),
+					getAllTasks(),
+					getAllSectors()
+				]);
+
 				setUserTasks(userTasks);
-
-				const tasks = await getAllTasks();
 				setTasks(tasks)
-
-				const sectors = await getAllSectors()
 				setSectors(sectors.filter(sector => sector.isActive) || []);
 
 			} catch (error) {
@@ -94,7 +100,6 @@ export default function Page({ params }) {
 			const userTasks = await getUserTaskByTaskSet(employee.id);
 			setUserTasks(userTasks);
 		} catch (error) {
-			console.log('Failed to assign tasks:', error);
 			toast({
 				variant: "destructive",
 				title: "Error",

@@ -14,6 +14,7 @@ import { Card } from "@/components/ui/card";
 import CashRegisterReport from "@/components/component/CashRegisterReport";
 import { getCashMovements } from "@/service/cashMovementsService";
 import { getCancellations } from "@/service/cancellationService";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Page() {
 	const [hasCashRegister, setHasCashRegister] = useState(false);
@@ -23,24 +24,38 @@ export default function Page() {
 	const [cashMovements, setCashMovements] = useState([]);
 	const [cancellations, setCancellations] = useState([]);
 	const [terminals, setTerminals] = useState([]);
-
 	const [isLoading, setIsLoading] = useState(true);
+
+	const { toast } = useToast();
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const cashRegisterExists = await checkIfCashRegisterExists();
 
-				const cashBoxes = await getCashBoxes()
+				const [
+					cashRegisterExists,
+					cashBoxes
+				] = await Promise.all([
+					checkIfCashRegisterExists(),
+					getCashBoxes()
+				]);
+
 				setCashBoxes(cashBoxes);
 
 				if (cashRegisterExists) {
 					setHasCashRegister(true);
 					setSelectedTab("movements");
 
-					const cashRegisterData = await getLastCashRegister();
-					const cashMovementsData = await getCashMovements();
-					const cancellationsData = await getCancellations();
+					const [
+						cashRegisterData,
+						cashMovementsData,
+						cancellationsData
+					] = await Promise.all([
+						getLastCashRegister(),
+						getCashMovements(),
+						getCancellations()
+					]);
+
 					const terminals = await getTerminals(cashRegisterData.id);
 
 					setCashRegister(cashRegisterData);
@@ -50,7 +65,11 @@ export default function Page() {
 
 				}
 			} catch (error) {
-				console.error('Error fetching data:', error);
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: "Ocurrió un error al cargar los datos",
+				});
 			} finally {
 				setIsLoading(false);
 			}

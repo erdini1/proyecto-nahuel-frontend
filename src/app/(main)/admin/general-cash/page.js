@@ -3,40 +3,49 @@ import { useState, useEffect } from "react";
 import Spinner from "@/components/component/Spinner";
 import GeneralTable from "@/components/component/general/GeneralTable";
 import { getAllCashMovements } from "@/service/cashMovementsService";
-import { createSector, deleteSector, getAllSectors, getAllUserSectors, updateSector } from "@/service/sectorService";
+import { getAllSectors, getAllUserSectors } from "@/service/sectorService";
 import { createProvider, deleteProvider, getProviders, updateProvider } from "@/service/providerService";
 import TerminalTable from "@/components/component/general/TerminalTable";
 import { createTerminal, deleteTerminal, getAllTerminalAssociations, getAllterminals, updateTerminal } from "@/service/terminalService";
+import { useToast } from "@/components/ui/use-toast"
 
 export default function Page() {
-	const [sectors, setSectors] = useState([]);
 	const [providers, setProviders] = useState([]);
 	const [cashMovements, setCashMovements] = useState([]);
-	const [userSectors, setUserSectors] = useState([]);
 	const [terminals, setTerminals] = useState([]);
 	const [terminalsAssociations, setTerminalsAssociations] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+
+	const { toast } = useToast();
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				setIsLoading(true)
 
-				const sectors = await getAllSectors();
-				const userSector = await getAllUserSectors();
-				const providers = await getProviders()
-				const terminals = await getAllterminals();
-				const cashMovementsData = await getAllCashMovements();
-				const terminalsAssociations = await getAllTerminalAssociations();
-				setSectors(sectors.filter(sector => sector.name !== "general" && sector.isActive) || []);
-				setUserSectors(userSector);
+				const [
+					providers,
+					terminals,
+					cashMovements,
+					terminalsAssociations
+				] = await Promise.all([
+					getProviders(),
+					getAllterminals(),
+					getAllCashMovements(),
+					getAllTerminalAssociations()
+				]);
+
 				setProviders(providers.filter(provider => !provider.name.toLowerCase().startsWith("retiro") && provider.isActive) || []);
 				setTerminals(terminals.filter(terminal => terminal.terminalNumber !== "cash" && terminal.isActive) || []);
-				setCashMovements(cashMovementsData);
+				setCashMovements(cashMovements);
 				setTerminalsAssociations(terminalsAssociations);
 
 			} catch (error) {
-				console.log('Failed to fetch all tasks:', error);
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: "Ocurrió un error al cargar los datos",
+				});
 			} finally {
 				setIsLoading(false);
 			}

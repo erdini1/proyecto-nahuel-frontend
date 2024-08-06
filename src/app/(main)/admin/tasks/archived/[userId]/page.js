@@ -29,12 +29,17 @@ export default function Page({ params }) {
 			const taskSetIdSearch = searchParams.get('taskSetId')
 
 			try {
-				const employee = await getUser(params.userId);
-				setEmployee(employee);
-
 				setTaskSetId(taskSetIdSearch)
 
-				const userTasks = await getUserTasksByTaskSetId(taskSetIdSearch);
+				const [
+					employee,
+					userTasks,
+				] = await Promise.all([
+					getUser(params.userId),
+					getUserTasksByTaskSetId(taskSetIdSearch),
+				]);
+
+				setEmployee(employee);
 				setUserTasks(userTasks);
 
 			} catch (error) {

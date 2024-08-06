@@ -6,13 +6,11 @@ import EmployeeCrudModal from "@/components/component/employee/EmployeeCrudModal
 import { getUsers, createUser, updateUser, deleteUser } from "@/service/userService";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/component/Spinner";
-import { SearchIcon, PlusIcon, ListPlusIcon } from "@/components/icons/index";
+import { SearchIcon, PlusIcon } from "@/components/icons/index";
 import { useToast } from "@/components/ui/use-toast"
-import { getAllSectors } from "@/service/sectorService";
 
 export default function EmployeeCrud() {
     const [employees, setEmployees] = useState([]);
-    const [sectors, setSectors] = useState([]);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [newEmployee, setNewEmployee] = useState({
         id: null,

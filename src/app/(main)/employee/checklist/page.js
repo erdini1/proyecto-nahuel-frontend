@@ -32,13 +32,19 @@ export default function ChecklistPage() {
 		const fetchUserTasks = async () => {
 			try {
 				setIsLoading(true);
-				const userTasks = await getUserTaskByTaskSet();
+
+				const [
+					userTasks,
+					user,
+					taskSet,
+				] = await Promise.all([
+					getUserTaskByTaskSet(),
+					getMyUser(),
+					getTaskSet()
+				]);
+
 				setUserTasks(userTasks.filter(userTask => userTask.isActive));
-
-				const user = await getMyUser();
 				setUserName(`${user.firstName} ${user.lastName}`);
-
-				const taskSet = await getTaskSet()
 				setTaskSet(taskSet);
 
 				const isShiftSet = taskSet.shift !== undefined && !taskSet.isClosed && taskSet.shift !== '';
