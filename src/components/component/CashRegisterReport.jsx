@@ -88,7 +88,7 @@ export default function CashRegisterReport({ cashRegister, cashMovements, cancel
 						</div>
 					) : (
 						<div className='flex flex-col gap-6'>
-							<div className={`mt-6 justify-center divide-x-2 ${lengthPaymentMethods() === 5 ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" : "flex flex-wrap"}`}>
+							<div className={`mt-6 justify-center divide-x-2 ${lengthPaymentMethods() >= 4 ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" : "flex flex-wrap"}`}>
 								<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
 									<PaymentTypeCash
 										cashMovements={cashMovements}

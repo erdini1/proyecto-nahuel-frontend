@@ -118,7 +118,7 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 
 	return (
 		<div>
-			<div className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
+			<div className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 lg:px-4 md:px-2">
 				<div className="flex-1">
 					<p className="mb-2"><span className="font-semibold">Cajas</span></p>
 				</div>
@@ -126,7 +126,7 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 				<div className="relative">
 					<SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
 					<Input
-						className="pl-8 sm:w-[200px] md:w-[200px] lg:w-[200px] bg-white"
+						className="pl-8 w-full bg-white"
 						id="search"
 						placeholder="Buscar caja..."
 						value={searchTerm}
@@ -136,9 +136,9 @@ const CashBoxTable = ({ data, onAdd, onEdit, onRemove, usedData }) => {
 
 				<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 					<DialogTrigger asChild>
-						<Button variant="outline" onClick={() => setIsDialogOpen(true)} className="flex items-center gap-2">
+						<Button variant="outline" onClick={() => setIsDialogOpen(true)} className="flex items-center gap-2 w-auto">
 							<PlusIcon className="h-4 w-4" />
-							Agregar caja
+							Nueva caja
 						</Button>
 					</DialogTrigger>
 					<DialogContent>
