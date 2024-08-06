@@ -70,7 +70,7 @@ export default function Page() {
 		return terminal;
 	}
 
-	const handleRemoveprovider = async (providerId) => {
+	const handleRemoveProvider = async (providerId) => {
 		await deleteProvider(providerId);
 		setProviders(providers.filter(provider => provider.id !== providerId));
 	};
@@ -104,32 +104,30 @@ export default function Page() {
 							<Spinner />
 						</div>
 					) : (
-						<div className="flex flex-col gap-4">
-							<div className="flex gap-4 mb-4">
-								<div className="w-1/2">
-									{/* Proveedores */}
-									<GeneralTable
-										data={providers}
-										onAdd={handleAddProvider}
-										onEdit={handleEditProvider}
-										onRemove={handleRemoveprovider}
-										placeholder="Nuevo Proveedor..."
-										tableName="proveedor"
-										usedData={getUsedProviders()}
-									/>
-								</div>
-								<div className="w-1/2">
-									{/* Terminales */}
-									<TerminalTable
-										data={terminals}
-										onAdd={handleAddTerminal}
-										onEdit={handleEditTerminal}
-										onRemove={handleRemoveTerminal}
-										placeholder="Nueva terminal..."
-										tableName="terminal"
-										usedData={getUsedTerminals()}
-									/>
-								</div>
+						<div className="flex flex-col lg:flex-row lg:gap-4 md:gap-y-16 gap-y-16 mb-10">
+							<div className="flex-grow min-w-0 w-full lg:w-1/2 ">
+								{/* Proveedores */}
+								<GeneralTable
+									data={providers}
+									onAdd={handleAddProvider}
+									onEdit={handleEditProvider}
+									onRemove={handleRemoveProvider}
+									placeholder="Nuevo Proveedor..."
+									tableName="proveedor"
+									usedData={getUsedProviders()}
+								/>
+							</div>
+							<div className="flex-grow min-w-0 w-full lg:w-1/2">
+								{/* Terminales */}
+								<TerminalTable
+									data={terminals}
+									onAdd={handleAddTerminal}
+									onEdit={handleEditTerminal}
+									onRemove={handleRemoveTerminal}
+									placeholder="Nueva terminal..."
+									tableName="terminal"
+									usedData={getUsedTerminals()}
+								/>
 							</div>
 						</div>
 					)}
@@ -137,4 +135,52 @@ export default function Page() {
 			</div>
 		</div>
 	);
+
+	// return (
+	// 	<div className="">
+	// 		<div className="flex flex-col">
+	// 			<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
+	// 				<div className="flex-1">
+	// 					<h1 className="font-semibold text-lg">General</h1>
+	// 				</div>
+	// 			</header>
+	// 			<main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+	// 				{isLoading ? (
+	// 					<div className="flex justify-center items-center h-64">
+	// 						<Spinner />
+	// 					</div>
+	// 				) : (
+	// 					<div className="flex flex-col gap-4">
+	// 						<div className="flex gap-4 mb-4">
+	// 							<div className="w-1/2">
+	// 								{/* Proveedores */}
+	// 								<GeneralTable
+	// 									data={providers}
+	// 									onAdd={handleAddProvider}
+	// 									onEdit={handleEditProvider}
+	// 									onRemove={handleRemoveprovider}
+	// 									placeholder="Nuevo Proveedor..."
+	// 									tableName="proveedor"
+	// 									usedData={getUsedProviders()}
+	// 								/>
+	// 							</div>
+	// 							<div className="w-1/2">
+	// 								{/* Terminales */}
+	// 								<TerminalTable
+	// 									data={terminals}
+	// 									onAdd={handleAddTerminal}
+	// 									onEdit={handleEditTerminal}
+	// 									onRemove={handleRemoveTerminal}
+	// 									placeholder="Nueva terminal..."
+	// 									tableName="terminal"
+	// 									usedData={getUsedTerminals()}
+	// 								/>
+	// 							</div>
+	// 						</div>
+	// 					</div>
+	// 				)}
+	// 			</main>
+	// 		</div>
+	// 	</div>
+	// );
 }

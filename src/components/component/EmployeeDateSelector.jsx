@@ -63,11 +63,11 @@ const EmployeeDateSelector = ({ onSelection }) => {
 	};
 
 	const today = new Date();
-	const fourteenDaysAgo = new Date(today);
-	fourteenDaysAgo.setDate(today.getDate() - 14);
+	const thirtyDaysAgo = new Date(today);
+	thirtyDaysAgo.setDate(today.getDate() - 31);
 
 	const isDateDisabled = (d) => {
-		return d > today || d < fourteenDaysAgo;
+		return d > today || d < thirtyDaysAgo;
 	};
 
 	return (
