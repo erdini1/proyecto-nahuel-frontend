@@ -33,3 +33,5 @@ export { default as DownloadIcon } from './DownloadIcon';
 export { default as MixerVertical } from './MixerVertical';
 export { default as MixerHorizontal } from './MixerHorizontal';
 export { default as ReloadIcon } from './ReloadIcon';
+export { default as MenuIcon } from './MenuIcon';
+export { default as CrossIcon } from './CrossIcon';

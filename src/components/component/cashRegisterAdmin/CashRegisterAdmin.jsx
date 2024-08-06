@@ -220,7 +220,7 @@ export default function CashRegisterAdmin() {
 							<div className="relative">
 								<SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
 								<Input
-									className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px] bg-white"
+									className="pl-8 w-full bg-white"
 									placeholder="Buscar Empleado..."
 									type="search"
 									value={searchQuery}

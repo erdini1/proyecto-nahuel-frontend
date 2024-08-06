@@ -104,7 +104,7 @@ export default function Page() {
 							<Spinner />
 						</div>
 					) : (
-						<div className="flex flex-col lg:flex-row lg:gap-4 mb-4 md:gap-y-16">
+						<div className="flex flex-col lg:flex-row lg:gap-4 md:gap-y-16 gap-y-16 mb-10">
 							<div className="flex-grow min-w-0 w-full lg:w-1/2 ">
 								{/* Proveedores */}
 								<GeneralTable
