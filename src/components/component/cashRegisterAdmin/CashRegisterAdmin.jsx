@@ -18,6 +18,7 @@ import { getAllterminals } from "@/service/terminalService";
 import { getCashBoxes } from "@/service/cashBoxService";
 import DownloadExcel from "../DownloadExcel";
 import { translateType } from "@/helpers/cancellation.helper";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function CashRegisterAdmin() {
 	const [cashRegisters, setCashRegisters] = useState([]);
@@ -34,16 +35,27 @@ export default function CashRegisterAdmin() {
 	const [cashMovementData, setCashMovementData] = useState([]);
 	const [cancellationData, setCancellationData] = useState([]);
 
+	const { toast } = useToast();
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				setIsLoading(true)
 
-				const cashRegistersData = await getAllCashRegisters();
-				const cashMovementsData = await getAllCashMovements();
-				const cancellationsData = await getAllCancellations();
-				const terminalsData = await getAllterminals();
-				const cashBoxesData = await getCashBoxes();
+				const [
+					cashRegistersData,
+					cashMovementsData,
+					cancellationsData,
+					terminalsData,
+					cashBoxesData
+				] = await Promise.all([
+					getAllCashRegisters(),
+					getAllCashMovements(),
+					getAllCancellations(),
+					getAllterminals(),
+					getCashBoxes()
+				]);
+
 				setCashRegisters(cashRegistersData);
 				setCashMovements(cashMovementsData);
 				setCancellations(cancellationsData);
@@ -51,7 +63,11 @@ export default function CashRegisterAdmin() {
 				setCashBoxes(cashBoxesData.filter(cashBox => cashBox.isActive) || []);
 
 			} catch (error) {
-				console.log('Failed to fetch all tasks:', error);
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: "Ocurrió un error al cargar los datos",
+				});
 			} finally {
 				setIsLoading(false);
 			}

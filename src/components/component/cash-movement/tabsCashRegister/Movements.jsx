@@ -62,7 +62,6 @@ export default function Movements({ cashRegisterId, cashMovements, handleUpdateC
 				setProviders(providers.filter(provider => provider.isActive) || []);
 
 			} catch (error) {
-				console.error('Error fetching data:', error);
 				toast({
 					variant: "destructive",
 					title: "Error",

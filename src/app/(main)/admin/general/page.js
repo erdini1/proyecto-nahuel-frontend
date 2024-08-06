@@ -5,6 +5,7 @@ import GeneralTable from "@/components/component/general/GeneralTable";
 import { createSector, deleteSector, getAllSectors, getAllUserSectors, updateSector } from "@/service/sectorService";
 import CashBoxTable from "@/components/component/general/CashBoxTable";
 import { createCashBox, deleteCashBox, getCashBoxes, updateCashBox } from "@/service/cashBoxService";
+import { useToast } from "@/components/ui/use-toast"
 
 export default function Page() {
 	const [sectors, setSectors] = useState([]);
@@ -12,20 +13,33 @@ export default function Page() {
 	const [cashBoxes, setCashBoxes] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
+	const { toast } = useToast();
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				setIsLoading(true)
 
-				const sectors = await getAllSectors();
-				const userSector = await getAllUserSectors();
-				const cashBox = await getCashBoxes();
+				const [
+					sectors,
+					userSector,
+					cashBox,
+				] = await Promise.all([
+					getAllSectors(),
+					getAllUserSectors(),
+					getCashBoxes(),
+				]);
+
 				setSectors(sectors.filter(sector => sector.name !== "general" && sector.isActive) || []);
 				setUserSectors(userSector);
 				setCashBoxes(cashBox.filter(cashBox => cashBox.isActive) || []);
 
 			} catch (error) {
-				console.log('Failed to fetch all tasks:', error);
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: "Ocurrió un error al cargar los datos",
+				});
 			} finally {
 				setIsLoading(false);
 			}

@@ -7,25 +7,36 @@ import { format } from "date-fns";
 import { toZonedTime } from 'date-fns-tz';
 import { CalendarDaysIcon } from "@/components/icons";
 import Spinner from "@/components/component/Spinner";
-
+import { useToast } from "@/components/ui/use-toast";
 
 export default function AssignTasks() {
     const [employees, setEmployees] = useState([]);
     const [userTasks, setUserTasks] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const { toast } = useToast();
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setIsLoading(true)
 
-                const userTasks = await getUserTasksByTaskSets();
-                setUserTasks(userTasks.filter(userTask => userTask.isActive));
+                const [
+                    userTasks,
+                    employees,
+                ] = await Promise.all([
+                    getUserTasksByTaskSets(),
+                    getUsers(),
+                ]);
 
-                const employees = await getUsers();
+                setUserTasks(userTasks.filter(userTask => userTask.isActive));
                 setEmployees(employees.filter((employee) => employee.role !== "admin"));
             } catch (error) {
-                console.log('Failed to fetch all tasks:', error);
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: "Ocurrió un error al cargar los datos",
+                });
             } finally {
                 setIsLoading(false);
             }

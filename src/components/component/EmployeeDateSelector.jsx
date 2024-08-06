@@ -34,7 +34,6 @@ const EmployeeDateSelector = ({ onSelection }) => {
 				const filteredData = data.filter((employee) => employee.role !== ROLE.ADMIN);
 				setEmployees(filteredData);
 			} catch (error) {
-				console.log("Failed to fetch employees:", error);
 				toast({
 					variant: "destructive",
 					title: "Error",
