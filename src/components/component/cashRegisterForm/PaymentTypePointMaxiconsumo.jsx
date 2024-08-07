@@ -67,7 +67,7 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 				<TableBody>
 					<TableRow>
 						<TableCell className="align-top" colSpan="1">
-							<div className="flex flex-col gap-3">
+							<div className="flex flex-col gap-3 pt-2 pb-5">
 								<div className="flex flex-col gap-6">
 									<div className="flex flex-col gap-2">
 										<label className="text-xs font-medium uppercase" htmlFor="salesWithPointMaxiconsumo">Ventas</label>

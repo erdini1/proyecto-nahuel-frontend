@@ -50,8 +50,8 @@ export default function SignIn() {
 	};
 
 	return (
-		<div className="flex min-h-[100dvh] items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 bg-gray-100">
-			<Card className="w-full max-w-md space-y-8 shadow-lg rounded-2xl mx-4 sm:mx-0 p-6">
+		<div className="flex min-h-[100dvh] items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 from-slate-300 to-slate-400 bg-gradient-to-b">
+			<Card className="w-full max-w-md space-y-8 shadow-lg rounded-2xl mx-4 sm:mx-0 p-6 ">
 				<div className='flex items-center gap-3 justify-center'>
 					<h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-foreground text-gray-900">
 						Inicia sesión

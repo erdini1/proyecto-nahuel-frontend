@@ -148,7 +148,7 @@ export default function Cancellations({ cashRegisterId, cancellations, handleUpd
 	return (
 		<Accordion type="single" collapsible className="">
 			<AccordionItem value="item-1">
-				<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
+				<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100 border px-6">
 					<div className="flex-grow">
 						<AccordionTrigger className="w-full" onClick={handleAccordionToggle}>
 							<div className="flex items-center gap-2 w-full">

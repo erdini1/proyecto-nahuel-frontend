@@ -75,92 +75,90 @@ export default function CashRegisterReport({ cashRegister, cashMovements, cancel
 	}
 
 	return (
-		<div className='bg-gray-100'>
-			<Card className="bg-white">
-				<CardHeader>
-					<CardTitle>Registro de Caja</CardTitle>
-					<CardDescription>Rellena los campos a continuación para actualizar los datos de la caja.</CardDescription>
-				</CardHeader>
-				<CardContent>
-					{isLoading ? (
-						<div className="flex justify-center items-center h-64">
-							<Spinner />
-						</div>
-					) : (
-						<div className='flex flex-col gap-6'>
-							<div className={`mt-6 justify-center divide-x-2 ${lengthPaymentMethods() >= 4 ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" : "flex flex-wrap"}`}>
+		<Card className="bg-white w-full">
+			<CardHeader>
+				<CardTitle>Registro de Caja</CardTitle>
+				<CardDescription>Rellena los campos a continuación para actualizar los datos de la caja.</CardDescription>
+			</CardHeader>
+			<CardContent>
+				{isLoading ? (
+					<div className="flex justify-center items-center h-64">
+						<Spinner />
+					</div>
+				) : (
+					<div className='flex flex-col gap-6'>
+						<div className={`mt-6 justify-center divide-x-2 ${lengthPaymentMethods() >= 4 ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" : "flex flex-wrap"}`}>
+							<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
+								<PaymentTypeCash
+									cashMovements={cashMovements}
+									cancellations={cancellations}
+									cashRegister={cashRegister}
+									updateCashRegister={handleUpdateCashRegister}
+								/>
+							</div>
+							{selectedTerminals.card && (
 								<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
-									<PaymentTypeCash
+									<PaymentTypeCard
 										cashMovements={cashMovements}
 										cancellations={cancellations}
 										cashRegister={cashRegister}
 										updateCashRegister={handleUpdateCashRegister}
 									/>
 								</div>
-								{selectedTerminals.card && (
-									<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
-										<PaymentTypeCard
-											cashMovements={cashMovements}
-											cancellations={cancellations}
-											cashRegister={cashRegister}
-											updateCashRegister={handleUpdateCashRegister}
-										/>
-									</div>
-								)}
-								{selectedTerminals.mercadoPago && (
-									<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
-										<PaymentTypeMercadoPago
-											cashMovements={cashMovements}
-											cancellations={cancellations}
-											cashRegister={cashRegister}
-											updateCashRegister={handleUpdateCashRegister}
-										/>
-									</div>
-								)}
-								{selectedTerminals.pointMaxiconsumo && (
-									<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
-										<PaymentTypePointMaxiconsumo
-											cashMovements={cashMovements}
-											cancellations={cancellations}
-											cashRegister={cashRegister}
-											updateCashRegister={handleUpdateCashRegister}
-										/>
-									</div>
-								)}
-								{selectedTerminals.checkingAccount && (
-									<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
-										<PaymentTypeCheckingAccount
-											cashMovements={cashMovements}
-											cancellations={cancellations}
-											cashRegister={cashRegister}
-											updateCashRegister={handleUpdateCashRegister}
-										/>
-									</div>
-								)}
-							</div>
-							<div className='flex flex-col gap-4 items-center'>
-								<div className="w-full max-w-lg">
-									<Label htmlFor="observations">Observaciones:</Label>
-									<Textarea
-										placeholder="Escribe tus observaciones..."
-										id="observations"
-										value={observations}
-										onChange={(e) => setObservations(e.target.value)}
+							)}
+							{selectedTerminals.mercadoPago && (
+								<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
+									<PaymentTypeMercadoPago
+										cashMovements={cashMovements}
+										cancellations={cancellations}
+										cashRegister={cashRegister}
+										updateCashRegister={handleUpdateCashRegister}
 									/>
 								</div>
-								<Link href="/cashier" className='w-full max-w-md'>
-									<Button
-										className='w-full'
-										onClick={handleSave}
-									>
-										Cerrar Caja
-									</Button>
-								</Link>
-							</div>
+							)}
+							{selectedTerminals.pointMaxiconsumo && (
+								<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
+									<PaymentTypePointMaxiconsumo
+										cashMovements={cashMovements}
+										cancellations={cancellations}
+										cashRegister={cashRegister}
+										updateCashRegister={handleUpdateCashRegister}
+									/>
+								</div>
+							)}
+							{selectedTerminals.checkingAccount && (
+								<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
+									<PaymentTypeCheckingAccount
+										cashMovements={cashMovements}
+										cancellations={cancellations}
+										cashRegister={cashRegister}
+										updateCashRegister={handleUpdateCashRegister}
+									/>
+								</div>
+							)}
 						</div>
-					)}
-				</CardContent>
-			</Card>
-		</div>
+						<div className='flex flex-col gap-4 items-center'>
+							<div className="w-full max-w-lg">
+								<Label htmlFor="observations">Observaciones:</Label>
+								<Textarea
+									placeholder="Escribe tus observaciones..."
+									id="observations"
+									value={observations}
+									onChange={(e) => setObservations(e.target.value)}
+								/>
+							</div>
+							<Link href="/cashier" className='w-full max-w-md'>
+								<Button
+									className='w-full'
+									onClick={handleSave}
+								>
+									Cerrar Caja
+								</Button>
+							</Link>
+						</div>
+					</div>
+				)}
+			</CardContent>
+		</Card>
 	);
 }

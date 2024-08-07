@@ -64,7 +64,7 @@ export default function PaymentTypeCard({ cashMovements, cancellations, cashRegi
 				<TableBody>
 					<TableRow>
 						<TableCell className="align-top" colSpan="1">
-							<div className="flex flex-col gap-3">
+							<div className="flex flex-col gap-3 pt-2 pb-5">
 								<div className="flex flex-col gap-6">
 									<div className="flex flex-col gap-2">
 										<label className="text-xs font-medium uppercase" htmlFor="salesWithCards">Ventas</label>

@@ -157,7 +157,7 @@ export default function Movements({ cashRegisterId, cashMovements, handleUpdateC
 
 	return (
 		<div className="">
-			<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 mb-4">
+			<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100 border px-6 mb-4">
 				<div className="flex-1">
 					<h1 className="font-semibold text-lg text-gray-900">Movimientos de caja</h1>
 				</div>

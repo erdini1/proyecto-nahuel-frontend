@@ -125,9 +125,9 @@ export default function ChecklistPage() {
 	}
 
 	return (
-		<div className="w-full mx-auto">
-			<header className="flex h-14 lg:h-[60px] items-center border-b bg-gray-100/40 px-6 mb-5">
-				<div className="flex-1">
+		<div className="w-full mx-auto from-slate-300 to-slate-400 bg-gradient-to-b h-auto min-h-screen">
+			<header className="flex h-14 lg:h-[60px] items-center border-b bg-gray-100 px-6 mb-5">
+				<div className="flex-1 opacity-0 pointer-events-none">
 					<h1 className="font-semibold text-lg">Tareas</h1>
 				</div>
 				<div className="flex items-center justify-between bg-gray-100/40 px-6 py-4">
@@ -176,7 +176,7 @@ export default function ChecklistPage() {
 				</div>
 			</header>
 			<main className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
-				<div className="border shadow-sm rounded-lg w-3/4 mx-auto">
+				<div className="border shadow-sm rounded-lg w-3/4 mx-auto bg-slate-100 p-3">
 					{isLoading ? (
 						<div className="flex justify-center items-center h-64">
 							<Spinner />
