@@ -25,7 +25,7 @@ export default function Page() {
 	}, [])
 
 	return (
-		<main className="flex  justify-center px-4 py-6 sm:px-6 lg:px-8 bg-gray-100 h-screen">
+		<main className="flex justify-center px-4 py-6 sm:px-6 lg:px-8 from-slate-200 to-slate-400 bg-gradient-to-b h-screen">
 			{isLoading ? (
 				<div className="flex justify-center items-center h-64">
 					<Spinner />
@@ -39,21 +39,21 @@ export default function Page() {
 					<div className="grid grid-cols-2 gap-4">
 						<Link
 							href="/employee/checklist"
-							className="flex flex-col items-center justify-center rounded-lg bg-white border-gray-300 p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
+							className="flex flex-col items-center justify-center rounded-lg from-[#31304D] to-[#31304D]/70 bg-gradient-to-t p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
 							prefetch={false}
 						>
 							<ClipboardListIcon className="mb-4 h-12 w-12 text-[#F59E0B]" />
-							<h3 className="text-lg font-medium text-gray-900">Checklist</h3>
-							<p className="mt-2 text-sm text-gray-500">Gestionar tareas</p>
+							<h3 className="text-lg font-medium text-gray-100">Checklist</h3>
+							<p className="mt-2 text-sm text-gray-300">Gestionar tareas</p>
 						</Link>
 						<Link
 							href="/cashier/cash-movement"
-							className="flex flex-col items-center justify-center rounded-lg bg-white border-gray-300 p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
+							className="flex flex-col items-center justify-center rounded-lg from-[#31304D] to-[#31304D]/70 bg-gradient-to-t p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
 							prefetch={false}
 						>
 							<DollarSignIcon className="mb-4 h-12 w-12 text-[#F59E0B]" />
-							<h3 className="text-lg font-medium text-gray-900">Caja</h3>
-							<p className="mt-2 text-sm text-gray-500">
+							<h3 className="text-lg font-medium text-gray-100">Caja</h3>
+							<p className="mt-2 text-sm text-gray-300">
 								Gestionar datos de caja
 							</p>
 						</Link>

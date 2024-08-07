@@ -131,7 +131,7 @@ export default function Page() {
 
 	// TODO: Agregar un desalizable para mostrar solo una cantidad movimientos y anulaciones
 	return (
-		<div className="w-full p-4 bg-gray-100 h-screen">
+		<div className="w-full p-4 from-slate-300 to-slate-400 bg-gradient-to-b min-h-screen h-full">
 			<div className="flex flex-col gap-6">
 				<Tabs value={selectedTab} onValueChange={handleTabChange}>
 					<div className="flex gap-3 items-center">
@@ -170,7 +170,7 @@ export default function Page() {
 								/>
 							</TabsContent>
 							<TabsContent value="movements" className="p-4">
-								<Card className="p-4 flex flex-col gap-10">
+								<Card className="p-4 flex flex-col gap-10 bg-white">
 									<Movements
 										cashRegisterId={cashRegister?.id}
 										cashMovements={cashMovements}

@@ -64,7 +64,7 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 	};
 
 	return (
-		<div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 border">
+		<div className="max-w-2xl mx-auto bg-slate-100 rounded-lg shadow-md p-6 border">
 			<h2 className="text-xl font-bold mb-4">Datos de la Caja</h2>
 			<form className="grid gap-4" onSubmit={handleSubmit}>
 				<div className="grid gap-2">
@@ -76,7 +76,7 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 								value={cashBox.id === cashBoxId}
 								id="cashBox"
 								variant="outline"
-								className={`w-full ${disabledButtons && cashBoxId !== cashBox.id ? 'opacity-60 bg-gray-200' : 'shadow bg-white'}`}
+								className={`w-full ${disabledButtons && cashBoxId !== cashBox.id ? 'opacity-60 bg-gray-200' : 'shadow bg-white border border-gray-300'}`}
 								onClick={() => handleCashBoxChange(cashBox.id)}
 							>
 								{cashBox.description}
