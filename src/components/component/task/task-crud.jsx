@@ -10,6 +10,7 @@ import Spinner from "@/components/component/Spinner";
 import { SearchIcon, PlusIcon } from "@/components/icons/index";
 import { useToast } from "@/components/ui/use-toast";
 import { getAllSectors } from "@/service/sectorService";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function TaskCrud() {
     const [tasks, setTasks] = useState([]);
@@ -151,11 +152,13 @@ export default function TaskCrud() {
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="all">- Sectores -</SelectItem>
-                                {sectors.map(sector => (
-                                    <SelectItem key={sector.id} value={sector.id} className="capitalize">
-                                        {sector.name}
-                                    </SelectItem>
-                                ))}
+                                <ScrollArea className="h-60">
+                                    {sectors.map(sector => (
+                                        <SelectItem key={sector.id} value={sector.id} className="capitalize">
+                                            {sector.name}
+                                        </SelectItem>
+                                    ))}
+                                </ScrollArea>
                             </SelectContent>
                         </Select>
                         <Button onClick={handleCreateTask} className="w-full">
