@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function TaskCrudDialog({ isEditing, newTask, setNewTask, sectors, handleSaveTask, handleInputChange, setShowCreateDialog, filteredTasks }) {
 	const [isTyping, setIsTyping] = useState(false);
@@ -55,11 +56,13 @@ export default function TaskCrudDialog({ isEditing, newTask, setNewTask, sectors
 								<SelectValue placeholder="Selecciona un sector" />
 							</SelectTrigger>
 							<SelectContent>
-								{sectors.map(sector => (
-									<SelectItem key={sector.id} value={sector.id} className="capitalize">
-										{sector.name}
-									</SelectItem>
-								))}
+								<ScrollArea className="h-52">
+									{sectors.map(sector => (
+										<SelectItem key={sector.id} value={sector.id} className="capitalize">
+											{sector.name}
+										</SelectItem>
+									))}
+								</ScrollArea>
 							</SelectContent>
 						</Select>
 					</div>

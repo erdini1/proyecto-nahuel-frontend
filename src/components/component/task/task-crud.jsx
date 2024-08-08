@@ -152,7 +152,7 @@ export default function TaskCrud() {
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="all">- Sectores -</SelectItem>
-                                <ScrollArea className="h-60">
+                                <ScrollArea className="h-52">
                                     {sectors.map(sector => (
                                         <SelectItem key={sector.id} value={sector.id} className="capitalize">
                                             {sector.name}

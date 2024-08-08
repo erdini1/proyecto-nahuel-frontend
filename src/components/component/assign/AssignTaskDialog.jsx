@@ -72,10 +72,12 @@ export default function AssignTaskDialog({ isOpen, onClose, tasks, sectors, onAs
                                     <SelectValue placeholder="Filtrar por sector" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">- Sectores -</SelectItem>
-                                    {sectors.map((sector) => (
-                                        <SelectItem key={sector.id} value={sector.id}>{sector.name.charAt(0).toUpperCase() + sector.name.slice(1)}</SelectItem>
-                                    ))}
+                                    <ScrollArea className="h-60">
+                                        <SelectItem value="all">- Sectores -</SelectItem>
+                                        {sectors.map((sector) => (
+                                            <SelectItem key={sector.id} value={sector.id}>{sector.name.charAt(0).toUpperCase() + sector.name.slice(1)}</SelectItem>
+                                        ))}
+                                    </ScrollArea>
                                 </SelectContent>
                             </Select>
                             <Button
