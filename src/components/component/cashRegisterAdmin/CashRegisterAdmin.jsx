@@ -19,6 +19,7 @@ import { getCashBoxes } from "@/service/cashBoxService";
 import DownloadExcel from "../DownloadExcel";
 import { translateType } from "@/helpers/cancellation.helper";
 import { useToast } from "@/components/ui/use-toast";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function CashRegisterAdmin() {
 	const [cashRegisters, setCashRegisters] = useState([]);
@@ -280,12 +281,14 @@ export default function CashRegisterAdmin() {
 								<SelectValue placeholder="Filtrar por caja" />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">- Cajas -</SelectItem>
-								{cashBoxes.map(cashBox => (
-									<SelectItem key={cashBox.id} value={cashBox.id} className="capitalize">
-										{cashBox.description}
-									</SelectItem>
-								))}
+								<ScrollArea className="h-60">
+									<SelectItem value="all">- Cajas -</SelectItem>
+									{cashBoxes.map(cashBox => (
+										<SelectItem key={cashBox.id} value={cashBox.id} className="capitalize">
+											{cashBox.description}
+										</SelectItem>
+									))}
+								</ScrollArea>
 							</SelectContent>
 						</Select>
 
@@ -294,12 +297,14 @@ export default function CashRegisterAdmin() {
 								<SelectValue placeholder="Filtrar por metodo" />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">- Metodos -</SelectItem>
-								{terminals.map(terminal => (
-									<SelectItem key={terminal.id} value={terminal.id} className="capitalize">
-										{terminal.description}
-									</SelectItem>
-								))}
+								<ScrollArea className="h-60">
+									<SelectItem value="all">- Metodos -</SelectItem>
+									{terminals.map(terminal => (
+										<SelectItem key={terminal.id} value={terminal.id} className="capitalize">
+											{terminal.description}
+										</SelectItem>
+									))}
+								</ScrollArea>
 							</SelectContent>
 						</Select>
 
