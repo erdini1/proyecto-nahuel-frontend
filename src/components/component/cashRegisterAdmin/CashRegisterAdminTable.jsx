@@ -68,7 +68,9 @@ export default function CashRegisterAdminTable({ cashRegisters, cashMovements, c
 							<TableCell className="w-2/12 py-4"></TableCell>
 							<TableCell className="w-1/12 py-4 text-sm font-semibold uppercase">{/* Totales: */}</TableCell>
 							<TableCell className="w-2/12 py-4 font-semibold">$ {allPaymentMethodsTotals()}</TableCell>
-							<TableCell className={`w-2/12 py-4 font-semibold ${allDiffTotals() >= 0 ? "text-green-500" : "text-red-500"}`}>$ {allDiffTotals()}</TableCell>
+							<TableCell className={`w-2/12 py-4 font-semibold ${allDiffTotals() >= 0 ? "text-green-500" : "text-red-500"}`}>
+								$ {allDiffTotals().toFixed(2)}
+							</TableCell>
 							<TableCell className="w-2/12 py-4 font-semibold">{cancellationsLength()}</TableCell>
 							<TableCell className="w-2/12 py-4 font-bold"></TableCell>
 						</TableRow>

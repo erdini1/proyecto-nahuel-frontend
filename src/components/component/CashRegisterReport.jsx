@@ -75,7 +75,7 @@ export default function CashRegisterReport({ cashRegister, cashMovements, cancel
 	}
 
 	return (
-		<Card className="bg-white w-full">
+		<Card className="bg-slate-100/70 backdrop-blur-lg w-full">
 			<CardHeader>
 				<CardTitle>Registro de Caja</CardTitle>
 				<CardDescription>Rellena los campos a continuación para actualizar los datos de la caja.</CardDescription>
@@ -87,7 +87,7 @@ export default function CashRegisterReport({ cashRegister, cashMovements, cancel
 					</div>
 				) : (
 					<div className='flex flex-col gap-6'>
-						<div className={`mt-6 justify-center divide-x-2 ${lengthPaymentMethods() >= 4 ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" : "flex flex-wrap"}`}>
+						<div className={`mt-3 justify-center divide-x-2 ${lengthPaymentMethods() >= 4 ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" : "flex flex-wrap"}`}>
 							<div className={`flex-grow ${lengthPaymentMethods() < 4 ? "max-w-md" : "max-w-xs"} flex-shrink-0 mb-4`}>
 								<PaymentTypeCash
 									cashMovements={cashMovements}
@@ -145,6 +145,7 @@ export default function CashRegisterReport({ cashRegister, cashMovements, cancel
 									id="observations"
 									value={observations}
 									onChange={(e) => setObservations(e.target.value)}
+									className="border shadow ring-2 ring-offset-1 ring-gray-400 p-2 "
 								/>
 							</div>
 							<Link href="/cashier" className='w-full max-w-md'>

@@ -148,9 +148,9 @@ export default function Cancellations({ cashRegisterId, cancellations, handleUpd
 	return (
 		<Accordion type="single" collapsible className="">
 			<AccordionItem value="item-1">
-				<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100 border px-6">
+				<header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-slate-900 border px-6">
 					<div className="flex-grow">
-						<AccordionTrigger className="w-full" onClick={handleAccordionToggle}>
+						<AccordionTrigger className="w-full text-white" onClick={handleAccordionToggle}>
 							<div className="flex items-center gap-2 w-full">
 								<h1 className="font-semibold text-lg">Anulaciones</h1>
 							</div>
@@ -160,7 +160,7 @@ export default function Cancellations({ cashRegisterId, cancellations, handleUpd
 						<div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
 							<Button
 								onClick={() => setIsModalOpen(true)}
-								className="flex items-center gap-1.5 align-middle shadow"
+								className="flex items-center gap-1.5 align-middle shadow border-2 border-gray-400 hover:bg-gray-300 transition-all"
 								variant="outline"
 							>
 								<PlusIcon className="h-4 w-4 mr-2" />
@@ -170,40 +170,40 @@ export default function Cancellations({ cashRegisterId, cancellations, handleUpd
 					)}
 				</header>
 				<AccordionContent>
-					<div className="border shadow-sm rounded-lg mt-4">
-						<Table className="border border-gray-200 shadow-sm bg-gray-50">
+					<div className="shadow-sm">
+						<Table className="border border-gray-200 shadow-sm bg-[#31304D]/70">
 							<TableHeader>
 								<TableRow>
-									<TableHead className="pl-8 w-1/6">ID</TableHead>
-									<TableHead className="w-1/6">Tipo</TableHead>
-									<TableHead className="w-1/6">Metodo</TableHead>
-									<TableHead className="w-1/6">Hora</TableHead>
-									<TableHead className="w-1/6">Monto</TableHead>
-									<TableHead className="w-1/6">Acciones</TableHead>
+									<TableHead className="pl-8 w-1/6 text-white">ID</TableHead>
+									<TableHead className="w-1/6 text-white">Tipo</TableHead>
+									<TableHead className="w-1/6 text-white">Metodo</TableHead>
+									<TableHead className="w-1/6 text-white">Hora</TableHead>
+									<TableHead className="w-1/6 text-white">Monto</TableHead>
+									<TableHead className="w-1/6 text-white">Acciones</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
 								{cancellations.length === 0 ? (
-									<TableRow>
+									<TableRow className="bg-[#e7e1e1]/70">
 										<TableCell colSpan="6" className="text-center">No hay anulaciones</TableCell>
 									</TableRow>
 								) : (
 									cancellations.map(cancellation => (
-										<TableRow key={cancellation.id} className="odd:bg-gray-100 even:bg-white">
+										<TableRow key={cancellation.id} className="even:bg-[#e7e1e1]/70 odd:bg-[#e7e1e1]/80 backdrop-blur">
 											<TableCell className="font-medium pl-8 w-1/6">{cancellation.id}</TableCell>
 											<TableCell className="w-1/6">{translateType(cancellation.type)}</TableCell>
 											<TableCell className="w-1/6">{cancellation.method}</TableCell>
 											<TableCell className="w-1/6">{cancellation.time}</TableCell>
 											<TableCell className="w-1/6">${cancellation.amount}</TableCell>
 											<TableCell className="w-1/6">
-												<Button variant="outline" size="icon" onClick={() => handleEdit(cancellation)}>
+												<Button variant="outline" className="shadow border-2 border-gray-400" size="icon" onClick={() => handleEdit(cancellation)}>
 													<FilePenIcon className="h-4 w-4" />
 													<span className="sr-only">Modificar</span>
 												</Button>
 
 												<AlertDialog>
 													<AlertDialogTrigger asChild>
-														<Button variant="outline" size="icon" >
+														<Button variant="outline" className="shadow border-2 border-gray-400" size="icon" >
 															<TrashIcon className="h-4 w-4" />
 															<span className="sr-only">Eliminar</span>
 														</Button>
@@ -231,7 +231,7 @@ export default function Cancellations({ cashRegisterId, cancellations, handleUpd
 				</AccordionContent>
 				{isModalOpen && (
 					<Dialog onOpenChange={handleModalClose} open={isModalOpen}>
-						<DialogContent>
+						<DialogContent className="from-slate-300 to-slate-400 bg-gradient-to-b">
 							<DialogHeader>
 								<DialogTitle>{editingCancellation ? 'Editar Anulación' : 'Crear Nueva Anulación'}</DialogTitle>
 								<DialogDescription>Complete el formulario para {editingCancellation ? 'editar la' : 'crear una nueva'} anulación.</DialogDescription>
@@ -242,8 +242,18 @@ export default function Cancellations({ cashRegisterId, cancellations, handleUpd
 										<label className="text-sm font-medium">Tipo</label>
 										<Tabs defaultValue={newCancellation.type} onValueChange={(value) => handleInputChange({ target: { name: 'type', value } })}>
 											<TabsList className="border w-full h-14 p-1 shadow">
-												<TabsTrigger value="cancellation" className="w-1/2 h-full">Anulación</TabsTrigger>
-												<TabsTrigger value="return" className="w-1/2 h-full">Devolución</TabsTrigger>
+												<TabsTrigger
+													value="cancellation"
+													className={`w-1/2 h-full ${newCancellation.type === "cancellation" ? "ring-2 ring-gray-300" : "opacity-50"}`}
+												>
+													Anulación
+												</TabsTrigger>
+												<TabsTrigger
+													value="return"
+													className={`w-1/2 h-full ${newCancellation.type === "return" ? "ring-2 ring-gray-300" : "opacity-50"}`}
+												>
+													Devolución
+												</TabsTrigger>
 											</TabsList>
 										</Tabs>
 									</div>

@@ -8,7 +8,7 @@ import { CardStackIcon } from '@radix-ui/react-icons';
 import { TrashIcon } from '@/components/icons';
 import { useToast } from "@/components/ui/use-toast";
 
-const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
+const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId, cashRegisterNumber }) => {
 	const [selectedOption, setSelectedOption] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [allTerminals, setAllTerminals] = useState([]);
@@ -31,8 +31,12 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 		fetchAllTerminals();
 	}, []);
 
+	const allTerminalsFiltered = () => {
+		return allTerminals.filter(terminal => terminal.description.includes("CLOVER") ? terminal.description.includes(cashRegisterNumber) : !terminal.description.includes('clover'));
+	}
+
 	const handleAdd = async () => {
-		const option = allTerminals.find(o => o.id === selectedOption);
+		const option = allTerminalsFiltered().find(o => o.id === selectedOption);
 		if (option && !terminals.some(t => t.id === option.id) && terminalsFiltered.length < 3) {
 			setLoading(true);
 			try {
@@ -71,7 +75,7 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 		}
 	};
 
-	const availableOptions = allTerminals.filter(
+	const availableOptions = allTerminalsFiltered().filter(
 		(option) => !terminals.some((t) => t.id === option.id)
 	);
 
@@ -85,7 +89,7 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 					Seleccionar Terminales
 				</Button>
 			</DialogTrigger>
-			<DialogContent>
+			<DialogContent className="from-slate-300 to-slate-400 bg-gradient-to-b">
 				<DialogHeader>
 					<DialogTitle>Seleccionar Terminales</DialogTitle>
 				</DialogHeader>
@@ -95,7 +99,7 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 						disabled={loading || terminalsFiltered.length >= 3}
 					>
 						<SelectTrigger className="px-4 py-2 border rounded-md">
-							{selectedOption ? allTerminals.find(o => o.id === selectedOption).description : 'Seleccionar...'}
+							{selectedOption ? allTerminalsFiltered().find(o => o.id === selectedOption).description : 'Seleccionar...'}
 						</SelectTrigger>
 						<SelectContent>
 							{availableOptions.map((option) => (
@@ -109,23 +113,23 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 						{loading ? 'Agregando...' : 'Agregar'}
 					</Button>
 				</div>
-				<div className="border shadow-sm rounded-lg mt-4">
-					<Table>
+				<div className="shadow-sm mt-4">
+					<Table className="bg-[#31304D]/70">
 						<TableHeader>
 							<TableRow>
-								<TableHead className="w-1/4">N° Terminal</TableHead>
-								<TableHead className="w-1/2">Descripción</TableHead>
-								<TableHead className="w-1/4">Acciones</TableHead>
+								<TableHead className="w-1/4 text-white">N° Terminal</TableHead>
+								<TableHead className="w-1/2 text-white">Descripción</TableHead>
+								<TableHead className="w-1/4 text-white">Acciones</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
 							{terminalsFiltered.length === 0 ? (
-								<TableRow>
+								<TableRow className="bg-[#e7e1e1]/70">
 									<TableCell colSpan="3" className="text-center">No hay terminales seleccionadas</TableCell>
 								</TableRow>
 							) : (
 								terminalsFiltered.map((terminal, index) => (
-									<TableRow key={index}>
+									<TableRow key={index} className="even:bg-[#e7e1e1]/70 odd:bg-[#e7e1e1]/80 backdrop-blur">
 										<TableCell className="font-medium w-1/4">{terminal.terminalNumber}</TableCell>
 										<TableCell className="w-1/2">{terminal.description}</TableCell>
 										<TableCell className="w-1/4">
@@ -133,6 +137,7 @@ const ModalTerminals = ({ terminals, onTerminalsChange, cashRegisterId }) => {
 												variant="outline"
 												size="icon"
 												onClick={() => handleRemove(terminal.id)}
+												className="shadow border-2 border-gray-400"
 											>
 												<TrashIcon className="h-4 w-4" />
 												<span className="sr-only">Eliminar</span>
