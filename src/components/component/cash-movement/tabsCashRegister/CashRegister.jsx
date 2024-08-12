@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast"
 export default function CashRegister({ onCreated, onUpdated, cashRegister, cashBoxes }) {
 	const [initialAmount, setInitialAmount] = useState("");
 	const [changeAmount, setChangeAmount] = useState("");
-	const [cashBoxId, setCashBoxId] = useState(cashBoxes.length > 0 ? cashBoxes[0].id : 0);
+	const [cashBoxId, setCashBoxId] = useState(0);
 	const [disabledButtons, setDisabledButtons] = useState(false);
 
 	const { toast } = useToast();
@@ -64,11 +64,11 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 	};
 
 	return (
-		<div className="max-w-2xl mx-auto bg-slate-100 rounded-lg shadow-md p-6 border">
-			<h2 className="text-xl font-bold mb-4">Datos de la Caja</h2>
+		<div className="max-w-2xl mx-auto from-[#211f2f] to-[#211f2f]/60 bg-gradient-to-t rounded-lg shadow-md p-6 border">
+			<h2 className="text-xl font-bold mb-4 text-white">Datos de la Caja</h2>
 			<form className="grid gap-4" onSubmit={handleSubmit}>
 				<div className="grid gap-2">
-					<label className="text-sm font-medium" htmlFor='cashBox'>Número de caja</label>
+					<label className="text-sm font-medium text-white" htmlFor='cashBox'>Número de caja</label>
 					<ToggleGroup type="single" className="justify-center grid grid-cols-3 gap-4">
 						{cashBoxes.map((cashBox) => (
 							<ToggleGroupItem
@@ -76,7 +76,8 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 								value={cashBox.id === cashBoxId}
 								id="cashBox"
 								variant="outline"
-								className={`w-full ${disabledButtons && cashBoxId !== cashBox.id ? 'opacity-60 bg-gray-200' : 'shadow bg-white border border-gray-300'}`}
+								className={`w-full ${disabledButtons && cashBoxId !== cashBox.id ? 'opacity-70 bg-gray-400' : 'shadow bg-white border border-gray-300'} 
+									${cashBox.id === cashBoxId ? 'ring-orange-500 ring-offset-1 ring-2' : ''}`}
 								onClick={() => handleCashBoxChange(cashBox.id)}
 							>
 								{cashBox.description}
@@ -86,7 +87,7 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 				</div>
 				<div className="flex gap-1">
 					<div className="grid gap-2 w-1/2">
-						<label className="text-sm font-medium" htmlFor='initialAmount'>Monto inicial</label>
+						<label className="text-sm font-medium text-white" htmlFor='initialAmount'>Monto inicial</label>
 						<div className="relative text-black">
 							<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
 							<Input
@@ -102,7 +103,7 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 						</div>
 					</div>
 					<div className="grid gap-2 w-1/2">
-						<label className="text-sm font-medium" htmlFor='changeAmount'>Ingreso de cambio</label>
+						<label className="text-sm font-medium text-white" htmlFor='changeAmount'>Ingreso de cambio</label>
 						<div className="relative text-black">
 							<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
 							<Input

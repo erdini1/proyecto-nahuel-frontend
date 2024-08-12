@@ -201,7 +201,7 @@ export default function ChecklistPage() {
 											id="observations"
 											value={observations}
 											onChange={(e) => setObservations(e.target.value)}
-											className="border shadow"
+											className="border shadow ring-2 ring-offset-1 ring-gray-400 p-2"
 										/>
 									</div>
 									<Link href="/cashier" className='w-full max-w-md'>

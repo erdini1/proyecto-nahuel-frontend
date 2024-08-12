@@ -15,6 +15,7 @@ import CashRegisterReport from "@/components/component/CashRegisterReport";
 import { getCashMovements } from "@/service/cashMovementsService";
 import { getCancellations } from "@/service/cancellationService";
 import { useToast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
 
 export default function Page() {
 	const [hasCashRegister, setHasCashRegister] = useState(false);
@@ -140,9 +141,29 @@ export default function Page() {
 						</div>
 						<div className="flex gap-10 items-center">
 							<TabsList className="border-b">
-								<TabsTrigger value="cashRegister">Datos iniciales</TabsTrigger>
-								<TabsTrigger value="movements" disabled={!hasCashRegister}>Movimientos de Caja</TabsTrigger>
-								<TabsTrigger value="reports" disabled={!hasCashRegister}>Cierre de caja</TabsTrigger>
+								<TabsTrigger
+									value="cashRegister"
+									className={`flex gap-1 text-xs ${selectedTab === "cashRegister" ? "ring-2 ring-gray-300" : ""}`}
+								>
+									<span className="font-bold text-sm">1</span>
+									(Datos iniciales)
+								</TabsTrigger>
+								<TabsTrigger
+									value="movements"
+									disabled={!hasCashRegister}
+									className={`flex gap-1 text-xs ${selectedTab === "movements" ? "ring-2 ring-gray-300" : ""}`}
+								>
+									<span className="font-bold text-sm">2</span>
+									(Movimientos de Caja)
+								</TabsTrigger>
+								<TabsTrigger
+									value="reports"
+									disabled={!hasCashRegister}
+									className={`flex gap-1 text-xs ${selectedTab === "reports" ? "ring-2 ring-gray-300" : ""}`}
+								>
+									<span className="font-bold text-sm">3</span>
+									(Cierre de caja)
+								</TabsTrigger>
 							</TabsList>
 							{selectedTab === "movements" && (
 								<div className="items-center flex gap-2">
@@ -150,6 +171,7 @@ export default function Page() {
 										terminals={terminals}
 										onTerminalsChange={setTerminals}
 										cashRegisterId={cashRegister?.id}
+										cashRegisterNumber={cashRegister?.CashBox.description.split(' ')[1]}
 									/>
 								</div>
 							)}
@@ -170,7 +192,7 @@ export default function Page() {
 								/>
 							</TabsContent>
 							<TabsContent value="movements" className="p-4">
-								<Card className="p-4 flex flex-col gap-10 bg-white">
+								<Card className="p-4 flex flex-col gap-10 bg-[#ebf4f5]/70 backdrop-blur-2xl">
 									<Movements
 										cashRegisterId={cashRegister?.id}
 										cashMovements={cashMovements}
@@ -195,6 +217,7 @@ export default function Page() {
 							<TabsContent value="reports" className="p-4">
 								<CashRegisterReport
 									cashRegister={cashRegister}
+									setCashRegister={setCashRegister}
 									cashMovements={cashMovements}
 									cancellations={cancellations}
 									terminals={terminals}

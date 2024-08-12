@@ -22,21 +22,21 @@ const TaskTableComplete = ({ tasks, handleCompleteUserTask }) => {
 	};
 
 	return (
-		<Table className="border-2 border-gray-300">
-			<TableHeader className="bg-gray-200">
+		<Table className="border border-gray-200 shadow-sm bg-[#31304D]/70">
+			<TableHeader className="">
 				<TableRow>
-					<TableHead className="w-5/6">Descripción</TableHead>
-					<TableHead className="w-1/6">Estado</TableHead>
+					<TableHead className="w-5/6 text-white">Descripción</TableHead>
+					<TableHead className="w-1/6 text-white">Estado</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody className="divide-y-2">
 				{tasks.length === 0 ? (
-					<TableRow>
+					<TableRow className="bg-[#e7e1e1]/70">
 						<TableCell colSpan="2" className="text-center">No hay tareas para mostrar</TableCell>
 					</TableRow>
 				) : (
 					tasks.map((userTask) => (
-						<TableRow key={userTask.id} className="shadow-sm hover:bg-gray-200/50 transition-all">
+						<TableRow key={userTask.id} className="even:bg-[#e7e1e1]/70 odd:bg-[#e7e1e1]/80 hover:bg-[#e7e1e1]/90 transition-all">
 							<TableCell colSpan={1} className="flex justify-between items-center">
 								{userTask.Task.description}
 								{userTask.Task.type === "elaboration" && (
