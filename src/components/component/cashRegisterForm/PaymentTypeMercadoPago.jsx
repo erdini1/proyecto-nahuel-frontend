@@ -1,8 +1,9 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from 'react';
+import { forwardRef, useImperativeHandle } from 'react';
 
-export default function PaymentTypeMercadoPago({ cashMovements, cancellations, cashRegister, updateCashRegister }) {
+const PaymentTypeMercadoPago = forwardRef(({ cashMovements, cancellations, cashRegister, updateCashRegister }, ref) => {
 	const [data, setData] = useState({
 		salesWithMercadoPago: 0,
 		withdrawal: 0,
@@ -44,12 +45,12 @@ export default function PaymentTypeMercadoPago({ cashMovements, cancellations, c
 		});
 	};
 
-	const handleBlur = (e) => {
-		updateCashRegister({
-			...cashRegister,
-			[e.target.name]: e.target.value
-		});
-	}
+	useImperativeHandle(ref, () => ({
+		getData: () => ({
+			salesWithMercadoPago: data.salesWithMercadoPago,
+			cashToRenderWithMercadoPago: data.cashToRenderWithMercadoPago
+		}),
+	}));
 
 	return (
 		<div className='flex flex-col w-full'>
@@ -78,7 +79,6 @@ export default function PaymentTypeMercadoPago({ cashMovements, cancellations, c
 												step="0.01"
 												value={data.salesWithMercadoPago || ''}
 												onChange={(e) => handleInputChange('salesWithMercadoPago', e.target.value)}
-												onBlur={handleBlur}
 												placeholder="0.00"
 												className="border w-full shadow pl-5 ring-2 ring-offset-1 ring-gray-500"
 												required
@@ -102,7 +102,6 @@ export default function PaymentTypeMercadoPago({ cashMovements, cancellations, c
 											/>
 										</div>
 									</div>
-									{/* <div className="flex gap-1"> */}
 									<div className="flex flex-col gap-2">
 										<label className="text-xs font-medium uppercase" htmlFor="toRenderSystemMercadoPago">A rendir</label>
 										<div className="relative text-gray-700">
@@ -132,14 +131,12 @@ export default function PaymentTypeMercadoPago({ cashMovements, cancellations, c
 												step="0.01"
 												value={data.cashToRenderWithMercadoPago || ''}
 												onChange={(e) => handleInputChange('cashToRenderWithMercadoPago', e.target.value)}
-												onBlur={handleBlur}
 												required
 												placeholder="0.00"
 												className="border w-full shadow pl-5 ring-2 ring-offset-1 ring-gray-500"
 											/>
 										</div>
 									</div>
-									{/* </div> */}
 									<div className="flex flex-col gap-2">
 										<label className="text-xs font-medium uppercase" htmlFor="diffMercadoPago">Diferencia</label>
 										<div className="relative text-gray-500">
@@ -182,8 +179,9 @@ export default function PaymentTypeMercadoPago({ cashMovements, cancellations, c
 			</Table>
 		</div>
 	);
-}
+})
 
+export default PaymentTypeMercadoPago;
 
 // import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 // import { Input } from "@/components/ui/input";

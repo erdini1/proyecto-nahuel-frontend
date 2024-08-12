@@ -1,8 +1,9 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from 'react';
+import { forwardRef, useImperativeHandle } from 'react';
 
-export default function PaymentTypeCard({ cashMovements, cancellations, cashRegister, updateCashRegister }) {
+const PaymentTypeCard = forwardRef(({ cashMovements, cancellations, cashRegister, updateCashRegister }, ref) => {
 	const [data, setData] = useState({
 		salesWithCards: 0,
 		withdrawal: 0,
@@ -44,13 +45,13 @@ export default function PaymentTypeCard({ cashMovements, cancellations, cashRegi
 		});
 	};
 
-	const handleBlur = (e) => {
-		updateCashRegister({
-			...cashRegister,
-			[e.target.name]: e.target.value
-		});
-	}
-
+	useImperativeHandle(ref, () => ({
+		getData: () => ({
+			salesWithCards: data.salesWithCards,
+			cashToRenderWithCards: data.cashToRenderWithCards
+		}),
+	}));
+	
 	return (
 		<div className='flex flex-col w-full'>
 			<Table className="w-full bg-slate-900">
@@ -78,7 +79,7 @@ export default function PaymentTypeCard({ cashMovements, cancellations, cashRegi
 												step="0.01"
 												value={data.salesWithCards || ''}
 												onChange={(e) => handleInputChange('salesWithCards', e.target.value)}
-												onBlur={handleBlur}
+												// onBlur={handleBlur}
 												placeholder="0.00"
 												className="border w-full shadow pl-5 ring-2 ring-offset-1 ring-gray-500"
 												required
@@ -132,7 +133,7 @@ export default function PaymentTypeCard({ cashMovements, cancellations, cashRegi
 												step="0.01"
 												value={data.cashToRenderWithCards || ''}
 												onChange={(e) => handleInputChange('cashToRenderWithCards', e.target.value)}
-												onBlur={handleBlur}
+												// onBlur={handleBlur}
 												placeholder="0.00"
 												className="border w-full shadow pl-5 ring-2 ring-offset-1 ring-gray-500"
 												required
@@ -182,8 +183,9 @@ export default function PaymentTypeCard({ cashMovements, cancellations, cashRegi
 			</Table>
 		</div>
 	);
-}
+})
 
+export default PaymentTypeCard;
 
 // import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 // import { Input } from "@/components/ui/input";

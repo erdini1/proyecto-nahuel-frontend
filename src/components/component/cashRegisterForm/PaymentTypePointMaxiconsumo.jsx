@@ -1,8 +1,9 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from 'react';
+import { forwardRef, useImperativeHandle } from 'react';
 
-export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellations, cashRegister, updateCashRegister }) {
+const PaymentTypePointMaxiconsumo = forwardRef(({ cashMovements, cancellations, cashRegister, updateCashRegister }, ref) => {
 	const [data, setData] = useState({
 		salesWithPointMaxiconsumo: 0,
 		withdrawal: 0,
@@ -46,12 +47,13 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 		});
 	};
 
-	const handleBlur = (e) => {
-		updateCashRegister({
-			...cashRegister,
-			[e.target.name]: e.target.value
-		});
-	}
+	useImperativeHandle(ref, () => ({
+		getData: () => ({
+			salesWithPointMaxiconsumo: data.salesWithPointMaxiconsumo,
+			cashToRenderWithPointMaxiconsumo: data.cashToRenderWithPointMaxiconsumo,
+			batchNumber: data.batchNumber
+		}),
+	}));
 
 	return (
 		<div className='flex flex-col w-full'>
@@ -81,7 +83,6 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 												step="0.01"
 												value={data.salesWithPointMaxiconsumo || ''}
 												onChange={(e) => handleInputChange('salesWithPointMaxiconsumo', e.target.value)}
-												onBlur={handleBlur}
 												placeholder="0.00"
 												className="border w-full shadow pl-5 ring-2 ring-offset-1 ring-gray-500"
 												required
@@ -105,7 +106,6 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 											/>
 										</div>
 									</div>
-									{/* <div className="flex gap-1"> */}
 									<div className="flex flex-col gap-2">
 										<label className="text-xs font-medium uppercase" htmlFor="toRenderSystemPointMaxiconsumo">A rendir</label>
 										<div className="relative text-gray-700">
@@ -135,14 +135,12 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 												step="0.01"
 												value={data.cashToRenderWithPointMaxiconsumo || ""}
 												onChange={(e) => handleInputChange('cashToRenderWithPointMaxiconsumo', e.target.value)}
-												onBlur={handleBlur}
 												required
 												placeholder="0.00"
 												className="border w-full shadow pl-5 ring-2 ring-offset-1 ring-gray-500"
 											/>
 										</div>
 									</div>
-									{/* </div> */}
 									<div className="flex gap-1 items-center">
 										<div className="flex flex-col gap-2 w-2/3">
 											<label className="text-xs font-medium uppercase" htmlFor="diffPointMaxiconsumo">Diferencia</label>
@@ -170,7 +168,6 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 												min="0"
 												value={data.batchNumber || ''}
 												onChange={(e) => handleInputChange('batchNumber', e.target.value)}
-												onBlur={handleBlur}
 												required
 												placeholder="Lote"
 												className="border w-full shadow ring-2 ring-offset-1 ring-gray-500"
@@ -202,7 +199,9 @@ export default function PaymentTypePointMaxiconsumo({ cashMovements, cancellatio
 			</Table>
 		</div>
 	);
-}
+})
+
+export default PaymentTypePointMaxiconsumo;
 
 
 // import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";

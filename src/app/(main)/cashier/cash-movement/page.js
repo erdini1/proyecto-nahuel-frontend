@@ -166,37 +166,14 @@ export default function Page() {
 								</TabsTrigger>
 							</TabsList>
 							{selectedTab === "movements" && (
-								<>
-									<div className="items-center flex gap-2">
-										<ModalTerminals
-											terminals={terminals}
-											onTerminalsChange={setTerminals}
-											cashRegisterId={cashRegister?.id}
-											cashRegisterNumber={cashRegister?.CashBox.description.split(' ')[1]}
-										/>
-									</div>
-									{/* <div className="items-center flex gap-2">
-										<div className="flex items-center gap-2">
-											<label className="text-sm font-medium text-black" htmlFor='changeAmount'>Ingreso de cambio: </label>
-											<div className="relative text-black">
-												<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
-												<Input
-													id="changeAmount"
-													type="number"
-													min="0"
-													step="0.01"
-													// value={changeAmount}
-													// onChange={(e) => setChangeAmount(e.target.value)}
-													className="p-2 border rounded pl-5 shadow w-32"
-													placeholder="0.00"
-												/>
-											</div>
-										</div>
-										<Button className="w-auto">Guardar</Button>
-									</div> */}
-
-								</>
-
+								<div className="items-center flex gap-2">
+									<ModalTerminals
+										terminals={terminals}
+										onTerminalsChange={setTerminals}
+										cashRegisterId={cashRegister?.id}
+										cashRegisterNumber={cashRegister?.CashBox.description.split(' ')[1]}
+									/>
+								</div>
 							)}
 						</div>
 					</div>
@@ -240,6 +217,7 @@ export default function Page() {
 							<TabsContent value="reports" className="p-4">
 								<CashRegisterReport
 									cashRegister={cashRegister}
+									setCashRegister={setCashRegister}
 									cashMovements={cashMovements}
 									cancellations={cancellations}
 									terminals={terminals}

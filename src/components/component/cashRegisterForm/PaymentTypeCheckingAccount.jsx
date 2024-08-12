@@ -1,8 +1,9 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from 'react';
+import { forwardRef, useImperativeHandle } from 'react';
 
-export default function PaymentTypeCheckingAccount({ cashMovements, cancellations, cashRegister, updateCashRegister }) {
+const PaymentTypeCheckingAccount = forwardRef(({ cashMovements, cancellations, cashRegister, updateCashRegister }, ref) => {
 	const [data, setData] = useState({
 		salesWithCredit: 0,
 		toRenderSystem: 0,
@@ -40,15 +41,14 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 		});
 	};
 
-	const handleBlur = (e) => {
-		updateCashRegister({
-			...cashRegister,
-			[e.target.name]: e.target.value
-		});
-	}
+	useImperativeHandle(ref, () => ({
+		getData: () => ({
+			salesWithCredit: data.salesWithCredit,
+			cashToRenderWithCredit: data.cashToRenderWithCredit
+		}),
+	}));
 
 	return (
-		// <div className="flex flex-col w-full min-h-full justify-between ">
 		<div className="flex flex-col w-full">
 			<Table className="w-full bg-slate-900">
 				<TableHeader>
@@ -75,14 +75,12 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 												step="0.01"
 												value={data.salesWithCredit || ''}
 												onChange={(e) => handleInputChange('salesWithCredit', e.target.value)}
-												onBlur={handleBlur}
 												placeholder="0.00"
 												className="border w-full shadow pl-5 ring-2 ring-offset-1 ring-gray-500"
 												required
 											/>
 										</div>
 									</div>
-									{/* <div className="flex gap-1"> */}
 									<div className="flex flex-col gap-2">
 										<label className="text-xs font-medium uppercase" htmlFor="toRenderSystemCredit">A rendir</label>
 										<div className="relative text-gray-700">
@@ -112,14 +110,12 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 												step="0.01"
 												value={data.cashToRenderWithCredit || ''}
 												onChange={(e) => handleInputChange('cashToRenderWithCredit', e.target.value)}
-												onBlur={handleBlur}
 												placeholder="0.00"
 												className="border w-full shadow pl-5 ring-2 ring-offset-1 ring-gray-500"
 												required
 											/>
 										</div>
 									</div>
-									{/* </div> */}
 									<div className="flex flex-col gap-2">
 										<label className="text-xs font-medium uppercase" htmlFor="diffCredit">Diferencia</label>
 										<div className="relative text-gray-500">
@@ -176,9 +172,10 @@ export default function PaymentTypeCheckingAccount({ cashMovements, cancellation
 				</TableBody>
 			</Table>
 		</div>
-		// </div>
 	);
-}
+})
+
+export default PaymentTypeCheckingAccount;
 
 // import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 // import { Input } from "@/components/ui/input";

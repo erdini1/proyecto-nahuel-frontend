@@ -3,8 +3,10 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from 'react';
+import { forwardRef, useImperativeHandle } from 'react';
 
-export default function PaymentTypeCash({ cashMovements, cancellations, cashRegister, updateCashRegister, }) {
+// export default function PaymentTypeCash({ cashMovements, cancellations, cashRegister, updateCashRegister, }) {
+const PaymentTypeCash = forwardRef(({ cashMovements, cancellations, cashRegister, updateCashRegister }, ref) => {
 	const [data, setData] = useState({
 		salesWithCash: 0,
 		income: 0,
@@ -51,12 +53,12 @@ export default function PaymentTypeCash({ cashMovements, cancellations, cashRegi
 		});
 	};
 
-	const handleBlur = (e) => {
-		updateCashRegister({
-			...cashRegister,
-			[e.target.name]: e.target.value
-		});
-	}
+	useImperativeHandle(ref, () => ({
+		getData: () => ({
+			salesWithCash: data.salesWithCash,
+			cashToRenderWithCash: data.cashToRenderWithCash,
+		}),
+	}));
 
 	return (
 		<div className='flex flex-col w-full'>
@@ -85,87 +87,81 @@ export default function PaymentTypeCash({ cashMovements, cancellations, cashRegi
 												step="0.01"
 												value={data.salesWithCash || ''}
 												onChange={(e) => handleInputChange('salesWithCash', e.target.value)}
-												onBlur={handleBlur}
 												placeholder="0.00"
 												className="border w-full shadow pl-5 ring-2 ring-gray-500"
 												required
 											/>
 										</div>
 									</div>
-									{/* <div className="flex gap-1"> */}
-										<div className="flex flex-col gap-2">
-											<label className="text-xs font-medium uppercase" htmlFor="incomeCash">Ingresos</label>
-											<div className="relative text-gray-700">
-												<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
-												<Input
-													type="number"
-													name="income"
-													id="incomeCash"
-													step="0.01"
-													value={data.income || ''}
-													placeholder="0.00"
-													className={`border w-full shadow bg-gray-300 cursor-not-allowed pl-5`}
-													onFocus={(e) => e.target.blur()}
-													readOnly
-												/>
-											</div>
+									<div className="flex flex-col gap-2">
+										<label className="text-xs font-medium uppercase" htmlFor="incomeCash">Ingresos</label>
+										<div className="relative text-gray-700">
+											<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
+											<Input
+												type="number"
+												name="income"
+												id="incomeCash"
+												step="0.01"
+												value={data.income || ''}
+												placeholder="0.00"
+												className={`border w-full shadow bg-gray-300 cursor-not-allowed pl-5`}
+												onFocus={(e) => e.target.blur()}
+												readOnly
+											/>
 										</div>
-										<div className="flex flex-col gap-2">
-											<label className="text-xs font-medium uppercase" htmlFor="withdrawalCash">Retiros</label>
-											<div className="relative text-gray-700">
-												<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
-												<Input
-													type="number"
-													name="withdrawal"
-													id="withdrawalCash"
-													step="0.01"
-													value={data.withdrawal || ''}
-													placeholder="0.00"
-													className={`border w-full shadow bg-gray-300 cursor-not-allowed pl-5`}
-													onFocus={(e) => e.target.blur()}
-													readOnly
-												/>
-											</div>
+									</div>
+									<div className="flex flex-col gap-2">
+										<label className="text-xs font-medium uppercase" htmlFor="withdrawalCash">Retiros</label>
+										<div className="relative text-gray-700">
+											<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
+											<Input
+												type="number"
+												name="withdrawal"
+												id="withdrawalCash"
+												step="0.01"
+												value={data.withdrawal || ''}
+												placeholder="0.00"
+												className={`border w-full shadow bg-gray-300 cursor-not-allowed pl-5`}
+												onFocus={(e) => e.target.blur()}
+												readOnly
+											/>
 										</div>
-									{/* </div> */}
-									{/* <div className="flex gap-1"> */}
-										<div className="flex flex-col gap-2">
-											<label className="text-xs font-medium uppercase" htmlFor="toRenderSystemCash">A rendir</label>
-											<div className="relative text-gray-700">
-												<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
-												<Input
-													type="number"
-													name="toRenderSystem"
-													id="toRenderSystemCash"
-													step="0.01"
-													value={data.toRenderSystem || ''}
-													placeholder="0.00"
-													className={`border w-full shadow bg-gray-300 cursor-not-allowed pl-5`}
-													onFocus={(e) => e.target.blur()}
-													readOnly
-												/>
-											</div>
+									</div>
+									<div className="flex flex-col gap-2">
+										<label className="text-xs font-medium uppercase" htmlFor="toRenderSystemCash">A rendir</label>
+										<div className="relative text-gray-700">
+											<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
+											<Input
+												type="number"
+												name="toRenderSystem"
+												id="toRenderSystemCash"
+												step="0.01"
+												value={data.toRenderSystem || ''}
+												placeholder="0.00"
+												className={`border w-full shadow bg-gray-300 cursor-not-allowed pl-5`}
+												onFocus={(e) => e.target.blur()}
+												readOnly
+											/>
 										</div>
-										<div className="flex flex-col gap-2">
-											<label className="text-xs font-medium uppercase" htmlFor="cashToRenderWithCash">Fisico</label>
-											<div className="relative text-black">
-												<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
-												<Input
-													type="number"
-													name="cashToRenderWithCash"
-													id="cashToRenderWithCash"
-													min="0"
-													step="0.01"
-													value={data.cashToRenderWithCash || ''}
-													onChange={(e) => handleInputChange('cashToRenderWithCash', e.target.value)}
-													onBlur={handleBlur}
-													placeholder="0.00"
-													className="border w-full shadow pl-5 ring-2 ring-offset-1 ring-gray-500"
-													required
-												/>
-											</div>
+									</div>
+									<div className="flex flex-col gap-2">
+										<label className="text-xs font-medium uppercase" htmlFor="cashToRenderWithCash">Fisico</label>
+										<div className="relative text-black">
+											<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
+											<Input
+												type="number"
+												name="cashToRenderWithCash"
+												id="cashToRenderWithCash"
+												min="0"
+												step="0.01"
+												value={data.cashToRenderWithCash || ''}
+												onChange={(e) => handleInputChange('cashToRenderWithCash', e.target.value)}
+												placeholder="0.00"
+												className="border w-full shadow pl-5 ring-2 ring-offset-1 ring-gray-500"
+												required
+											/>
 										</div>
-									{/* </div> */}
+									</div>
 									<div className="flex flex-col gap-2">
 										<label className="text-xs font-medium uppercase" htmlFor="diffCash">Diferencia</label>
 										<div className="relative text-gray-500">
@@ -191,7 +187,9 @@ export default function PaymentTypeCash({ cashMovements, cancellations, cashRegi
 			</Table>
 		</div>
 	);
-}
+})
+
+export default PaymentTypeCash;
 
 // import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 // import { Input } from "@/components/ui/input";
