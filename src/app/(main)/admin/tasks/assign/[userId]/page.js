@@ -161,8 +161,10 @@ export default function Page({ params }) {
 								</div>
 							</div>
 							<AssignTaskTable
-								tasks={userTasks}
+								userTasks={userTasks}
+								setUserTasks={setUserTasks}
 								handleDisableUserTask={handleDisableUserTask}
+								userId={employee.id}
 							/>
 						</div>
 						<div className="w-1/4 flex flex-col gap-4">

@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
+import { SaveIcon } from '../icons';
 
 export default function CashRegisterReport({ cashRegister, setCashRegister, cashMovements, cancellations, terminals }) {
 	const cashRef = useRef();
@@ -109,7 +110,7 @@ export default function CashRegisterReport({ cashRegister, setCashRegister, cash
 
 		toast({
 			title: "Actualizado",
-			description: "Los datos del registro de caja se actualizaron correctamente",
+			description: "El registro de caja ha sido actualizado correctamente",
 		});
 	};
 
@@ -132,12 +133,13 @@ export default function CashRegisterReport({ cashRegister, setCashRegister, cash
 						<CardTitle>Registro de Caja</CardTitle>
 						<CardDescription>Rellena los campos a continuación para actualizar los datos de la caja.</CardDescription>
 					</div>
-					<div className='w-1/6'>
+					<div className='w-auto'>
 						<Button
 							variant="outline"
-							className="w-full shadow ring-2 ring-offset-1 ring-gray-400"
+							className="w-full shadow ring-2 ring-offset-1 ring-gray-400 flex gap-2 items-center"
 							onClick={() => handleSave(false)}
 						>
+							<SaveIcon className="w-4 h-4 mr-2" />
 							Guardar
 						</Button>
 					</div>
