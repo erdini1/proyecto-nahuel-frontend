@@ -175,6 +175,7 @@ export default function TaskCrud() {
                     ) : (
                         <TaskCrudTable
                             tasks={filteredTasksBySector}
+                            setTasks={setTasks}
                             handleUpdateTask={handleUpdateTask}
                             handleDeleteTask={handleDeleteTask}
                         />

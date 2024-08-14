@@ -102,7 +102,7 @@ export default function Page({ params }) {
 								</div>
 							</div>
 							<AssignTaskTable
-								tasks={userTasks}
+								userTasks={userTasks}
 								isArchived={isArchived}
 							/>
 						</div>

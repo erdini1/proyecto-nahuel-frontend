@@ -120,3 +120,13 @@ export const updateTask = async (taskId, task) => {
 		throw new Error('Failed to update task');
 	}
 }
+
+export const saveTaskOrder = async (taskIdsInOrder, userId) => {
+	try {
+		const response = await axios.post(`/checklist/order/${userId}`, taskIdsInOrder);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to save task order:', error);
+		throw new Error('Failed to save task order');
+	}
+}
