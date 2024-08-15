@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { completeTask, getUserTaskByTaskSet } from '@/service/taskService';
+import { completeTask, getUserTaskByTaskSet, markTaskAsShouldDo } from '@/service/taskService';
 import TaskTableComplete from '@/components/component/TaskTableComplete';
 import AssignShift from '@/components/component/AssignShift';
 import { UserIcon, CalendarDaysIcon, ClockIcon } from '@/components/icons/index';
@@ -19,6 +19,7 @@ export default function ChecklistPage() {
 	const [userTasks, setUserTasks] = useState([]);
 	const [taskSet, setTaskSet] = useState({});
 	const [userName, setUserName] = useState('');
+	const [userRole, setUserRole] = useState('');
 	const [observations, setObservations] = useState('');
 	const [searchTerm, setSearchTerm] = useState('');
 	const [filterByStatus, setFilterByStatus] = useState('all');
@@ -45,6 +46,7 @@ export default function ChecklistPage() {
 
 				setUserTasks(userTasks.filter(userTask => userTask.isActive));
 				setUserName(`${user.firstName} ${user.lastName}`);
+				setUserRole(user.role);
 				setTaskSet(taskSet);
 
 				const isShiftSet = taskSet.shift !== undefined && !taskSet.isClosed && taskSet.shift !== '';
@@ -80,7 +82,7 @@ export default function ChecklistPage() {
 
 	const filteredTasks = userTasks.filter(userTask => {
 		const matchesDescription = userTask.Task.description.toLowerCase().includes(searchTerm.toLowerCase());
-		const matchesStatus = filterByStatus === 'all' ? true : userTask.isCompleted === filterByStatus;
+		const matchesStatus = filterByStatus === 'all' ? true : userTask.isCompleted === filterByStatus && userTask.shouldDo;
 		return matchesDescription && matchesStatus;
 	});
 
@@ -120,6 +122,22 @@ export default function ChecklistPage() {
 				variant: "error",
 				title: "Error",
 				description: "Ocurrió un error al cerrar el checklist",
+			});
+		}
+	}
+
+	const handleMarkTaskAsShouldDo = async (userTaskId) => {
+		try {
+			const { shouldDo } = userTasks.find(userTask => userTask.id === userTaskId);
+			await markTaskAsShouldDo(userTaskId, !shouldDo);
+			setUserTasks(userTasks.map(userTask =>
+				userTask.id === userTaskId ? { ...userTask, shouldDo: !userTask.shouldDo } : userTask
+			));
+		} catch (error) {
+			toast({
+				variant: "destructive",
+				title: "Error",
+				description: "Ocurrió un error al marcar la tarea",
 			});
 		}
 	}
@@ -176,7 +194,7 @@ export default function ChecklistPage() {
 				</div>
 			</header>
 			<main className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
-				<div className="border shadow-md rounded-lg w-3/4 mx-auto bg-slate-100/70 backdrop-blur-lg p-3">
+				<div className="border shadow-md rounded-lg w-5/6 mx-auto bg-slate-100/70 backdrop-blur-lg p-3">
 					{isLoading ? (
 						<div className="flex justify-center items-center h-64">
 							<Spinner />
@@ -191,6 +209,7 @@ export default function ChecklistPage() {
 							<TaskTableComplete
 								tasks={filteredTasks}
 								handleCompleteUserTask={handleCompleteUserTask}
+								handleMarkTaskAsShouldDo={handleMarkTaskAsShouldDo}
 							/>
 							{filteredTasks.length !== 0 && (
 								<div className='flex flex-col gap-4 items-center'>
@@ -204,7 +223,7 @@ export default function ChecklistPage() {
 											className="border shadow ring-2 ring-offset-1 ring-gray-400 p-2"
 										/>
 									</div>
-									<Link href="/cashier" className='w-full max-w-md'>
+									<Link href={userRole === "CASHIER" ? "/cashier" : "/employee"} className='w-full max-w-md'>
 										<Button
 											className='w-full shadow'
 											onClick={handleCloseChecklist}

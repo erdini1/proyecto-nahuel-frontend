@@ -47,8 +47,8 @@ const PaymentTypeMercadoPago = forwardRef(({ cashMovements, cancellations, cashR
 
 	useImperativeHandle(ref, () => ({
 		getData: () => ({
-			salesWithMercadoPago: data.salesWithMercadoPago,
-			cashToRenderWithMercadoPago: data.cashToRenderWithMercadoPago
+			salesWithMercadoPago: data.salesWithMercadoPago || 0,
+			cashToRenderWithMercadoPago: data.cashToRenderWithMercadoPago || 0,
 		}),
 	}));
 

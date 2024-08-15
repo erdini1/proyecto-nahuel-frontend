@@ -3,6 +3,8 @@ import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible"
 import { Badge } from "@/components/ui/badge"
+import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz'
 import PaymentMethodsTable from '@/components/component/cashRegisterAdmin/PaymentMethodsTable';
 import CashMovementsTable from '@/components/component/cashRegisterAdmin/CashMovementsTable';
 import CancellationsTable from '@/components/component/cashRegisterAdmin/CancellationsTable';

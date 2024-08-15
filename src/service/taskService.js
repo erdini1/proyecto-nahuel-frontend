@@ -34,6 +34,26 @@ export const completeTask = async (taskId, kilos) => {
 	}
 };
 
+export const markTaskAsOptional = async (userTaskId, isOptional) => {
+	try {
+		const response = await axios.put(`/checklist/${userTaskId}/optional`, { isOptional });
+		return response.data;
+	} catch (error) {
+		console.error('Failed to mark task as optional:', error);
+		throw new Error('Failed to mark task as optional');
+	}
+}
+
+export const markTaskAsShouldDo = async (userTaskId, shouldDo) => {
+	try {
+		const response = await axios.put(`/checklist/${userTaskId}/should-do`, { shouldDo });
+		return response.data;
+	} catch (error) {
+		console.error('Failed to mark task as should do:', error);
+		throw new Error('Failed to mark task as should do');
+	}
+}
+
 // REVISADO - OBTIENE TODAS LAS TAREAS DE TODOS LOS USUARIOS POR TASK SETS (TURNO) 
 export const getUserTasksByTaskSets = async () => {
 	try {
