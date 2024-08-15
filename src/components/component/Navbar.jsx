@@ -39,7 +39,7 @@ export default function Navbar() {
 			case 'cashier':
 				return '/cashier';
 			case 'employee':
-				return '/employee/checklist';
+				return '/employee';
 			default:
 				return '/login';
 		}

@@ -52,38 +52,39 @@ export default function CashRegisterReport({ cashRegister, setCashRegister, cash
 		try {
 			const { cash, cards, mercadoPago, pointMaxiconsumo, credit, observations, isClosed } = updatedData;
 			await updateCashRegister(cashRegister.id, {
-				salesWithCash: cash.salesWithCash,
-				cashToRenderWithCash: cash.cashToRenderWithCash,
-				salesWithCards: cards.salesWithCards,
-				cashToRenderWithCards: cards.cashToRenderWithCards,
-				salesWithMercadoPago: mercadoPago.salesWithMercadoPago,
-				cashToRenderWithMercadoPago: mercadoPago.cashToRenderWithMercadoPago,
-				salesWithPointMaxiconsumo: pointMaxiconsumo.salesWithPointMaxiconsumo,
-				cashToRenderWithPointMaxiconsumo: pointMaxiconsumo.cashToRenderWithPointMaxiconsumo,
-				batchNumber: pointMaxiconsumo.batchNumber,
-				salesWithCredit: credit.salesWithCredit,
-				cashToRenderWithCredit: credit.cashToRenderWithCredit,
+				salesWithCash: cash?.salesWithCash || 0,
+				cashToRenderWithCash: cash?.cashToRenderWithCash || 0,
+				salesWithCards: cards?.salesWithCards || 0,
+				cashToRenderWithCards: cards?.cashToRenderWithCards || 0,
+				salesWithMercadoPago: mercadoPago?.salesWithMercadoPago || 0,
+				cashToRenderWithMercadoPago: mercadoPago?.cashToRenderWithMercadoPago || 0,
+				salesWithPointMaxiconsumo: pointMaxiconsumo?.salesWithPointMaxiconsumo || 0,
+				cashToRenderWithPointMaxiconsumo: pointMaxiconsumo?.cashToRenderWithPointMaxiconsumo || 0,
+				batchNumber: pointMaxiconsumo?.batchNumber || 0,
+				salesWithCredit: credit?.salesWithCredit || 0,
+				cashToRenderWithCredit: credit?.cashToRenderWithCredit || 0,
 				observations,
 				isClosed
 			});
 
 			setCashRegister({
 				...cashRegister,
-				salesWithCash: cash.salesWithCash,
-				cashToRenderWithCash: cash.cashToRenderWithCash,
-				salesWithCards: cards.salesWithCards,
-				cashToRenderWithCards: cards.cashToRenderWithCards,
-				salesWithMercadoPago: mercadoPago.salesWithMercadoPago,
-				cashToRenderWithMercadoPago: mercadoPago.cashToRenderWithMercadoPago,
-				salesWithPointMaxiconsumo: pointMaxiconsumo.salesWithPointMaxiconsumo,
-				cashToRenderWithPointMaxiconsumo: pointMaxiconsumo.cashToRenderWithPointMaxiconsumo,
-				batchNumber: pointMaxiconsumo.batchNumber,
-				salesWithCredit: credit.salesWithCredit,
-				cashToRenderWithCredit: credit.cashToRenderWithCredit,
+				salesWithCash: cash?.salesWithCash || 0,
+				cashToRenderWithCash: cash?.cashToRenderWithCash || 0,
+				salesWithCards: cards?.salesWithCards || 0,
+				cashToRenderWithCards: cards?.cashToRenderWithCards || 0,
+				salesWithMercadoPago: mercadoPago?.salesWithMercadoPago || 0,
+				cashToRenderWithMercadoPago: mercadoPago?.cashToRenderWithMercadoPago || 0,
+				salesWithPointMaxiconsumo: pointMaxiconsumo?.salesWithPointMaxiconsumo || 0,
+				cashToRenderWithPointMaxiconsumo: pointMaxiconsumo?.cashToRenderWithPointMaxiconsumo || 0,
+				batchNumber: pointMaxiconsumo?.batchNumber || 0,
+				salesWithCredit: credit?.salesWithCredit || 0,
+				cashToRenderWithCredit: credit?.cashToRenderWithCredit || 0,
 				observations,
 				isClosed
 			});
 		} catch (error) {
+			console.error("Error updating cash register", error);
 			toast({
 				variant: "destructive",
 				title: "Error",
@@ -106,7 +107,7 @@ export default function CashRegisterReport({ cashRegister, setCashRegister, cash
 			formData.isClosed = true;
 		}
 
-		handleUpdateCashRegister(formData);
+		await handleUpdateCashRegister(formData);
 
 		toast({
 			title: "Actualizado",

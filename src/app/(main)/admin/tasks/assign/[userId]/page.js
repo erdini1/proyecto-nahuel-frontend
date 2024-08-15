@@ -6,12 +6,14 @@ import AssignTaskTable from "@/components/component/assign/AssignTaskTable";
 import { getAllTasks, assignTask, getUserTaskByTaskSet, disableUserTask } from "@/service/taskService";
 import { Button } from "@/components/ui/button";
 import ProgressChecklist from "@/components/component/progressChecklist";
-import { PlusIcon, ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon } from "@/components/icons/index";
+import { PlusIcon, ArrowLeftIcon, UserIcon, CalendarDaysIcon, ClockIcon, ReloadIcon, TrashIcon } from "@/components/icons/index";
+import { PinIcon, PinOffIcon } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 import { getUser } from "@/service/userService";
 import Spinner from "@/components/component/Spinner";
 import { getAllSectors } from "@/service/sectorService";
 import ObservationChecklist from "@/components/component/ObservationChecklist";
+import References from "@/components/component/References";
 
 export default function Page({ params }) {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -109,6 +111,33 @@ export default function Page({ params }) {
 		handleCloseDialog();
 	};
 
+	const references = [
+		{
+			id: 1,
+			name: "Eliminar",
+			icon: TrashIcon,
+			description: "Eliminar",
+		},
+		{
+			id: 2,
+			name: "Habilitar",
+			icon: ReloadIcon,
+			description: "Habilitar",
+		},
+		{
+			id: 3,
+			name: "Aplica",
+			icon: PinIcon,
+			description: "Aplica",
+		},
+		{
+			id: 4,
+			name: "Puede no aplicar",
+			icon: PinOffIcon,
+			description: "Puede no aplicar",
+		},
+	]
+
 	return (
 		<div className="min-h-screen">
 			<div className="flex flex-col">
@@ -169,11 +198,14 @@ export default function Page({ params }) {
 						</div>
 						<div className="w-1/4 flex flex-col gap-4">
 							<ProgressChecklist
-								tasksCompleted={userTasks.filter(task => task.isCompleted).length}
-								totalTasks={userTasks.filter(task => task.isActive).length}
+								tasksCompleted={userTasks.filter(task => task.isCompleted && task.shouldDo).length}
+								totalTasks={userTasks.filter(task => task.isActive && task.shouldDo).length}
 							/>
 							<ObservationChecklist
 								observations={userTasks[0]?.TaskSet.observations}
+							/>
+							<References
+								references={references}
 							/>
 						</div>
 					</main>

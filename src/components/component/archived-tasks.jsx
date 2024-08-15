@@ -38,7 +38,7 @@ export default function ArchivedTasks() {
         setIsLoading(true);
         const { from, to } = dateRange;
         const allUserTasks = await getUserTasksByRange(employeeId, from, to);
-        const userTasks = allUserTasks.filter(task => task.isActive);
+        const userTasks = allUserTasks.filter(task => task.isActive && task.shouldDo);
         const timeZone = 'America/Argentina/Ushuaia';
 
         const formattedTasks = userTasks.map(task => {

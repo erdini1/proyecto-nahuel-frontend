@@ -12,7 +12,7 @@ export default function ProgressChecklist({ tasksCompleted, totalTasks }) {
 
 	return (
 		<div className="right-4">
-			<Card className="w-full max-w-md ">
+			<Card className="w-full max-w-md shadow ring-1 ring-gray-300">
 				<CardHeader>
 					<CardTitle>Tareas Completadas</CardTitle>
 				</CardHeader>

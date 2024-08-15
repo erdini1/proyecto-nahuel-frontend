@@ -108,8 +108,8 @@ export default function Page({ params }) {
 						</div>
 						<div className="w-1/4 flex flex-col gap-4">
 							<ProgressChecklist
-								tasksCompleted={userTasks.filter(task => task.isCompleted).length}
-								totalTasks={userTasks.length}
+								tasksCompleted={userTasks.filter(task => task.isCompleted && task.shouldDo).length}
+								totalTasks={userTasks.filter(task => task.shouldDo).length}
 							/>
 							<ObservationChecklist
 								observations={userTasks[0]?.TaskSet.observations}

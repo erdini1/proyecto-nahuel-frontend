@@ -34,7 +34,7 @@ export default function SignIn() {
 					router.push("/cashier");
 					break;
 				case 'employee':
-					router.push("/employee/checklist");
+					router.push("/employee");
 					break;
 				default:
 					router.push("/unauthorized");
