@@ -56,7 +56,6 @@ export default function Page() {
 						getCashMovements(),
 						getCancellations()
 					]);
-
 					const terminals = await getTerminals(cashRegisterData.id);
 
 					setCashRegister(cashRegisterData);
