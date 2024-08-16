@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast"
 export default function CashRegister({ onCreated, onUpdated, cashRegister, cashBoxes }) {
 	const [initialAmount, setInitialAmount] = useState("");
 	const [changeAmount, setChangeAmount] = useState("");
-	const [cashBoxId, setCashBoxId] = useState(0);
+	const [cashBoxId, setCashBoxId] = useState(cashBoxes.length > 0 ? cashBoxes[0].id : 0)
 	const [disabledButtons, setDisabledButtons] = useState(false);
 
 	const { toast } = useToast();
@@ -73,7 +73,7 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 						{cashBoxes.map((cashBox) => (
 							<ToggleGroupItem
 								key={cashBox.id}
-								value={cashBox.id === cashBoxId}
+								value={cashBox.id}
 								id="cashBox"
 								variant="outline"
 								className={`w-full ${disabledButtons && cashBoxId !== cashBox.id ? 'opacity-70 bg-gray-400' : 'shadow bg-white border border-gray-300'} 

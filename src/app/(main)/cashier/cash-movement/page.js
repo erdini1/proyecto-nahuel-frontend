@@ -44,8 +44,6 @@ export default function Page() {
 				setCashBoxes(cashBoxes);
 
 				if (cashRegisterExists) {
-					setHasCashRegister(true);
-					setSelectedTab("movements");
 
 					const [
 						cashRegisterData,
@@ -63,6 +61,8 @@ export default function Page() {
 					setCancellations(cancellationsData);
 					setTerminals(terminals);
 
+					setHasCashRegister(true);
+					setSelectedTab("movements");
 				}
 			} catch (error) {
 				toast({
