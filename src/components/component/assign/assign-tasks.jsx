@@ -29,7 +29,7 @@ export default function AssignTasks() {
                     getUsers(),
                 ]);
 
-                setUserTasks(userTasks.filter(userTask => userTask.isActive && userTask.shouldDo));
+                setUserTasks(userTasks);
                 setEmployees(employees.filter((employee) => employee.role !== "admin"));
             } catch (error) {
                 toast({
