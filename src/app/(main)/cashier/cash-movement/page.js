@@ -15,7 +15,6 @@ import CashRegisterReport from "@/components/component/CashRegisterReport";
 import { getCashMovements } from "@/service/cashMovementsService";
 import { getCancellations } from "@/service/cancellationService";
 import { useToast } from "@/components/ui/use-toast";
-import { Input } from "@/components/ui/input";
 
 export default function Page() {
 	const [hasCashRegister, setHasCashRegister] = useState(false);
@@ -44,6 +43,8 @@ export default function Page() {
 				setCashBoxes(cashBoxes);
 
 				if (cashRegisterExists) {
+					setHasCashRegister(true);
+					setSelectedTab("movements");
 
 					const [
 						cashRegisterData,
@@ -61,10 +62,9 @@ export default function Page() {
 					setCancellations(cancellationsData);
 					setTerminals(terminals);
 
-					setHasCashRegister(true);
-					setSelectedTab("movements");
 				}
 			} catch (error) {
+				console.log('Error fetching data:', error);
 				toast({
 					variant: "destructive",
 					title: "Error",
@@ -164,7 +164,7 @@ export default function Page() {
 									(Cierre de caja)
 								</TabsTrigger>
 							</TabsList>
-							{selectedTab === "movements" && (
+							{selectedTab === "movements" && hasCashRegister && (
 								<div className="items-center flex gap-2">
 									<ModalTerminals
 										terminals={terminals}
@@ -176,7 +176,7 @@ export default function Page() {
 							)}
 						</div>
 					</div>
-					{isLoading ? (
+					{isLoading && !hasCashRegister && cashRegister === null ? (
 						<div className="flex justify-center items-center h-64">
 							<Spinner />
 						</div>
@@ -190,29 +190,31 @@ export default function Page() {
 									cashBoxes={cashBoxes.filter((cashBox) => cashBox.isActive)}
 								/>
 							</TabsContent>
-							<TabsContent value="movements" className="p-4">
-								<Card className="p-4 flex flex-col gap-10 bg-[#ebf4f5]/70 backdrop-blur-2xl">
-									<Movements
-										cashRegisterId={cashRegister?.id}
-										cashMovements={cashMovements}
-										handleUpdateCashMovements={handleUpdateCashMovements}
-										refreshCashMovements={refreshCashMovements}
-									/>
-									<Cancellations
-										cashRegisterId={cashRegister?.id}
-										cancellations={cancellations}
-										handleUpdateCancellations={handleUpdateCancellations}
-										refreshCancellations={refreshCancellations}
-										terminals={terminals}
-									/>
-									<Button
-										onClick={() => setSelectedTab("reports")}
-										className={`flex items-center rounded-md transition-colors duration-300 w-1/3 mx-auto`}
-									>
-										Cargar datos
-									</Button>
-								</Card>
-							</TabsContent>
+							{cashRegister && (
+								<TabsContent value="movements" className="p-4">
+									<Card className="p-4 flex flex-col gap-10 bg-[#ebf4f5]/70 backdrop-blur-2xl">
+										<Movements
+											cashRegisterId={cashRegister?.id}
+											cashMovements={cashMovements}
+											handleUpdateCashMovements={handleUpdateCashMovements}
+											refreshCashMovements={refreshCashMovements}
+										/>
+										<Cancellations
+											cashRegisterId={cashRegister?.id}
+											cancellations={cancellations}
+											handleUpdateCancellations={handleUpdateCancellations}
+											refreshCancellations={refreshCancellations}
+											terminals={terminals}
+										/>
+										<Button
+											onClick={() => setSelectedTab("reports")}
+											className={`flex items-center rounded-md transition-colors duration-300 w-1/3 mx-auto`}
+										>
+											Cargar datos
+										</Button>
+									</Card>
+								</TabsContent>
+							)}
 							<TabsContent value="reports" className="p-4">
 								<CashRegisterReport
 									cashRegister={cashRegister}

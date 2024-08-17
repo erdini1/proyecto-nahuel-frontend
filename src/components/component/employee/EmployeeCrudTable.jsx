@@ -1,7 +1,6 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { FilePenIcon, TrashIcon } from "@/components/icons/index";
-import { translateRole } from "@/helpers/role.helper";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -22,10 +21,10 @@ export default function EmployeeCrudTable({ employees, handleUpdateEmployee, han
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead className="w-1/5">Nombre y Apellido</TableHead>
-						<TableHead className="w-1/5">Numero de ingreso</TableHead>
-						<TableHead className="w-2/5">Sector</TableHead>
-						<TableHead className="w-1/5">Acciones</TableHead>
+						<TableHead className="w-1/6">Nombre y Apellido</TableHead>
+						<TableHead className="w-1/6">Numero de ingreso</TableHead>
+						<TableHead className="w-3/6">Sector</TableHead>
+						<TableHead className="w-1/6">Acciones</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -36,13 +35,13 @@ export default function EmployeeCrudTable({ employees, handleUpdateEmployee, han
 					) : (
 						employees.map((employee) => (
 							<TableRow key={employee.id}>
-								<TableCell className="w-1/5 capitalize">{employee.firstName} {employee.lastName}</TableCell>
-								<TableCell className="w-1/5">{employee.number}</TableCell>
-								<TableCell className="w-2/5 uppercase mt-2 gap-2">
-									<div className="flex flex-wrap gap-2">
+								<TableCell className="w-1/6 capitalize">{employee.firstName} {employee.lastName}</TableCell>
+								<TableCell className="w-1/6">{employee.number}</TableCell>
+								<TableCell className="w-3/6 uppercase mt-2 gap-2">
+									<div className="flex flex-wrap gap-1">
 										{employee.Sectors?.map((sector, index) => (
 											<Badge
-												className="bg-gray-600 flex-1 min-w-[25%] max-w-[25%] justify-center"
+												className="bg-gray-600 flex-1 min-w-[25%] max-w-[30%] justify-center"
 												key={sector.id}
 											>
 												{sector.name}
@@ -50,7 +49,7 @@ export default function EmployeeCrudTable({ employees, handleUpdateEmployee, han
 										))}
 									</div>
 								</TableCell>
-								<TableCell className="w-1/5">
+								<TableCell className="w-1/6">
 									<div className="flex items-center gap-2">
 										<Button
 											variant="outline"

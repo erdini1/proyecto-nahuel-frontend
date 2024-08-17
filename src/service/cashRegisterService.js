@@ -1,8 +1,8 @@
 import axios from "../config/axios";
 
 export const createCashRegister = async (cashRegisterData) => {
+	console.log('cashRegisterData', cashRegisterData);
 	try {
-		console.log('cashRegisterData', cashRegisterData);
 		const response = await axios.post(`/cash-register`, cashRegisterData);
 		return response.data;
 	} catch (error) {

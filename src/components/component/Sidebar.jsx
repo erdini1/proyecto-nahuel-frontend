@@ -100,7 +100,7 @@ export default function Sidebar() {
 									className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname.startsWith("/admin/tasks/archived") ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
 									href="/admin/tasks/archived">
 									<CalendarDaysIcon className="h-4 w-4" />
-									Historial de Tareas
+									Registro de Checklist
 								</Link>
 							</div>
 							{/* ---- Caja ----- */}

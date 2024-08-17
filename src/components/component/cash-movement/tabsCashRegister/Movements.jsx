@@ -57,7 +57,6 @@ export default function Movements({ cashRegisterId, cashMovements, handleUpdateC
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-
 				const providers = await getProviders();
 				setProviders(providers.filter(provider => provider.isActive) || []);
 

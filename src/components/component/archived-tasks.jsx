@@ -114,7 +114,7 @@ export default function ArchivedTasks() {
                 <div>
                     <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 mb-5">
                         <div className="flex-1">
-                            <h1 className="font-semibold text-lg">Historial de Tareas</h1>
+                            <h1 className="font-semibold text-lg">Registro de Checklist</h1>
                         </div>
                     </header>
                     <EmployeeDateSelector onSelection={handleSelection} />

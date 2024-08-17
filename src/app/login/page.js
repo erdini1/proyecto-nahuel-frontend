@@ -51,15 +51,15 @@ export default function SignIn() {
 
 	return (
 		<div className="flex min-h-[100dvh] items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 from-slate-300 to-slate-400 bg-gradient-to-b">
-			<Card className="w-full max-w-md space-y-8 shadow-lg rounded-2xl mx-4 sm:mx-0 p-6 ">
+			<Card className="w-full max-w-md space-y-8 shadow-lg rounded-2xl mx-4 sm:mx-0 p-6 from-[#31304D]/90 to-[#31304D]/70 bg-gradient-to-b ring-1 ring-gray-600">
 				<div className='flex items-center gap-3 justify-center'>
-					<h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-foreground text-gray-900">
+					<h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-foreground text-white">
 						Inicia sesión
 					</h2>
 				</div>
 				<form className="space-y-6 px-4 sm:px-0" onSubmit={handleSubmit}>
 					<div>
-						<Label htmlFor="number" className="block text-sm font-medium text-muted-foreground">
+						<Label htmlFor="number" className="block text-sm font-medium text-muted-foreground text-white">
 							Contraseña
 						</Label>
 						<div className="mt-1">
