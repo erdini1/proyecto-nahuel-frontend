@@ -37,7 +37,7 @@ export default function Navbar() {
 			case 'admin':
 				return '/admin/general';
 			case 'cashier':
-				return '/cashier';
+				return '/employee';
 			case 'employee':
 				return '/employee';
 			default:
@@ -64,7 +64,7 @@ export default function Navbar() {
 							<span className="text-lg font-medium text-white">Invitado</span>
 						</div>
 					)}
-					<Link href="/logout" className="flex items-center gap-2 text-gray-300 transition-colors" prefetch={false}>
+					<Link href="/logout" className="flex items-center gap-2 text-gray-300 transition-colors bg-gray-600 hover:bg-gray-400 hover:text-black duration-300 ring-2 ring-gray-400 p-2 rounded" prefetch={false}>
 						<PowerIcon className="h-5 w-5 " />
 						<span className="font-medium ">Cerrar Sesión</span>
 					</Link>

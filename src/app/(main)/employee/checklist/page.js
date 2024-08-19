@@ -223,7 +223,7 @@ export default function ChecklistPage() {
 											className="border shadow ring-2 ring-offset-1 ring-gray-400 p-2"
 										/>
 									</div>
-									<Link href={userRole === "CASHIER" ? "/cashier" : "/employee"} className='w-full max-w-md'>
+									<Link href="/employee" className='w-full max-w-md'>
 										<Button
 											className='w-full shadow'
 											onClick={handleCloseChecklist}

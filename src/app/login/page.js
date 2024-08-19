@@ -31,7 +31,7 @@ export default function SignIn() {
 					router.push("/admin/general");
 					break;
 				case 'cashier':
-					router.push("/cashier");
+					router.push("/employee");
 					break;
 				case 'employee':
 					router.push("/employee");

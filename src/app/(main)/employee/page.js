@@ -36,17 +36,42 @@ export default function Page() {
 						<h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Bienvenido, <span className="capitalize">{user?.firstName} {user?.lastName}</span></h2>
 						<p className="mt-2 text-center text-sm text-gray-600">Seleccione una opción</p>
 					</div>
-					<div className="items-center">
-						<Link
-							href="/employee/checklist"
-							className="flex flex-col items-center justify-center rounded-lg from-[#31304D]/90 to-[#31304D]/30 bg-gradient-to-t p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
-							prefetch={false}
-						>
-							<ClipboardListIcon className="mb-4 h-12 w-12 text-[#F59E0B]" />
-							<h3 className="text-lg font-medium text-gray-100">Checklist</h3>
-							<p className="mt-2 text-sm text-gray-300">Gestionar tareas</p>
-						</Link>
-					</div>
+					{user.role === "employee" ? (
+						<div className="items-center">
+							<Link
+								href="/employee/checklist"
+								className="flex flex-col items-center justify-center rounded-lg from-[#31304D]/90 to-[#31304D]/30 bg-gradient-to-t p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
+								prefetch={false}
+							>
+								<ClipboardListIcon className="mb-4 h-12 w-12 text-[#F59E0B]" />
+								<h3 className="text-lg font-medium text-gray-100">Checklist</h3>
+								<p className="mt-2 text-sm text-gray-300">Gestionar tareas</p>
+							</Link>
+						</div>
+					) : (
+						<div className="grid grid-cols-2 gap-4">
+							<Link
+								href="/employee/checklist"
+								className="flex flex-col items-center justify-center rounded-lg from-[#31304D]/90 to-[#31304D]/30 bg-gradient-to-t p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
+								prefetch={false}
+							>
+								<ClipboardListIcon className="mb-4 h-12 w-12 text-[#F59E0B]" />
+								<h3 className="text-lg font-medium text-gray-100">Checklist</h3>
+								<p className="mt-2 text-sm text-gray-300">Gestionar tareas</p>
+							</Link>
+							<Link
+								href="/cashier/cash-movement"
+								className="flex flex-col items-center justify-center rounded-lg from-[#31304D]/90 to-[#31304D]/30 bg-gradient-to-t p-6 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 border"
+								prefetch={false}
+							>
+								<DollarSignIcon className="mb-4 h-12 w-12 text-[#F59E0B]" />
+								<h3 className="text-lg font-medium text-gray-100">Caja</h3>
+								<p className="mt-2 text-sm text-gray-300">
+									Gestionar datos de caja
+								</p>
+							</Link>
+						</div>
+					)}
 				</div>
 			)}
 		</main>
