@@ -219,7 +219,7 @@ export default function CashRegisterReport({ cashRegister, setCashRegister, cash
 									className="border shadow ring-2 ring-offset-1 ring-gray-400 p-2"
 								/>
 							</div>
-							<Link href="/cashier" className='w-full max-w-md'>
+							<Link href="/employee" className='w-full max-w-md'>
 								<Button
 									className='w-full'
 									onClick={() => handleSave(true)}
