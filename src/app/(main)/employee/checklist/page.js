@@ -24,6 +24,7 @@ export default function ChecklistPage() {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [filterByStatus, setFilterByStatus] = useState('all');
 	const [isLoading, setIsLoading] = useState(true);
+	const [isSaving, setIsSaving] = useState(false);
 	const [isShiftSelected, setIsShiftSelected] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -66,12 +67,16 @@ export default function ChecklistPage() {
 	}, []);
 
 	const handleCompleteUserTask = async (taskId, kilos) => {
+		setUserTasks(userTasks.map(userTask =>
+			userTask.Task.id === taskId ? { ...userTask, isCompleted: !userTask.isCompleted, kilos } : userTask
+		));
+
 		try {
 			await completeTask(taskId, kilos);
-			setUserTasks(userTasks.map(userTask =>
-				userTask.Task.id === taskId ? { ...userTask, isCompleted: !userTask.isCompleted, kilos } : userTask
-			));
 		} catch (error) {
+			setUserTasks(userTasks.map(userTask =>
+				userTask.Task.id === taskId ? { ...userTask, isCompleted: !userTask.isCompleted, kilos: userTask.kilos } : userTask
+			));
 			toast({
 				variant: "destructive",
 				title: "Error",
@@ -105,6 +110,10 @@ export default function ChecklistPage() {
 	};
 
 	const handleCloseChecklist = async () => {
+		// Verifica si ya se está procesando una solicitud para evitar duplicados
+		if (isSaving) return;
+
+		setIsSaving(true); // Indica que se está procesando la solicitud
 		try {
 			await updateTaskSet({
 				observations,
@@ -116,15 +125,17 @@ export default function ChecklistPage() {
 				title: "Checklist cerrado",
 				description: "Checklist cerrado correctamente",
 			});
-
 		} catch (error) {
 			toast({
 				variant: "error",
 				title: "Error",
 				description: "Ocurrió un error al cerrar el checklist",
 			});
+		} finally {
+			setIsSaving(false); // Indica que la solicitud ha terminado
 		}
-	}
+	};
+
 
 	const handleMarkTaskAsShouldDo = async (userTaskId) => {
 		try {
@@ -141,6 +152,15 @@ export default function ChecklistPage() {
 			});
 		}
 	}
+
+	const handleSaveAndRedirect = async () => {
+		try {
+			await handleCloseChecklist();
+			window.location.href = "/employee"
+		} catch (error) {
+			console.error("Error al guardar:", error);
+		}
+	};
 
 	return (
 		<div className="w-full mx-auto from-slate-300 to-slate-400 bg-gradient-to-b h-auto min-h-screen">
@@ -223,14 +243,13 @@ export default function ChecklistPage() {
 											className="border shadow ring-2 ring-offset-1 ring-gray-400 p-2"
 										/>
 									</div>
-									<Link href="/employee" className='w-full max-w-md'>
-										<Button
-											className='w-full shadow'
-											onClick={handleCloseChecklist}
-										>
-											Cerrar Checklist
-										</Button>
-									</Link>
+									<Button
+										className='w-1/2 shadow'
+										onClick={handleSaveAndRedirect}
+										disabled={isSaving}
+									>
+										{isSaving ? 'Guardando...' : 'Cerrar Checklist'}
+									</Button>
 								</div>
 							)}
 						</div>

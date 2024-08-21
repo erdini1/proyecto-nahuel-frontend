@@ -107,13 +107,18 @@ const AssignTaskTable = ({ userTasks, setUserTasks, handleDisableUserTask, userI
     };
 
     const handleMarkAsOptional = async (userTaskId) => {
+        const { isOptional } = userTasks.find(userTask => userTask.id === userTaskId);
+
+        const previousTasks = [...userTasks];
+
+        setUserTasks(userTasks.map(userTask =>
+            userTask.id === userTaskId ? { ...userTask, isOptional: !isOptional } : userTask
+        ));
+
         try {
-            const { isOptional } = userTasks.find(userTask => userTask.id === userTaskId);
             await markTaskAsOptional(userTaskId, !isOptional);
-            setUserTasks(userTasks.map(userTask =>
-                userTask.id === userTaskId ? { ...userTask, isOptional: !userTask.isOptional } : userTask
-            ));
         } catch (error) {
+            setUserTasks(previousTasks);
             toast({
                 variant: "destructive",
                 title: "Error",

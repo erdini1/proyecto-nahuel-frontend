@@ -24,6 +24,7 @@ export default function CashRegisterReport({ cashRegister, setCashRegister, cash
 
 	const [observations, setObservations] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
+	const [isSaving, setIsSaving] = useState(false);
 	const [selectedTerminals, setSelectedTerminals] = useState({
 		cash: true,
 		card: true,
@@ -49,6 +50,10 @@ export default function CashRegisterReport({ cashRegister, setCashRegister, cash
 	}, [cashRegister]);
 
 	const handleUpdateCashRegister = async (updatedData) => {
+		if (isSaving) return;
+
+		setIsSaving(true);
+
 		try {
 			const { cash, cards, mercadoPago, pointMaxiconsumo, credit, observations, isClosed } = updatedData;
 			await updateCashRegister(cashRegister.id, {
@@ -90,6 +95,8 @@ export default function CashRegisterReport({ cashRegister, setCashRegister, cash
 				title: "Error",
 				description: "Ocurrió un error al actualizar el registro de caja",
 			});
+		} finally {
+			setIsSaving(false);
 		}
 	};
 
@@ -125,6 +132,15 @@ export default function CashRegisterReport({ cashRegister, setCashRegister, cash
 		];
 		return paymentMethods.reduce((acc, value) => value ? acc + 1 : acc, 0);
 	}
+
+	const handleSaveAndRedirect = async () => {
+		try {
+			await handleSave(true);
+			window.location.href = "/employee"
+		} catch (error) {
+			console.error("Error al guardar:", error);
+		}
+	};
 
 	return (
 		<Card className="bg-slate-100/70 backdrop-blur-lg">
@@ -219,14 +235,9 @@ export default function CashRegisterReport({ cashRegister, setCashRegister, cash
 									className="border shadow ring-2 ring-offset-1 ring-gray-400 p-2"
 								/>
 							</div>
-							<Link href="/employee" className='w-full max-w-md'>
-								<Button
-									className='w-full'
-									onClick={() => handleSave(true)}
-								>
-									Cerrar Caja
-								</Button>
-							</Link>
+							<Button className='w-full max-w-md' onClick={handleSaveAndRedirect} disabled={isSaving}>
+								{isSaving ? 'Guardando...' : 'Cerrar Caja'}
+							</Button>
 						</div>
 					</div>
 				)}
