@@ -79,16 +79,22 @@ export default function Page({ params }) {
 	};
 
 	const handleDisableUserTask = async (userTaskId, isActive) => {
+		const updatedUserTasks = userTasks.map(task =>
+			task.id === userTaskId ? { ...task, isActive } : task
+		);
+		setUserTasks(updatedUserTasks);
+
 		try {
 			await disableUserTask(userTaskId, isActive);
-			const userTasks = await getUserTaskByTaskSet(employee.id);
-			setUserTasks(userTasks);
 		} catch (error) {
+			const originalUserTasks = await getUserTaskByTaskSet(employee.id);
+			setUserTasks(originalUserTasks);
+
 			toast({
 				variant: "destructive",
 				title: "Error",
 				description: "Ocurrió un error al eliminar la tarea",
-			})
+			});
 		}
 	};
 

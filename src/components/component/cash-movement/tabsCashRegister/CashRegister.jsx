@@ -10,6 +10,7 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 	const [changeAmount, setChangeAmount] = useState("");
 	const [cashBoxId, setCashBoxId] = useState(0)
 	const [disabledButtons, setDisabledButtons] = useState(false);
+	const [isSaving, setIsSaving] = useState(false);
 
 	const { toast } = useToast();
 
@@ -31,6 +32,10 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 	};
 
 	const handleSubmit = async (e) => {
+		if (isSaving) return;
+
+		setIsSaving(true);
+
 		e.preventDefault();
 		const formData = {
 			initialAmount,
@@ -60,6 +65,8 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 				title: "Error",
 				description: "Ocurrió un error al crear la caja",
 			});
+		} finally {
+			setIsSaving(false);
 		}
 	};
 
@@ -122,8 +129,10 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 				<Button
 					className="w-full"
 					type="submit"
-					disabled={cashBoxId === 0 || initialAmount === ""}
-				>Guardar Datos Iniciales</Button>
+					disabled={cashBoxId === 0 || initialAmount === "" || isSaving}
+				>
+					{isSaving ? 'Creando...' : 'Guardar Datos Iniciales'}
+				</Button>
 			</form>
 		</div>
 	);
