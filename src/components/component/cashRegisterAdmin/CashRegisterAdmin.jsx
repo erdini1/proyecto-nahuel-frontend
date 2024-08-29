@@ -20,6 +20,7 @@ import DownloadExcel from "../DownloadExcel";
 import { translateType } from "@/helpers/cancellation.helper";
 import { useToast } from "@/components/ui/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import MultiSelect from "@/components/component/MultiSelect";
 
 export default function CashRegisterAdmin() {
 	const [cashRegisters, setCashRegisters] = useState([]);
@@ -29,8 +30,8 @@ export default function CashRegisterAdmin() {
 	const [cashBoxes, setCashBoxes] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [searchQuery, setSearchQuery] = useState("");
-	const [cashBoxFilter, setCashBoxFilter] = useState("all");
-	const [dateFilter, setDateFilter] = useState(null);
+	const [cashBoxFilter, setCashBoxFilter] = useState([]);
+	const [dateFilter, setDateFilter] = useState({ from: null, to: null });
 	const [terminalFilter, setTerminalFilter] = useState("all");
 	const [cashRegisterData, setCashRegisterData] = useState([]);
 	const [cashMovementData, setCashMovementData] = useState([]);
@@ -79,14 +80,13 @@ export default function CashRegisterAdmin() {
 	const filteredCashRegistersByCashierOrCashBox = useMemo(() => {
 		return cashRegisters.filter((cashRegister) => {
 			const matchesCashier = `${cashRegister.User.firstName} ${cashRegister.User.lastName}`.toLowerCase().includes(searchQuery.toLowerCase());
-			const matchesCashBox = cashBoxFilter === 'all' ? true : cashRegister.CashBox.id === cashBoxFilter;
-			const matchesDate = dateFilter === null ? true : (dateFilter ? cashRegister.date === format(dateFilter, 'yyyy-MM-dd') : true)
+			const matchesCashBox = cashBoxFilter.length === 0 || cashBoxFilter.includes(cashRegister.CashBox.id);
+			const matchesDate = dateFilter?.from && dateFilter.to ?
+				(cashRegister.date >= format(dateFilter?.from, 'yyyy-MM-dd') && cashRegister.date <= format(dateFilter.to, 'yyyy-MM-dd')) : true;
 			const matchesTerminal = terminalFilter === 'all' ? true : cashRegister.Terminals.map(terminal => terminal.id).includes(terminalFilter);
 			return matchesCashier && matchesCashBox && matchesDate && matchesTerminal;
 		});
 	}, [cashRegisters, searchQuery, cashBoxFilter, dateFilter, terminalFilter]);
-
-	/*  */
 
 	useEffect(() => {
 		const calculateData = (cashRegister) => {
@@ -222,8 +222,6 @@ export default function CashRegisterAdmin() {
 		return (parseFloat(cashToRender || 0) - toRenderSystem).toFixed(2);
 	};
 
-	/*  */
-
 	return (
 		<div className="">
 			<div className="flex flex-col">
@@ -251,17 +249,19 @@ export default function CashRegisterAdmin() {
 								<Button
 									variant={"outline"}
 									className={cn(
-										"w-[200px] justify-start text-left font-normal",
-										!dateFilter && "text-muted-foreground"
+										"w-auto justify-start text-left font-normal",
+										!dateFilter?.from && !dateFilter?.to && "text-muted-foreground"
 									)}
 								>
 									<CalendarDaysIcon className="mr-2 h-4 w-4" />
-									{dateFilter ? format(toZonedTime(dateFilter, 'America/Argentina/Ushuaia'), 'dd/MM/yyyy') : <span className="overflow-hidden">Seleccione una fecha</span>}
+									{dateFilter?.from && dateFilter?.to
+										? `${format(toZonedTime(dateFilter?.from, 'America/Argentina/Ushuaia'), 'dd/MM/yyyy')} - ${format(toZonedTime(dateFilter.to, 'America/Argentina/Ushuaia'), 'dd/MM/yyyy')}`
+										: <span className="overflow-hidden">Rango de fechas</span>}
 								</Button>
 							</PopoverTrigger>
 							<PopoverContent className="w-auto p-0">
 								<Calendar
-									mode="single"
+									mode="range"
 									selected={dateFilter}
 									onSelect={setDateFilter}
 									initialFocus
@@ -269,28 +269,23 @@ export default function CashRegisterAdmin() {
 								<Button
 									variant="outline"
 									className="w-full"
-									onClick={() => setDateFilter(null)}
+									onClick={() => setDateFilter({ from: null, to: null })}
 								>
 									Limpiar
 								</Button>
 							</PopoverContent>
 						</Popover>
 
-						<Select id="cashBoxFilter" value={cashBoxFilter} onValueChange={(value) => setCashBoxFilter(value)}>
-							<SelectTrigger className="w-28">
-								<SelectValue placeholder="Filtrar por caja" />
-							</SelectTrigger>
-							<SelectContent>
-								<ScrollArea className="h-60">
-									<SelectItem value="all">- Cajas -</SelectItem>
-									{cashBoxes.map(cashBox => (
-										<SelectItem key={cashBox.id} value={cashBox.id} className="capitalize">
-											{cashBox.description}
-										</SelectItem>
-									))}
-								</ScrollArea>
-							</SelectContent>
-						</Select>
+						<div className="w-auto min-w-[150px]">
+							<MultiSelect
+								name="caja"
+								options={cashBoxes}
+								selected={cashBoxFilter}
+								onChange={setCashBoxFilter}
+								displayValue="description"
+								displayQuantity={1}
+							/>
+						</div>
 
 						<Select id="terminalFilter" value={terminalFilter} onValueChange={(value) => setTerminalFilter(value)}>
 							<SelectTrigger className="w-40">
@@ -314,7 +309,6 @@ export default function CashRegisterAdmin() {
 							cancellations={cancellationData}
 							fileName="registro_de_caja"
 						/>
-
 					</div>
 				</header>
 				<main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">

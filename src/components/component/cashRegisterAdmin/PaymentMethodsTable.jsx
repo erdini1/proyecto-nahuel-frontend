@@ -62,11 +62,11 @@ const PaymentMethodsTable = ({ cashRegister }) => {
 				<div className="flex gap-6 border rounded-lg bg-white shadow p-4 text-xs uppercase">
 					<div className="flex items-center gap-1">
 						<span className="font-semibold text-gray-700">Monto Inicial:</span>
-						<Badge variant="" className="bg-gray-400">$ {cashRegister?.initialAmount || 0}</Badge>
+						<Badge variant="" className="bg-gray-400">$ {cashRegister?.initialAmount.toFixed(2) || 0}</Badge>
 					</div>
 					<div className="flex items-center gap-1">
 						<span className="font-semibold text-gray-700">Ingreso de Cambio:</span>
-						<Badge variant="" className="bg-gray-400">$ {cashRegister?.changeAmount || 0}</Badge>
+						<Badge variant="" className="bg-gray-400">$ {(cashRegister?.changeAmount || 0).toFixed(2)}</Badge>
 					</div>
 					<div className="flex items-center gap-1">
 						<span className="font-semibold text-gray-700">Terminales:</span>
@@ -97,13 +97,13 @@ const PaymentMethodsTable = ({ cashRegister }) => {
 							!isInUse ? null : (
 								<TableRow key={key}>
 									<TableCell className={`px-6 py-4 text-gray-600 uppercase`}>{label} <span>{key === "PointMaxiconsumo" && isInUse ? `(${data[key]?.batchNumber})` : ""}</span></TableCell>
-									<TableCell className="px-6 py-4">$ {data[key]?.sales || 0}</TableCell>
-									<TableCell className="px-6 py-4">{key !== "Cash" ? " - " : `$ ${data.Cash.income}`}</TableCell>
-									<TableCell className="px-6 py-4">{key === "Credit" ? " - " : `$ ${data[key]?.withdrawal || 0}`}</TableCell>
-									<TableCell className="px-6 py-4">$ {data[key]?.toRenderSystem || 0}</TableCell>
-									<TableCell className="px-6 py-4 ">$ {data[key]?.inHand || 0}</TableCell>
+									<TableCell className="px-6 py-4">$ {data[key]?.sales.toFixed(2) || 0}</TableCell>
+									<TableCell className="px-6 py-4">{key !== "Cash" ? " - " : `$ ${data.Cash.income.toFixed(2)}`}</TableCell>
+									<TableCell className="px-6 py-4">{key === "Credit" ? " - " : `$ ${data[key]?.withdrawal.toFixed(2) || 0}`}</TableCell>
+									<TableCell className="px-6 py-4">$ {data[key]?.toRenderSystem.toFixed(2) || 0}</TableCell>
+									<TableCell className="px-6 py-4 ">$ {data[key]?.inHand.toFixed(2) || 0}</TableCell>
 									<TableCell className="px-6 py-4">
-										$ <span className={`font-semibold ${data[key]?.diff >= 0 ? "text-green-500" : "text-red-500"}`}>{data[key]?.diff || 0}</span>
+										$ <span className={`font-semibold ${data[key]?.diff >= 0 ? "text-green-500" : "text-red-500"}`}>{data[key]?.diff.toFixed(2) || 0}</span>
 									</TableCell>
 								</TableRow>
 							)
@@ -111,11 +111,11 @@ const PaymentMethodsTable = ({ cashRegister }) => {
 					})}
 					<TableRow className="bg-gray-100 font-semibold uppercase">
 						<TableCell className="px-6 py-4 border-t-2">Total Medios de Pago</TableCell>
-						<TableCell className="px-6 py-4 border-r-2 border-t-2">$ {cashRegister.totalPaymentMethods || 0}</TableCell>
+						<TableCell className="px-6 py-4 border-r-2 border-t-2">$ {cashRegister.totalPaymentMethods.toFixed(2) || 0}</TableCell>
 						<TableCell className="px-6 py-4 border-t-2" colSpan={2}>Retiro total Efectivo</TableCell>
-						<TableCell className="px-6 py-4 border-r-2 border-t-2">$ {cashRegister.cashWithdrawal || 0}</TableCell>
+						<TableCell className="px-6 py-4 border-r-2 border-t-2">$ {cashRegister.cashWithdrawal.toFixed(2) || 0}</TableCell>
 						<TableCell className="px-6 py-4 border-t-2" colSpan={1}>Total Diferencias</TableCell>
-						<TableCell className={`px-6 py-4 border-t-2 ${cashRegister.totalDiff >= 0 ? "text-green-500" : "text-red-500"}`}>$ {cashRegister.totalDiff}</TableCell>
+						<TableCell className={`px-6 py-4 border-t-2 ${cashRegister.totalDiff >= 0 ? "text-green-500" : "text-red-500"}`}>$ {cashRegister.totalDiff.toFixed(2)}</TableCell>
 					</TableRow>
 				</TableBody>
 			</Table>
