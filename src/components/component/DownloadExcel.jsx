@@ -144,7 +144,7 @@ const DownloadExcel = ({ cashRegisters, cashMovements, cancellations, fileName }
 	return (
 		<Button onClick={downloadExcel}>
 			<DownloadIcon />
-			Exportar a Excel
+			Exportar
 		</Button>
 	);
 };

@@ -1,6 +1,5 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import CashRegisterRow from '@/components/component/cashRegisterAdmin/CashRegisterRow';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
 
 export default function CashRegisterAdminTable({ cashRegisters, cashMovements, cancellations }) {
 
@@ -66,8 +65,8 @@ export default function CashRegisterAdminTable({ cashRegisters, cashMovements, c
 							<TableCell className="py-4"></TableCell>
 							<TableCell className="w-2/12 py-4"></TableCell>
 							<TableCell className="w-2/12 py-4"></TableCell>
-							<TableCell className="w-1/12 py-4 text-sm font-semibold uppercase">{/* Totales: */}</TableCell>
-							<TableCell className="w-2/12 py-4 font-semibold">$ {allPaymentMethodsTotals()}</TableCell>
+							<TableCell className="w-1/12 py-4 text-sm font-semibold uppercase"></TableCell>
+							<TableCell className="w-2/12 py-4 font-semibold">$ {allPaymentMethodsTotals().toFixed(2)}</TableCell>
 							<TableCell className={`w-2/12 py-4 font-semibold ${allDiffTotals() >= 0 ? "text-green-500" : "text-red-500"}`}>
 								$ {allDiffTotals().toFixed(2)}
 							</TableCell>

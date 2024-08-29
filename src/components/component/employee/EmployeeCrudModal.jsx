@@ -139,10 +139,12 @@ export default function EmployeeCrudModal({
 							<div className="grid gap-3 w-full">
 								<Label htmlFor="sector">Sector</Label>
 								<MultiSelect
+									name="sector"
 									options={sectors}
 									selected={selectedSectors}
 									onChange={handleSectorChange}
 									displayValue="name"
+									displayQuantity={3}
 								/>
 							</div>
 						</div>

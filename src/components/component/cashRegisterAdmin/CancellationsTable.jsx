@@ -27,7 +27,7 @@ const CancellationsTable = ({ cancellations }) => {
 								<TableCell className="w-1/5 py-4 pl-6">{cancellation.type}</TableCell>
 								<TableCell className="w-1/5 py-4 pl-6">{cancellation.method}</TableCell>
 								<TableCell className="w-1/5 py-4 pl-6">{cancellation.time}</TableCell>
-								<TableCell className="w-1/5 py-4 pl-6">$ {cancellation.amount}</TableCell>
+								<TableCell className="w-1/5 py-4 pl-6">$ {cancellation.amount.toFixed(2)}</TableCell>
 							</TableRow>
 						))
 					)}

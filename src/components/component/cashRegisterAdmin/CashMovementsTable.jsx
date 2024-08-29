@@ -28,7 +28,7 @@ const CashMovementsTable = ({ cashMovements }) => {
 								<TableCell className="w-1/5 py-4 pl-6">{translateType(cashMovement.type)}</TableCell>
 								<TableCell className="w-1/5 py-4 pl-6">{cashMovement.detail}</TableCell>
 								<TableCell className="w-1/5 py-4 pl-6">{cashMovement.time}</TableCell>
-								<TableCell className="w-1/5 py-4 pl-6">$ {cashMovement.amount}</TableCell>
+								<TableCell className="w-1/5 py-4 pl-6">$ {cashMovement.amount.toFixed(2)}</TableCell>
 							</TableRow>
 						))
 					)}

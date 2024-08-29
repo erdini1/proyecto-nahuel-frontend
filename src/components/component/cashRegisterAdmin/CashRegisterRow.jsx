@@ -25,8 +25,8 @@ const CashRegisterRow = ({ cashRegister, cashMovementsFiltered, cancellationsFil
 				<TableCell className="w-2/12 py-4 capitalize">{cashRegister.cashier}</TableCell>
 				<TableCell className="w-2/12 py-4">{cashRegister.date}</TableCell>
 				<TableCell className="w-1/12 py-4">{cashRegister.cashBoxNumber}</TableCell>
-				<TableCell className="w-2/12 py-4">$ {cashRegister.totalPaymentMethods}</TableCell>
-				<TableCell className={`w-2/12 py-4 ${cashRegister.totalDiff >= 0 ? "text-green-500" : "text-red-500"}`}>$ {cashRegister.totalDiff}</TableCell>
+				<TableCell className="w-2/12 py-4">$ {cashRegister.totalPaymentMethods.toFixed(2)}</TableCell>
+				<TableCell className={`w-2/12 py-4 ${cashRegister.totalDiff >= 0 ? "text-green-500" : "text-red-500"}`}>$ {cashRegister.totalDiff.toFixed(2)}</TableCell>
 				<TableCell className="w-2/12 py-4">{cancellationsFiltered(cashRegister?.id).length}</TableCell>
 				<TableCell className="w-1/12 py-4">
 					<Badge className={`rounded-2xl p-1 text-xs ${cashRegister.isClosed ? 'bg-green-500 hover:bg-green-600' : 'bg-yellow-500 hover:bg-yellow-600'}`}>

@@ -2,7 +2,7 @@ import { Select, SelectTrigger, SelectContent } from "@/components/ui/select";
 import { ScrollArea } from "../ui/scroll-area";
 import { useState } from "react";
 
-export default function MultiSelect({ options, selected, onChange, displayValue }) {
+export default function MultiSelect({ name, options, selected, onChange, displayValue, displayQuantity }) {
 	const [open, setOpen] = useState(false);
 
 	const handleSelect = (optionId) => {
@@ -14,21 +14,21 @@ export default function MultiSelect({ options, selected, onChange, displayValue 
 
 	const renderSelectedItems = () => {
 		if (selected.length === 0) {
-			return "Seleccionar sectores";
+			return `Seleccione ${name}`;
 		}
 
 		let displayText = "";
-		if (selected.length <= 3) {
+		if (selected.length <= displayQuantity) {
 			displayText = selected.map((id) => {
 				const selectedItem = options.find((item) => item.id === id);
 				return selectedItem ? selectedItem[displayValue] : '';
 			}).join(", ");
 		} else {
-			displayText = selected.slice(0, 3).map((id) => {
+			displayText = selected.slice(0, displayQuantity).map((id) => {
 				const selectedItem = options.find((item) => item.id === id);
 				return selectedItem ? selectedItem[displayValue] : '';
 			}).join(", ");
-			const additionalCount = selected.length - 3;
+			const additionalCount = selected.length - displayQuantity;
 			displayText += ` (+${additionalCount})`;
 		}
 
