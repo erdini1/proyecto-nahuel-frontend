@@ -39,7 +39,7 @@ const TaskTableComplete = ({ tasks, handleCompleteUserTask, handleMarkTaskAsShou
 				) : (
 					tasks.map((userTask) => (
 						<TableRow key={userTask.id} className="even:bg-[#e7e1e1]/70 odd:bg-[#e7e1e1]/80 hover:bg-[#e7e1e1]/90 transition-all">
-							<TableCell colSpan={1} className={`flex justify-between items-center ${!userTask.shouldDo ? "text-gray-500 line-through" : ""}`}>
+							<TableCell colSpan={1} className={`flex justify-between items-center py-2 ${!userTask.shouldDo ? "text-gray-500 line-through" : ""}`}>
 								{userTask.Task.description}
 								{userTask.Task.type === "elaboration" && (
 									<Input
@@ -49,10 +49,11 @@ const TaskTableComplete = ({ tasks, handleCompleteUserTask, handleMarkTaskAsShou
 										onChange={(e) => handleKilosChange(userTask.id, e.target.value)}
 										disabled={userTask.isCompleted || !userTask.shouldDo}
 										className="w-[70px] text-center border shadow"
+										type="number"
 									/>
 								)}
 							</TableCell>
-							<TableCell colSpan={1}>
+							<TableCell colSpan={1} className="py-2">
 								<Button
 									onClick={() => handleCompleteUserTask(userTask.Task.id, kilosData[userTask.id])}
 									className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-300 ${userTask.isCompleted
@@ -74,7 +75,7 @@ const TaskTableComplete = ({ tasks, handleCompleteUserTask, handleMarkTaskAsShou
 									)}
 								</Button>
 							</TableCell>
-							<TableCell colSpan={1}>
+							<TableCell colSpan={1} className="py-2">
 								{userTask.isOptional ? (
 									<Button
 										onClick={() => handleMarkTaskAsShouldDo(userTask.id)}

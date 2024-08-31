@@ -18,13 +18,13 @@ function SortableTask({ task, handleDisableUserTask, isArchived, handleMarkAsOpt
     };
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={`flex border-b border-gray-200 p-4 hover:bg-gray-100 text-sm ${isArchived ? "cursor-default" : ""}`}>
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={`flex border-b border-gray-200 px-4 py-2  hover:bg-gray-100 text-sm ${isArchived ? "cursor-default" : ""}`}>
             <div className={`w-4/6 py-2 ${!task.shouldDo ? "text-gray-400" : ""} ${!task.isActive ? "text-gray-400 line-through" : ""}`}>
                 {task.Task.description}
                 <span className="text-gray-400 text-sm">{task.periodicity === "daily" ? " (Solo por hoy)" : ""}</span>
                 {task.Task.type === "elaboration" && task.kilos && (
                     <div className="flex items-center gap-1 text-sm text-muted-foreground text-gray-500 mt-1">
-                        Cantidad elaborada: {task.kilos} kg
+                        Elaborado: {task.kilos} kg
                     </div>
                 )}
             </div>
