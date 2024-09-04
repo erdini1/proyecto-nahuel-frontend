@@ -21,6 +21,26 @@ export const getAllCashMovements = async () => {
 	}
 }
 
+export const getAllWithdrawals = async (page) => {
+	try {
+		const response = await axios.get(`/cash-movement/withdrawals?page=${page}`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get all withdrawals:', error);
+		throw new Error('Failed to get all withdrawals');
+	}
+}
+
+export const getWithdrawalsSummary = async () => {
+	try {
+		const response = await axios.get(`/cash-movement/withdrawals/summary`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get withdrawals summary:', error);
+		throw new Error('Failed to get withdrawals summary');
+	}
+}
+
 export const createCashMovement = async (data) => {
 	try {
 		const response = await axios.post(`/cash-movement`, data);

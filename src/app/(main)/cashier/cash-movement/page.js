@@ -15,6 +15,8 @@ import CashRegisterReport from "@/components/component/CashRegisterReport";
 import { getCashMovements } from "@/service/cashMovementsService";
 import { getCancellations } from "@/service/cancellationService";
 import { useToast } from "@/components/ui/use-toast";
+import { toZonedTime } from "date-fns-tz";
+import { format } from "date-fns";
 
 export default function Page() {
 	const [hasCashRegister, setHasCashRegister] = useState(false);
@@ -134,47 +136,56 @@ export default function Page() {
 		<div className="w-full p-4 from-slate-300 to-slate-400 bg-gradient-to-b min-h-screen h-full">
 			<div className="flex flex-col gap-6">
 				<Tabs value={selectedTab} onValueChange={handleTabChange}>
-					<div className="flex gap-3 items-center">
-						<div className="flex justify-between px-2">
-							<h1 className="text-2xl font-bold tracking-tight">Gestión de Caja</h1>
+					<div className="flex items-center justify-between">
+						<div className="flex gap-3 items-center">
+							<div className="flex justify-between px-2">
+								<h1 className="text-2xl font-bold tracking-tight">Gestión de Caja</h1>
+							</div>
+							<div className="flex gap-10 items-center">
+								<TabsList className="border-b">
+									<TabsTrigger
+										value="cashRegister"
+										className={`flex gap-1 text-xs ${selectedTab === "cashRegister" ? "ring-2 ring-gray-300" : ""}`}
+									>
+										<span className="font-bold text-sm">1</span>
+										(Datos iniciales)
+									</TabsTrigger>
+									<TabsTrigger
+										value="movements"
+										disabled={!hasCashRegister}
+										className={`flex gap-1 text-xs ${selectedTab === "movements" ? "ring-2 ring-gray-300" : ""}`}
+									>
+										<span className="font-bold text-sm">2</span>
+										(Movimientos de Caja)
+									</TabsTrigger>
+									<TabsTrigger
+										value="reports"
+										disabled={!hasCashRegister}
+										className={`flex gap-1 text-xs ${selectedTab === "reports" ? "ring-2 ring-gray-300" : ""}`}
+									>
+										<span className="font-bold text-sm">3</span>
+										(Cierre de caja)
+									</TabsTrigger>
+								</TabsList>
+								{selectedTab === "movements" && hasCashRegister && (
+									<div className="items-center flex gap-2">
+										<ModalTerminals
+											terminals={terminals}
+											onTerminalsChange={setTerminals}
+											cashRegisterId={cashRegister?.id}
+											cashRegisterNumber={cashRegister?.CashBox.description.split(' ')[1]}
+										/>
+									</div>
+								)}
+							</div>
 						</div>
-						<div className="flex gap-10 items-center">
-							<TabsList className="border-b">
-								<TabsTrigger
-									value="cashRegister"
-									className={`flex gap-1 text-xs ${selectedTab === "cashRegister" ? "ring-2 ring-gray-300" : ""}`}
-								>
-									<span className="font-bold text-sm">1</span>
-									(Datos iniciales)
-								</TabsTrigger>
-								<TabsTrigger
-									value="movements"
-									disabled={!hasCashRegister}
-									className={`flex gap-1 text-xs ${selectedTab === "movements" ? "ring-2 ring-gray-300" : ""}`}
-								>
-									<span className="font-bold text-sm">2</span>
-									(Movimientos de Caja)
-								</TabsTrigger>
-								<TabsTrigger
-									value="reports"
-									disabled={!hasCashRegister}
-									className={`flex gap-1 text-xs ${selectedTab === "reports" ? "ring-2 ring-gray-300" : ""}`}
-								>
-									<span className="font-bold text-sm">3</span>
-									(Cierre de caja)
-								</TabsTrigger>
-							</TabsList>
-							{selectedTab === "movements" && hasCashRegister && (
-								<div className="items-center flex gap-2">
-									<ModalTerminals
-										terminals={terminals}
-										onTerminalsChange={setTerminals}
-										cashRegisterId={cashRegister?.id}
-										cashRegisterNumber={cashRegister?.CashBox.description.split(' ')[1]}
-									/>
-								</div>
-							)}
-						</div>
+						{selectedTab !== "cashRegister" && cashRegister && (
+							<div className="mx-4 px-4 py-2 border rounded bg-gray-100 text-sm">
+								<p className="flex gap-1">Caja creada el día:
+									<strong clas>{format(toZonedTime(cashRegister.date, 'America/Argentina/Ushuaia'), 'dd/MM')}</strong>
+								</p>
+							</div>
+						)}
 					</div>
 					{isLoading && !hasCashRegister && cashRegister === null ? (
 						<div className="flex justify-center items-center h-64">

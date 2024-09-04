@@ -107,10 +107,16 @@ export default function Sidebar() {
 							<div className="grid gap-1 mt-4">
 								<div className="text-gray-500 px-3 py-2">Caja</div>
 								<Link
-									className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/cash-register" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
-									href="/admin/cash-register">
+									className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/cash-register/report" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+									href="/admin/cash-register/report">
 									<DollarSignIcon className="h-4 w-4" />
 									Registro de Caja
+								</Link>
+								<Link
+									className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${pathname === "/admin/cash-register/withdrawal" ? "bg-gray-900 text-gray-50" : "text-gray-500 hover:text-gray-900"}`}
+									href="/admin/cash-register/withdrawal">
+									<DollarSignIcon className="h-4 w-4" />
+									Pagos de Proveedores
 								</Link>
 							</div>
 						</nav>
