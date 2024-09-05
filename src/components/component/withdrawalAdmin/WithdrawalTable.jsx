@@ -42,7 +42,7 @@ export default function WithdrawalTable({ cashMovements, totalOfAllWithdrawals }
 							<TableCell className="w-1/12 py-4 font-semibold"></TableCell>
 							<TableCell className="w-1/6  py-4 font-semibold"></TableCell>
 							<TableCell className="w-1/6  py-4 font-semibold ">
-								<span className="flex flex-col gap-2 text-gray-600 items-end">Subtotal por pagina: <span className="text-black">Total:</span></span>
+								<span className="flex flex-col gap-2 text-gray-600 items-end">Subtotal: <span className="text-black">Total:</span></span>
 
 							</TableCell>
 							<TableCell className="w-3/12 py-4 font-semibold">

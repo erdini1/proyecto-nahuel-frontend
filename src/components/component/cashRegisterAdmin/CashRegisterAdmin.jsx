@@ -129,7 +129,7 @@ export default function CashRegisterAdmin() {
 				cashBoxNumber: cashRegister.CashBox.description,
 				cashBoxHasCheckingAccount: cashRegister.CashBox.hasCheckingAccount,
 				initialAmount,
-				incomeChange: changeAmount,
+				changeAmount: changeAmount,
 				Terminals: cashRegister.Terminals,
 				cashSales: +cashRegister.salesWithCash,
 				cashIncome: incomeCash,

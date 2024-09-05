@@ -77,7 +77,7 @@ const DownloadExcel = ({ cashRegisters, cashMovements, cancellations, fileName }
 			{ header: 'FECHA', key: 'date', width: 15 },
 			{ header: 'NUMERO DE CAJA', key: 'cashBoxNumber', width: 15 },
 			{ header: 'MONTO INICIAL', key: 'initialAmount', width: 20 },
-			{ header: 'INGRESO DE CAMBIO', key: 'incomeChange', width: 20 },
+			{ header: 'INGRESO DE CAMBIO', key: 'changeAmount', width: 20 },
 			{ header: 'VENTAS', key: 'cashSales', width: 20 },
 			{ header: 'INGRESO', key: 'cashIncome', width: 20 },
 			{ header: 'RETIROS', key: 'cashWithdrawal', width: 20 },
