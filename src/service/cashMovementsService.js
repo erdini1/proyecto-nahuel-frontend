@@ -10,7 +10,6 @@ export const getCashMovements = async () => {
 	}
 };
 
-// TODO: Poner paginación 
 export const getAllCashMovements = async () => {
 	try {
 		const response = await axios.get(`/cash-movement`);
@@ -18,6 +17,26 @@ export const getAllCashMovements = async () => {
 	} catch (error) {
 		console.error('Failed to get all cash movements:', error);
 		throw new Error('Failed to get all cash movements');
+	}
+}
+
+export const getAllWithdrawals = async (page, providerName, cashBoxIds, dateFrom, dateTo) => {
+	try {
+		const response = await axios.get(`/cash-movement/withdrawals?page=${page}&providerName=${providerName}&cashBoxIds=${cashBoxIds}&dateFrom=${dateFrom}&dateTo=${dateTo}`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get all withdrawals:', error);
+		throw new Error('Failed to get all withdrawals');
+	}
+}
+
+export const getWithdrawalsSummary = async (providerName, cashBoxIds, dateFrom, dateTo) => {
+	try {
+		const response = await axios.get(`/cash-movement/withdrawals/summary?providerName=${providerName}&cashBoxIds=${cashBoxIds}&dateFrom=${dateFrom}&dateTo=${dateTo}`);
+		return response.data;
+	} catch (error) {
+		console.error('Failed to get withdrawals summary:', error);
+		throw new Error('Failed to get withdrawals summary');
 	}
 }
 

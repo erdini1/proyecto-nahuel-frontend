@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/use-toast"
 export default function CashRegister({ onCreated, onUpdated, cashRegister, cashBoxes }) {
 	const [initialAmount, setInitialAmount] = useState("");
 	const [changeAmount, setChangeAmount] = useState("");
+	const [supplierIncome, setSupplierIncome] = useState("");
 	const [cashBoxId, setCashBoxId] = useState(0)
 	const [disabledButtons, setDisabledButtons] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
@@ -18,11 +19,13 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 		if (cashRegister) {
 			const initialAmount = parseFloat(cashRegister.initialAmount) || 0;
 			const changeAmount = parseFloat(cashRegister.changeAmount) || 0;
+			const supplierIncome = parseFloat(cashRegister.supplierIncome) || 0;
 
 			setCashBoxId(cashRegister.cashBoxId);
 			setDisabledButtons(true);
 			setInitialAmount(initialAmount);
 			setChangeAmount(changeAmount);
+			setSupplierIncome(supplierIncome);
 		}
 	}, [cashRegister]);
 
@@ -40,6 +43,7 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 		const formData = {
 			initialAmount,
 			changeAmount: changeAmount || 0,
+			supplierIncome: supplierIncome || 0,
 			cashBoxId,
 		};
 		try {
@@ -71,7 +75,7 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 	};
 
 	return (
-		<div className="max-w-2xl mx-auto from-[#211f2f] to-[#211f2f]/60 bg-gradient-to-t rounded-lg shadow-md p-6 border">
+		<div className="max-w-3xl mx-auto from-[#211f2f] to-[#211f2f]/60 bg-gradient-to-t rounded-lg shadow-md p-6 border">
 			<h2 className="text-xl font-bold mb-4 text-white">Datos de la Caja</h2>
 			<form className="grid gap-4" onSubmit={handleSubmit}>
 				<div className="grid gap-2">
@@ -93,7 +97,7 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 					</ToggleGroup>
 				</div>
 				<div className="flex gap-1">
-					<div className="grid gap-2 w-1/2">
+					<div className="grid gap-2 w-1/3">
 						<label className="text-sm font-medium text-white" htmlFor='initialAmount'>Monto inicial</label>
 						<div className="relative text-black">
 							<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
@@ -109,7 +113,7 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 							/>
 						</div>
 					</div>
-					<div className="grid gap-2 w-1/2">
+					<div className="grid gap-2 w-1/3">
 						<label className="text-sm font-medium text-white" htmlFor='changeAmount'>Ingreso de cambio</label>
 						<div className="relative text-black">
 							<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
@@ -120,6 +124,22 @@ export default function CashRegister({ onCreated, onUpdated, cashRegister, cashB
 								step="0.01"
 								value={changeAmount}
 								onChange={(e) => setChangeAmount(e.target.value)}
+								className="p-2 border rounded pl-5 shadow"
+								placeholder="0.00"
+							/>
+						</div>
+					</div>
+					<div className="grid gap-2 w-1/3">
+						<label className="text-sm font-medium text-white" htmlFor='supplierIncome'>Ingreso de proveedores</label>
+						<div className="relative text-black">
+							<span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">$</span>
+							<Input
+								id="supplierIncome"
+								type="number"
+								min="0"
+								step="0.01"
+								value={supplierIncome}
+								onChange={(e) => setSupplierIncome(e.target.value)}
 								className="p-2 border rounded pl-5 shadow"
 								placeholder="0.00"
 							/>

@@ -28,15 +28,15 @@ const DownloadExcel = ({ cashRegisters, cashMovements, cancellations, fileName }
 			};
 
 			if (key === "cashRegister") {
-				sheet.spliceRows(1, 0, ["", "", "", "", "", "EFECTIVO", "EFECTIVO", "EFECTIVO", "EFECTIVO", "EFECTIVO", "EFECTIVO", "TARJETAS", "TARJETAS", "TARJETAS", "TARJETAS", "TARJETAS", "MERCADO PAGO", "MERCADO PAGO", "MERCADO PAGO", "MERCADO PAGO", "MERCADO PAGO", "POINT MAXICONSUMO", "POINT MAXICONSUMO", "POINT MAXICONSUMO", "POINT MAXICONSUMO", "POINT MAXICONSUMO", "POINT MAXICONSUMO", "CUENTA CORRIENTE", "CUENTA CORRIENTE", "CUENTA CORRIENTE", "CUENTA CORRIENTE", "", ""]);
+				sheet.spliceRows(1, 0, ["", "", "", "", "", "", "EFECTIVO", "EFECTIVO", "EFECTIVO", "EFECTIVO", "EFECTIVO", "EFECTIVO", "TARJETAS", "TARJETAS", "TARJETAS", "TARJETAS", "TARJETAS", "MERCADO PAGO", "MERCADO PAGO", "MERCADO PAGO", "MERCADO PAGO", "MERCADO PAGO", "POINT MAXICONSUMO", "POINT MAXICONSUMO", "POINT MAXICONSUMO", "POINT MAXICONSUMO", "POINT MAXICONSUMO", "POINT MAXICONSUMO", "CUENTA CORRIENTE", "CUENTA CORRIENTE", "CUENTA CORRIENTE", "CUENTA CORRIENTE", "", ""]);
 
-				sheet.mergeCells("F1:K1");
-				sheet.mergeCells("L1:P1");
-				sheet.mergeCells("Q1:U1");
-				sheet.mergeCells("V1:AA1");
-				sheet.mergeCells("AB1:AE1");
+				sheet.mergeCells("G1:L1");
+				sheet.mergeCells("M1:Q1");
+				sheet.mergeCells("R1:V1");
+				sheet.mergeCells("W1:AB1");
+				sheet.mergeCells("AC1:AF1");
 
-				const paymentMethodRange = ["F1", "L1", "Q1", "V1", "AB1"];
+				const paymentMethodRange = ["G1", "M1", "S1", "Y1", "AE1"];
 				paymentMethodRange.forEach(cell => {
 					sheet.getCell(cell).fill = {
 						type: 'pattern',
@@ -52,12 +52,12 @@ const DownloadExcel = ({ cashRegisters, cashMovements, cancellations, fileName }
 					}
 				};
 
-				sheet.getColumn("F").border = { left: { style: 'medium' } };
-				sheet.getColumn("L").border = { left: { style: 'medium' } };
-				sheet.getColumn("Q").border = { left: { style: 'medium' } };
-				sheet.getColumn("V").border = { left: { style: 'medium' } };
-				sheet.getColumn("AB").border = { left: { style: 'medium' } };
-				sheet.getColumn("AF").border = { left: { style: 'medium' } };
+				sheet.getColumn("G").border = { left: { style: 'medium' } };
+				sheet.getColumn("M").border = { left: { style: 'medium' } };
+				sheet.getColumn("R").border = { left: { style: 'medium' } };
+				sheet.getColumn("W").border = { left: { style: 'medium' } };
+				sheet.getColumn("AC").border = { left: { style: 'medium' } };
+				sheet.getColumn("AG").border = { left: { style: 'medium' } };
 			} else {
 				sheet.getColumn("E").border = { left: { style: 'medium' } };
 			}
@@ -77,7 +77,8 @@ const DownloadExcel = ({ cashRegisters, cashMovements, cancellations, fileName }
 			{ header: 'FECHA', key: 'date', width: 15 },
 			{ header: 'NUMERO DE CAJA', key: 'cashBoxNumber', width: 15 },
 			{ header: 'MONTO INICIAL', key: 'initialAmount', width: 20 },
-			{ header: 'INGRESO DE CAMBIO', key: 'incomeChange', width: 20 },
+			{ header: 'INGRESO DE CAMBIO', key: 'changeAmount', width: 20 },
+			{ header: 'INGRESO DE PAGO A PROVEEDOR', key: 'supplierIncome', width: 20 },
 			{ header: 'VENTAS', key: 'cashSales', width: 20 },
 			{ header: 'INGRESO', key: 'cashIncome', width: 20 },
 			{ header: 'RETIROS', key: 'cashWithdrawal', width: 20 },

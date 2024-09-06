@@ -92,7 +92,8 @@ export default function CashRegisterAdmin() {
 		const calculateData = (cashRegister) => {
 			const initialAmount = parseFloat(cashRegister.initialAmount) || 0;
 			const changeAmount = parseFloat(cashRegister.changeAmount) || 0;
-			const incomeCash = initialAmount + changeAmount;
+			const supplierIncome = parseFloat(cashRegister.supplierIncome) || 0;
+			const incomeCash = initialAmount + changeAmount + supplierIncome;
 
 			const cashMovementsFiltered = cashMovements.filter(cashMovement => cashMovement.CashRegister.id === cashRegister.id);
 			const cancellationsFiltered = cancellations.filter(cancellation => cancellation.CashRegister.id === cashRegister.id);
@@ -129,7 +130,8 @@ export default function CashRegisterAdmin() {
 				cashBoxNumber: cashRegister.CashBox.description,
 				cashBoxHasCheckingAccount: cashRegister.CashBox.hasCheckingAccount,
 				initialAmount,
-				incomeChange: changeAmount,
+				changeAmount: changeAmount,
+				supplierIncome,
 				Terminals: cashRegister.Terminals,
 				cashSales: +cashRegister.salesWithCash,
 				cashIncome: incomeCash,
