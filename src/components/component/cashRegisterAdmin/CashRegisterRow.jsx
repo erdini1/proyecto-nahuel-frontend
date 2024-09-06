@@ -36,7 +36,7 @@ const CashRegisterRow = ({ cashRegister, cashMovementsFiltered, cancellationsFil
 			</TableRow>
 			{isExpanded && (
 				<TableRow>
-					<TableCell colSpan="8" className="px-6 py-4 whitespace-nowrap bg-gray-200/40">
+					<TableCell colSpan="8" className="px-6 py-4 whitespace-nowrap bg-gray-300">
 						<Collapsible open>
 							<CollapsibleContent className='flex flex-col gap-4'>
 								<PaymentMethodsTable

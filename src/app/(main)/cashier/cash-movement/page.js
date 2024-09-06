@@ -179,10 +179,10 @@ export default function Page() {
 								)}
 							</div>
 						</div>
-						{selectedTab !== "cashRegister" && cashRegister && (
+						{cashRegister && (
 							<div className="mx-4 px-4 py-2 border rounded bg-gray-100 text-sm">
 								<p className="flex gap-1">Caja creada el día:
-									<strong clas>{format(toZonedTime(cashRegister.date, 'America/Argentina/Ushuaia'), 'dd/MM')}</strong>
+									<strong>{format(toZonedTime(cashRegister.date, 'America/Argentina/Ushuaia'), 'dd/MM')}</strong>
 								</p>
 							</div>
 						)}

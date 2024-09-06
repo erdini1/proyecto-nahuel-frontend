@@ -47,7 +47,7 @@ export default function WithdrawalTable({ cashMovements, totalOfAllWithdrawals }
 							</TableCell>
 							<TableCell className="w-3/12 py-4 font-semibold">
 								<span className="flex flex-col gap-2 text-gray-600">$ {totalWithdrawals().toFixed(2)}
-									<span className="text-red-500">
+									<span className="text-black">
 										$ {totalOfAllWithdrawals}
 									</span>
 								</span>

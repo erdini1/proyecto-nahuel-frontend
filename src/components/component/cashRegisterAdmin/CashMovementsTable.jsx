@@ -5,8 +5,12 @@ const CashMovementsTable = ({ cashMovements }) => {
 
 	return (
 		<div className='w-1/2'>
-			<p><span className="font-semibold">Movimientos</span></p>
-			<Table className="min-w-full divide-y divide-gray-200 mt-4 border">
+			<div className="bg-white p-2 rounded w-full border ring-1 ring-gray-200">
+				<div className="text-center">
+					<p className="font-bold text-gray-700 uppercase">Movimientos</p>
+				</div>
+			</div>
+			<Table className="min-w-full divide-y divide-gray-200 mt-2 border">
 				<TableHeader className="bg-gray-50 text-left text-xs text-gray-500 uppercase">
 					<TableRow>
 						<TableHead className="w-1/5 py-3 pl-6">ID</TableHead>
